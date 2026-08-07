@@ -166,6 +166,18 @@ class TreeSnapshotTests(unittest.TestCase):
         self.assertEqual(raw, "../target.txt")
         self.assertEqual(target, "target.txt")
 
+    def test_root_relative_path_accepts_equivalent_alias_ancestor(self) -> None:
+        root = Path("long-spelling") / "project"
+        target = Path("short-spelling") / "project" / "nested" / "target.txt"
+
+        def samefile(left: Path, right: Path) -> bool:
+            return Path(left) == target.parents[1] and Path(right) == root
+
+        with mock.patch.object(tree_snapshot.os.path, "samefile", side_effect=samefile):
+            relative = tree_snapshot.relative_to_root(target, root)
+
+        self.assertEqual(relative, Path("nested") / "target.txt")
+
     def test_external_symlink_is_rejected(self) -> None:
         outside = Path(self.temporary.name) / "outside.txt"
         outside.write_text("must not be read", encoding="utf-8")

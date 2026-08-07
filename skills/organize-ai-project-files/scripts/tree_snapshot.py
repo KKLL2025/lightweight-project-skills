@@ -110,13 +110,31 @@ def sha256(path: Path) -> str:
     return digest.hexdigest().upper()
 
 
-def is_within_root(path: Path, root: Path) -> bool:
-    """Return whether a resolved path is contained by root on this platform."""
+def relative_to_root(path: Path, root: Path) -> Path | None:
+    """Return a contained relative path, including Windows alias spellings."""
     try:
-        path.relative_to(root)
+        return path.relative_to(root)
     except ValueError:
-        return False
-    return True
+        pass
+
+    # Windows can expose the same directory through a long path and an 8.3 or
+    # ``\\?\`` spelling. Walk existing ancestors and compare file identity so
+    # an alias does not turn an in-root link into a false path-escape report.
+    parts: list[str] = []
+    candidate = path
+    while True:
+        try:
+            if os.path.samefile(candidate, root):
+                return Path(*reversed(parts))
+        except OSError:
+            # Broken leaf targets are allowed when an existing parent can
+            # still establish containment.
+            pass
+        parent = candidate.parent
+        if parent == candidate:
+            return None
+        parts.append(candidate.name)
+        candidate = parent
 
 
 def safe_symlink_target(path: Path, root: Path) -> tuple[str, str]:
@@ -129,12 +147,13 @@ def safe_symlink_target(path: Path, root: Path) -> tuple[str, str]:
         resolved_target = target_path.resolve(strict=False)
     except RuntimeError as exc:
         raise ValueError(f"cannot resolve symlink safely: {path}: {exc}") from exc
-    if not is_within_root(resolved_target, root):
+    relative_target = relative_to_root(resolved_target, root)
+    if relative_target is None:
         relative = path.relative_to(root).as_posix()
         raise ValueError(
             f"symlink points outside tree root: {relative} -> {raw_target}"
         )
-    return raw_target, resolved_target.relative_to(root).as_posix()
+    return raw_target, relative_target.as_posix()
 
 
 def iter_tree(root: Path, prefixes: list[str]) -> Iterable[tuple[Path, str]]:

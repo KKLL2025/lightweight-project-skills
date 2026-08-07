@@ -26,5 +26,9 @@ All notable changes to this project are documented here. The format follows [Kee
 - Real symlink tests require platform permission; policy tests provide a permission-independent fallback.
 - This preview is not a production or safety certification.
 
+### Fixed
+
+- Windows hosted-runner UTF-8 output and equivalent long/8.3 symlink target spellings.
+
 [Unreleased]: https://github.com/KKLL2025/lightweight-project-skills/compare/v0.4.0-preview...HEAD
 [0.4.0-preview]: https://github.com/KKLL2025/lightweight-project-skills/releases/tag/v0.4.0-preview
