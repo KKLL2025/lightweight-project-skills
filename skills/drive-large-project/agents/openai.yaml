@@ -1,0 +1,4 @@
+interface:
+  display_name: "Drive Large Projects"
+  short_description: "Run large projects with clean structure and truthful state"
+  default_prompt: "Use $drive-large-project to continue this project autonomously with clean structure, truthful state, and proportional verification."

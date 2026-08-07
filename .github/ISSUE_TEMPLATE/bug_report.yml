@@ -1,0 +1,63 @@
+name: Bug report
+description: Report a reproducible problem in a skill, script, test, or document.
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for providing a safe, minimal reproduction. Do not include secrets or private project data.
+  - type: dropdown
+    id: component
+    attributes:
+      label: Component
+      options:
+        - spec-workflow
+        - drive-large-project
+        - organize-ai-project-files
+        - Tests or release engineering
+        - Documentation
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+      placeholder: 0.4.0-preview or commit SHA
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Runtime, model, operating system, and Python version if a script is involved.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: Include the original prompt or command and the smallest safe fixture.
+    validations:
+      required: true
+  - type: textarea
+    id: observed
+    attributes:
+      label: Observed behavior
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety check
+      options:
+        - label: I removed credentials, private data, and machine-specific absolute paths.
+          required: true
+        - label: This is not a security vulnerability. Security reports use the private process in SECURITY.md.
+          required: true

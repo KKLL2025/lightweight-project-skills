@@ -1,0 +1,4 @@
+interface:
+  display_name: "Organize AI Project Files"
+  short_description: "Design and migrate clean three-zone AI project folders"
+  default_prompt: "Use $organize-ai-project-files to design or safely migrate this project into a clean, role-based folder structure."

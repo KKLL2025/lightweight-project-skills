@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Questions and design discussion
+    url: https://github.com/KKLL2025/lightweight-project-skills/discussions
+    about: Ask for help or discuss an early idea before filing an issue.
+  - name: Private security report
+    url: https://github.com/KKLL2025/lightweight-project-skills/security/advisories/new
+    about: Report vulnerabilities and sensitive path or credential exposure privately.
