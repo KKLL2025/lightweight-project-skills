@@ -149,7 +149,8 @@ def safe_symlink_target(path: Path, root: Path) -> tuple[str, str]:
         raise ValueError(f"cannot resolve symlink safely: {path}: {exc}") from exc
     relative_target = relative_to_root(resolved_target, root)
     if relative_target is None:
-        relative = path.relative_to(root).as_posix()
+        link_relative = relative_to_root(path, root)
+        relative = link_relative.as_posix() if link_relative is not None else path.name
         raise ValueError(
             f"symlink points outside tree root: {relative} -> {raw_target}"
         )
