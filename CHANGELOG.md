@@ -4,6 +4,11 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+### Changed
+
+- Tightened the English and Chinese README first screen around the lightweight, proportional-governance value proposition.
+- Added a tested one-command discovery and project-scoped Codex installation path through the open-source `skills` CLI, while retaining manual installation fallbacks.
+
 ### Planned
 
 - Broader repeated behavior evaluations across more than one model/runtime.
