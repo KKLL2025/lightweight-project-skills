@@ -47,7 +47,7 @@ Lightweight Project Skills 假设现代模型能够自主处理普通工程判�
 ## 30 秒安装
 
 > [!NOTE]
-> 从 `v0.4.0-preview` 升级时请注意：`spec-workflow` 已更名为 `align-project-requirements`。重新安装前应移除旧的 `spec-workflow` 安装目录；不要同时启用两个版本，否则可能重复触发。
+> 从 `v0.4.0-preview` 升级时请注意：`spec-workflow` 已更名为 `align-project-requirements`。重新安装前，只移除此前从本仓库安装的旧 `spec-workflow` 副本；请先核对来源，不要删除其他提供方或插件中的同名 skill。同时启用本仓库的新旧副本可能造成重复触发。
 
 ### 一条命令（推荐）
 

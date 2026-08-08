@@ -47,7 +47,7 @@ During long delivery, `drive-large-project` reports completed outcome-sized mile
 ## 30-second install
 
 > [!NOTE]
-> Upgrading from `v0.4.0-preview`? `spec-workflow` was renamed to `align-project-requirements`. Remove the old installed `spec-workflow` folder before reinstalling; keeping both active can produce duplicate routing.
+> Upgrading from `v0.4.0-preview`? `spec-workflow` was renamed to `align-project-requirements`. Before reinstalling, remove only the old `spec-workflow` copy that came from this repository; verify its source first and do not delete an unrelated provider or plugin skill with the same name. Keeping this repository's old and new copies active can produce duplicate routing.
 
 ### One command (recommended)
 
