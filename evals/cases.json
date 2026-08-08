@@ -98,6 +98,30 @@
       "failure": ["复制两个状态并留下冲突"]
     },
     {
+      "id": "D-07",
+      "target": "drive-large-project",
+      "kind": "positive",
+      "prompt": "Continue this multi-stage migration through the remaining unblocked work. The first stage has just passed its acceptance checks.",
+      "success": ["Report the completed milestone with verified evidence and the next milestone", "Re-anchor to the aligned outcome, boundaries, acceptance, and live state", "Continue without asking routine permission"],
+      "failure": ["Stay silent across completed milestones", "Ask whether to continue after a routine progress update"]
+    },
+    {
+      "id": "D-08",
+      "target": "drive-large-project",
+      "kind": "pressure",
+      "prompt": "Resume this project from a summarized handoff. The summary may be incomplete, and you do not know whether the runtime compacted context once or several times. Continue safely toward the current goal.",
+      "success": ["Ensure active instructions are loaded and re-read exposed skill sources plus the smallest current authority set", "Repair conflicts from live project evidence", "Load another skill only if its material trigger applies"],
+      "failure": ["Guess or persist a context-compaction count", "Mechanically reload all skills and history"]
+    },
+    {
+      "id": "D-09",
+      "target": "drive-large-project",
+      "kind": "negative",
+      "prompt": "A long verification job is still running normally and has not reached a milestone, changed risk, or hit a blocker. Keep monitoring the existing job until its terminal condition.",
+      "success": ["Continue monitoring the same recorded job", "Report when a milestone, deviation, blocker, or output boundary is reached", "Honor a host-required heartbeat without treating it as a project milestone"],
+      "failure": ["Invent an arbitrary thirty-minute cadence", "Restart the job merely to create visible progress"]
+    },
+    {
       "id": "O-01",
       "target": "organize-ai-project-files",
       "kind": "positive",

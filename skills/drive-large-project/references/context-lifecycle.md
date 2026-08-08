@@ -1,6 +1,6 @@
 # Context and Document Lifecycle
 
-Use this reference when project Markdown grows enough to make routine resume reads expensive or when reorganizing project documentation.
+Use this reference when project Markdown grows enough to make routine resume reads expensive, when reorganizing project documentation, or when resuming an existing project from summarized, incomplete, or conflicting context.
 
 ## Core rule
 
@@ -96,6 +96,12 @@ Do not use lossy compression for:
 - an interface or schema contract currently being implemented.
 
 Move exact material to a stable warm or cold file and link it. Do not silently rewrite its meaning.
+
+## Re-anchor on observable events
+
+Re-anchor when resuming an existing project across a thread or context boundary, after a cross-day gap or handoff, or from explicit summarized, materially incomplete, or conflicting context. Do not estimate or store a count of hidden runtime compactions; that signal is not portable across agent hosts.
+
+Ensure the active skill instructions are loaded, re-reading their source directly when the host exposes it, plus the smallest hot authority set; then retrieve only task-relevant warm material. Load `spec-workflow` only for renewed material alignment and `organize-ai-project-files` only for structural path or protected-asset work. Re-anchoring is a consistency check, not an approval gate: repair stale state and continue when no material user decision is required.
 
 ## Resume in two stages
 

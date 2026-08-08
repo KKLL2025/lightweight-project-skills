@@ -8,6 +8,7 @@ All notable changes to this project are documented here. The format follows [Kee
 
 - Tightened the English and Chinese README first screen around the lightweight, proportional-governance value proposition.
 - Added a tested one-command discovery and project-scoped Codex installation path through the open-source `skills` CLI, while retaining manual installation fallbacks.
+- Added non-blocking milestone updates and lightweight direction re-anchoring to `drive-large-project`, using observable recovery events instead of self-imposed timers or hidden context-compaction counters while preserving host-required progress heartbeats.
 
 ### Planned
 

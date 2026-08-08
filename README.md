@@ -42,6 +42,8 @@ small explicit task      -> execute directly
 
 The skills coordinate without duplicating ownership. Requirements do not maintain execution status, handoffs do not become acceptance ledgers, and folder names do not prove release state.
 
+During long delivery, `drive-large-project` reports completed outcome-sized milestones, re-anchors to the aligned outcome, boundaries, evidence, and live state, then continues unless a material blocker requires input. It does not invent timer-based interruptions or pretend to know a host's hidden context-compaction count; host-required progress heartbeats still apply.
+
 ## 30-second install
 
 ### One command (recommended)

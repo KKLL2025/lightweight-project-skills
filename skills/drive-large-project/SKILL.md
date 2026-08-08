@@ -45,7 +45,7 @@ During each milestone, correct simple placement drift as part of the work when t
 - Add an acceptance ledger only when multiple criteria, external validation, or evidence gaps must survive across sessions.
 - Store raw logs, screenshots, manifests, and old milestone details outside the default read set.
 
-When templates are needed, read [artifact-templates.md](references/artifact-templates.md). When project documents are growing or duplicated, read [context-lifecycle.md](references/context-lifecycle.md).
+When templates are needed, read [artifact-templates.md](references/artifact-templates.md). When project documents are growing or duplicated, or recovery context is summarized or uncertain, read [context-lifecycle.md](references/context-lifecycle.md).
 
 Give each changing fact one owner: alignment owns desired behavior; tasks own execution state; the acceptance ledger owns evidence state; the handoff summarizes the current stage and next action; the layout contract owns folder roles. References may point to these facts but must not independently maintain competing copies.
 
@@ -60,9 +60,21 @@ For the active milestone:
 5. Exercise the real user/runtime path when practical.
 6. Record evidence and gaps honestly.
 7. Update the task owner, acceptance owner when present, and concise handoff.
-8. Continue to the next unblocked milestone without asking for routine permission.
+8. At the completion of each outcome-sized milestone, re-anchor against the aligned outcome, relevant non-goals and authority boundaries, acceptance evidence, live project state, and the next unblocked result.
+9. Send a brief user-visible milestone update with the verified result and evidence, material gaps or risks, and the next milestone.
+10. Continue to the next unblocked milestone without asking for routine permission.
 
 Do not claim more than the evidence establishes. Code written, locally checked, packaged candidate, externally accepted, and formally released are different states. Reopen an acceptance item when later changes invalidate its evidence.
+
+Use the runtime's progress channel when it supports intermediate updates; otherwise report at the next user-visible output boundary. Update canonical task, acceptance, and handoff owners before summarizing them in conversation. Do not split milestones merely to create updates, invent a time-based reporting cadence when the host does not require one, repeat unchanged status, or turn a milestone update into a permission gate. Follow any host-required progress heartbeat without treating it as a project milestone or approval gate.
+
+Report without waiting for a milestone when evidence overturns the plan, a material scope or authority boundary changes, a real blocker appears, or work is about to stop, hand off, release, or claim completion. Ask only when the existing authority rules require a user decision; otherwise state the adjustment and continue.
+
+## Refresh context on observable events
+
+Do not estimate, persist, or act on hidden runtime compaction counts. When resuming an existing project across a thread or context boundary, after a cross-day gap or handoff, or from explicit summarized, materially incomplete, or conflicting context, ensure the active instructions are loaded and re-read the smallest current authority set. Re-read this `SKILL.md` directly when the host exposes it.
+
+Load `spec-workflow` only when desired behavior or another material boundary needs renewed alignment. Load `organize-ai-project-files` only when topology, multiple referenced paths, or protected assets require structural work. Before release or a completion claim, re-check this skill's evidence and completion boundaries. If re-anchoring finds no material deviation, continue without creating an approval step.
 
 ## Handle long-running and release work
 

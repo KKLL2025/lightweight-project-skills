@@ -108,6 +108,37 @@ class SkillContractTests(unittest.TestCase):
         self.assertIn("Skip for small", frontmatter(read_skill("drive-large-project"))["description"])
         self.assertIn("Simple placement", read_skill("organize-ai-project-files"))
 
+    def test_milestone_updates_reanchor_without_becoming_a_gate(self) -> None:
+        drive = read_skill("drive-large-project").casefold()
+        required = (
+            "completion of each outcome-sized milestone",
+            "re-anchor against the aligned outcome",
+            "brief user-visible milestone update",
+            "next unblocked milestone",
+            "permission gate",
+            "continue without creating an approval step",
+            "host-required progress heartbeat",
+        )
+        for phrase in required:
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, drive)
+
+        self.assertIn("This skill owns desired behavior", read_skill("spec-workflow"))
+        organize = read_skill("organize-ai-project-files")
+        self.assertIn("`drive-large-project` owns execution continuity", organize)
+        self.assertIn("This skill owns topology", organize)
+
+    def test_progress_refresh_uses_observable_events_not_timers_or_counts(self) -> None:
+        drive = read_skill("drive-large-project").casefold()
+        self.assertIn("do not estimate, persist, or act on hidden runtime compaction counts", drive)
+        self.assertIn("from explicit summarized, materially incomplete, or conflicting context", drive)
+        self.assertIn("do not split milestones merely to create updates", drive)
+        self.assertIn("invent a time-based reporting cadence when the host does not require one", drive)
+        self.assertIn("re-read this `skill.md` directly when the host exposes it", drive)
+        for banned in ("30-minute", "30 minutes", "every 30", "after five compactions", "compaction_count"):
+            with self.subTest(banned=banned):
+                self.assertNotIn(banned, drive)
+
 
 if __name__ == "__main__":
     unittest.main()
