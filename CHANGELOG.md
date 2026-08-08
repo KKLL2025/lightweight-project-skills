@@ -4,15 +4,25 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [Unreleased]
 
-### Changed
-
-- Tightened the English and Chinese README first screen around the lightweight, proportional-governance value proposition.
-- Added a tested one-command discovery and project-scoped Codex installation path through the open-source `skills` CLI, while retaining manual installation fallbacks.
-
 ### Planned
 
 - Broader repeated behavior evaluations across more than one model/runtime.
 - More complete real-project fixtures and installation verification.
+
+## [0.5.0-preview] - 2026-08-08
+
+### Changed
+
+- Tightened the English and Chinese README first screen around the lightweight, proportional-governance value proposition.
+- Added a tested one-command discovery and project-scoped Codex installation path through the open-source `skills` CLI, while retaining manual installation fallbacks.
+- Added non-blocking milestone updates and lightweight direction re-anchoring to `drive-large-project`, using observable recovery events instead of self-imposed timers or hidden context-compaction counters while preserving host-required progress heartbeats.
+- Renamed `spec-workflow` to `align-project-requirements` and its evaluation IDs from `S-*` to `A-*` so the public name matches its lightweight requirements-alignment behavior and no longer reuses the CloudBase skill name. Existing preview users must remove only the old copy installed from this repository before reinstalling to avoid duplicate routing; unrelated provider or plugin skills with the same old name must not be removed.
+
+### Known limitations
+
+- Behavior evidence remains a small Codex sample rather than a statistically meaningful multi-model benchmark.
+- Real symlink tests require platform permission; policy tests provide a permission-independent fallback.
+- This preview is not a production or safety certification.
 
 ## [0.4.0-preview] - 2026-08-08
 
@@ -35,5 +45,6 @@ All notable changes to this project are documented here. The format follows [Kee
 
 - Windows hosted-runner UTF-8 output and equivalent long/8.3 symlink target spellings.
 
-[Unreleased]: https://github.com/KKLL2025/lightweight-project-skills/compare/v0.4.0-preview...HEAD
+[Unreleased]: https://github.com/KKLL2025/lightweight-project-skills/compare/v0.5.0-preview...HEAD
+[0.5.0-preview]: https://github.com/KKLL2025/lightweight-project-skills/releases/tag/v0.5.0-preview
 [0.4.0-preview]: https://github.com/KKLL2025/lightweight-project-skills/releases/tag/v0.4.0-preview

@@ -13,7 +13,7 @@
 ## Checklist
 
 - [ ] This pull request has one focused purpose.
-- [ ] I preserved the public skill paths and ownership boundaries.
+- [ ] I preserved public skill paths and ownership boundaries, or documented and fully migrated an intentional rename.
 - [ ] I did not add machine-specific paths, credentials, private data, or internal reports.
 - [ ] `python -m unittest discover -s tests -v` passes locally.
 - [ ] User-visible changes are documented.

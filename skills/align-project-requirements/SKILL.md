@@ -1,5 +1,5 @@
 ---
-name: spec-workflow
+name: align-project-requirements
 description: Align the goal, current facts, non-goals, material decisions, assumptions, and observable acceptance for a medium-to-large project change before implementation. Use for new features, product or workflow changes, ambiguous requests, cross-module work, architecture choices, or when an existing specification needs correction. Skip for small, explicit, low-risk fixes that can be executed and verified directly. Do not use for routine diagnosis, formatting, dependency maintenance, or one-turn implementation unless it changes product behavior or another material boundary.
 ---
 

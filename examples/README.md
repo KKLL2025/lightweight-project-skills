@@ -5,7 +5,7 @@
 | Request | Route | Why |
 |---|---|---|
 | “Fix this explicit typo and run the focused test.” | Direct execution | Small, reversible, and observable in one turn |
-| “Improve onboarding so new-user retention increases.” | `spec-workflow` | Target behavior and success measure are material choices |
+| “Improve onboarding so new-user retention increases.” | `align-project-requirements` | Target behavior and success measure are material choices |
 | “Resume the project; the handoff says complete but the acceptance ledger disagrees.” | `drive-large-project` | Live state, evidence, and recovery must survive across turns |
 | “Move several referenced asset and output directories without breaking CI.” | `organize-ai-project-files` | Structural migration has path consumers and preservation risk |
 

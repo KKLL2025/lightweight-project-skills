@@ -72,7 +72,7 @@ A copy, rename, hash, local build, mock, or folder label cannot upgrade an artif
 
 ## Coordinate with the other two skills
 
-- `spec-workflow` owns the desired outcome, non-goals, and acceptance boundaries. Store its durable artifacts under the control/alignment role.
+- `align-project-requirements` owns the desired outcome, non-goals, and acceptance boundaries. Store its durable artifacts under the control/alignment role.
 - `drive-large-project` owns execution continuity and keeps ordinary new files in their correct roles during development.
 - This skill owns topology, placement rules, structural migration, asset preservation, and path-consumer verification. It does not redefine product scope or claim acceptance.
 

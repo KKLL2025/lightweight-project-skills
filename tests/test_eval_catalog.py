@@ -22,7 +22,7 @@ class EvalCatalogTests(unittest.TestCase):
 
         target_counts = Counter(case.get("target") for case in cases)
         self.assertEqual(
-            {"spec-workflow", "drive-large-project", "organize-ai-project-files"},
+            {"align-project-requirements", "drive-large-project", "organize-ai-project-files"},
             set(target_counts),
         )
         for target, count in target_counts.items():
