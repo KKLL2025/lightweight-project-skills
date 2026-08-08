@@ -2,7 +2,7 @@
 
 # Lightweight Project Skills
 
-**用于需求对齐、长项目推进和 AI 项目文件夹安全治理的三个可组合 Agent Skills。**
+**让 AI 项目保持需求对齐、长期可续接、目录结构安全，又不把每个任务都变成繁重流程的三个轻量 Agent Skills。**
 
 [English](README.md)
 
@@ -13,9 +13,13 @@
 
 </div>
 
-Lightweight Project Skills 假设现代模型能够自主处理普通工程判断，只在需求歧义、跨回合连续性、证据真实性或文件系统安全确实需要时增加结构。
+```bash
+npx skills add KKLL2025/lightweight-project-skills
+```
 
-它是一层轻量治理，不是替代模型的项目操作系统。它**不要求**每次修改都写 PRD、采用固定阶段文件、绑定某个 Issue 系统、使用 Bash、所有任务强制 TDD，或每一步都派发新 agent。
+一个仓库，三个可组合 skill：只对齐实质决策、依据证据续接长期交付、安全整理项目目录而不丢文件或破坏路径引用。安装时可以选择其中一个，也可以选择全部三个。
+
+Lightweight Project Skills 假设现代模型能够自主处理普通工程判断，只在需求歧义、跨回合连续性、证据真实性或文件系统安全确实需要时增加结构。它**不要求**每次修改都写 PRD、采用固定阶段文件、绑定某个 Issue 系统、使用 Bash、所有任务强制 TDD，或每一步都派发新 agent。
 
 > [!IMPORTANT]
 > `0.4.0-preview` 是公开预览版。确定性工具已有测试，但行为证据仍主要来自小规模 Codex 试运行。关键项目使用前请在自己的模型和运行时中验证。
@@ -39,6 +43,24 @@ Lightweight Project Skills 假设现代模型能够自主处理普通工程判�
 三个 skill 互相路由，但不重复维护同一事实。需求文档不维护执行进度，handoff 不取代验收账本，文件夹名称也不能证明已经正式发布。
 
 ## 30 秒安装
+
+### 一条命令（推荐）
+
+安装了 Node.js 和 npm 后，使用开源的 [`skills` CLI](https://github.com/vercel-labs/skills)识别三个 skill，并选择目标 Agent 和安装范围：
+
+```bash
+npx skills add KKLL2025/lightweight-project-skills
+```
+
+如果要无交互地把三个 skill 全部复制到当前项目的 Codex 兼容目录：
+
+```bash
+npx skills add KKLL2025/lightweight-project-skills --skill '*' --agent codex --yes --copy
+```
+
+本仓库已经实际验证过远程识别，以及三个 skill 的 Codex 项目级复制安装。安装前仍应查看 skill 内容；安装后的 skill 会使用 Agent 本身拥有的权限。
+
+### 手动安装备用方案
 
 将 `skills/` 下需要的一个或全部文件夹复制到当前 Agent 运行时使用的 skills 目录。
 

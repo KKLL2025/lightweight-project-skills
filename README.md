@@ -2,7 +2,7 @@
 
 # Lightweight Project Skills
 
-**Three composable Agent Skills for aligning requirements, delivering long-running projects, and keeping AI-assisted project folders safe and understandable.**
+**Three lightweight Agent Skills that keep AI projects aligned, resumable, and structurally safe—without turning every task into ceremony.**
 
 [简体中文](README.zh-CN.md)
 
@@ -13,9 +13,13 @@
 
 </div>
 
-Lightweight Project Skills assumes the model can make ordinary engineering decisions. It adds structure only where ambiguity, continuity, evidence, or filesystem safety makes structure useful.
+```bash
+npx skills add KKLL2025/lightweight-project-skills
+```
 
-It is a governance layer, not a replacement project operating system. It does **not** require a PRD for every change, fixed phase files, a specific issue tracker, Bash, TDD for every task, or a fresh subagent for every step.
+One repository, three composable skills: align material decisions, resume long-running delivery from evidence, and reorganize project folders without losing files or breaking path consumers. Choose one skill or all three when prompted.
+
+Lightweight Project Skills assumes the model can make ordinary engineering decisions. It adds structure only where ambiguity, continuity, evidence, or filesystem safety makes structure useful. It does **not** require a PRD for every change, fixed phase files, a specific issue tracker, Bash, TDD for every task, or a fresh subagent for every step.
 
 > [!IMPORTANT]
 > `0.4.0-preview` is a public preview. The deterministic checks are tested, but behavior evidence is still limited to a small Codex sample. Test these skills in your own runtime before relying on them for critical work.
@@ -39,6 +43,24 @@ small explicit task      -> execute directly
 The skills coordinate without duplicating ownership. Requirements do not maintain execution status, handoffs do not become acceptance ledgers, and folder names do not prove release state.
 
 ## 30-second install
+
+### One command (recommended)
+
+With Node.js and npm available, let the open-source [`skills` CLI](https://github.com/vercel-labs/skills) discover the three skills and choose the target agent and installation scope:
+
+```bash
+npx skills add KKLL2025/lightweight-project-skills
+```
+
+To copy all three into the current project's Codex-compatible skill directory without prompts:
+
+```bash
+npx skills add KKLL2025/lightweight-project-skills --skill '*' --agent codex --yes --copy
+```
+
+The repository has been smoke-tested for remote discovery and a project-scoped copy install of all three skills. Review skills before installing them; installed skills run with the permissions of your agent.
+
+### Manual fallback
 
 Copy one or all folders under `skills/` into the Agent Skills directory used by your harness.
 
