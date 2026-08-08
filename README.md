@@ -22,7 +22,7 @@ One repository, three composable skills: **Align → Drive → Organize.** Align
 Lightweight Project Skills assumes the model can make ordinary engineering decisions. It adds structure only where ambiguity, continuity, evidence, or filesystem safety makes structure useful. It does **not** require a PRD for every change, fixed phase files, a specific issue tracker, Bash, TDD for every task, or a fresh subagent for every step.
 
 > [!IMPORTANT]
-> `0.4.0-preview` is a public preview. The deterministic checks are tested, but behavior evidence is still limited to a small Codex sample. Test these skills in your own runtime before relying on them for critical work.
+> `0.5.0-preview` is a public preview. The deterministic checks are tested, but behavior evidence is still limited to a small Codex sample. Test these skills in your own runtime before relying on them for critical work.
 
 ## Choose the right skill
 

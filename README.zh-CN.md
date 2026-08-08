@@ -22,7 +22,7 @@ npx skills add KKLL2025/lightweight-project-skills
 Lightweight Project Skills 假设现代模型能够自主处理普通工程判断，只在需求歧义、跨回合连续性、证据真实性或文件系统安全确实需要时增加结构。它**不要求**每次修改都写 PRD、采用固定阶段文件、绑定某个 Issue 系统、使用 Bash、所有任务强制 TDD，或每一步都派发新 agent。
 
 > [!IMPORTANT]
-> `0.4.0-preview` 是公开预览版。确定性工具已有测试，但行为证据仍主要来自小规模 Codex 试运行。关键项目使用前请在自己的模型和运行时中验证。
+> `0.5.0-preview` 是公开预览版。确定性工具已有测试，但行为证据仍主要来自小规模 Codex 试运行。关键项目使用前请在自己的模型和运行时中验证。
 
 ## 选择正确的 skill
 
