@@ -17,7 +17,7 @@
 npx skills add KKLL2025/lightweight-project-skills
 ```
 
-一个仓库，三个可组合 skill：只对齐实质决策、依据证据续接长期交付、安全整理项目目录而不丢文件或破坏路径引用。安装时可以选择其中一个，也可以选择全部三个。
+一个仓库，三个可组合 skill：**Align → Drive → Organize（对齐 → 推进 → 整理）。** 只对齐实质决策、依据证据续接长期交付、安全整理项目目录而不丢文件或破坏路径引用。安装时可以选择其中一个，也可以选择全部三个。
 
 Lightweight Project Skills 假设现代模型能够自主处理普通工程判断，只在需求歧义、跨回合连续性、证据真实性或文件系统安全确实需要时增加结构。它**不要求**每次修改都写 PRD、采用固定阶段文件、绑定某个 Issue 系统、使用 Bash、所有任务强制 TDD，或每一步都派发新 agent。
 
@@ -28,13 +28,13 @@ Lightweight Project Skills 假设现代模型能够自主处理普通工程判�
 
 | 情况 | 使用 | 负责内容 |
 |---|---|---|
-| 实质目标、用户、边界或验收仍不清楚 | [`spec-workflow`](skills/spec-workflow/SKILL.md) | 期望行为、实质决策、假设、可观察验收 |
+| 实质目标、用户、边界或验收仍不清楚 | [`align-project-requirements`](skills/align-project-requirements/SKILL.md) | 期望行为、实质决策、假设、可观察验收 |
 | 交付跨回合、里程碑或长期运行检查 | [`drive-large-project`](skills/drive-large-project/SKILL.md) | 当前状态、里程碑、证据、可恢复交接、普通文件放置 |
 | 项目树或被引用路径需要结构变化 | [`organize-ai-project-files`](skills/organize-ai-project-files/SKILL.md) | 拓扑、安全迁移、受保护资产、路径消费者、输出边界 |
 | 任务小、明确、可逆并能立即验证 | 直接执行 | 不需要新建管理文档 |
 
 ```text
-实质目标不清楚 -> spec-workflow
+实质目标不清楚 -> align-project-requirements
 跨回合交付     -> drive-large-project
 结构路径变化   -> organize-ai-project-files
 明确的小任务   -> 直接执行
@@ -45,6 +45,9 @@ Lightweight Project Skills 假设现代模型能够自主处理普通工程判�
 在长期交付中，`drive-large-project` 会在具有可观察结果的里程碑完成后汇报，并根据已对齐目标、边界、证据和项目真实状态重新校准；没有实质阻塞就继续推进。它不会自行设置固定时间打断，也不会假装知道宿主隐藏的上下文压缩次数；宿主要求的进度心跳仍然照常执行。
 
 ## 30 秒安装
+
+> [!NOTE]
+> 从 `v0.4.0-preview` 升级时请注意：`spec-workflow` 已更名为 `align-project-requirements`。重新安装前应移除旧的 `spec-workflow` 安装目录；不要同时启用两个版本，否则可能重复触发。
 
 ### 一条命令（推荐）
 
@@ -70,7 +73,7 @@ npx skills add KKLL2025/lightweight-project-skills --skill '*' --agent codex --y
 
 ```powershell
 $target = Join-Path $env:USERPROFILE '.codex\skills'
-Copy-Item -Recurse -Force skills\spec-workflow $target
+Copy-Item -Recurse -Force skills\align-project-requirements $target
 Copy-Item -Recurse -Force skills\drive-large-project $target
 Copy-Item -Recurse -Force skills\organize-ai-project-files $target
 ```
@@ -79,7 +82,7 @@ Copy-Item -Recurse -Force skills\organize-ai-project-files $target
 
 ```sh
 mkdir -p ~/.codex/skills
-cp -R skills/spec-workflow ~/.codex/skills/
+cp -R skills/align-project-requirements ~/.codex/skills/
 cp -R skills/drive-large-project ~/.codex/skills/
 cp -R skills/organize-ai-project-files ~/.codex/skills/
 ```
@@ -89,7 +92,7 @@ cp -R skills/organize-ai-project-files ~/.codex/skills/
 ## 使用示例
 
 ```text
-使用 $spec-workflow 对齐这个产品变更；如果没有实质决策阻塞，就继续实现。
+使用 $align-project-requirements 对齐这个产品变更；如果没有实质决策阻塞，就继续实现。
 
 使用 $drive-large-project 从项目真实状态恢复，完成下一个未阻塞结果。
 
@@ -162,4 +165,4 @@ CI 在 Windows/Linux 的 Python 3.11 和 3.13 上执行测试，覆盖 skill 合
 
 ## 许可证
 
-MIT，见 [LICENSE](LICENSE)。
+MIT，见 [LICENSE](LICENSE)。所吸收上游工作的署名与许可证保留在 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。

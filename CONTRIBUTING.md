@@ -23,7 +23,7 @@ If you have the Agent Skills structure validator installed, also run it once for
 
 ## Changing a skill
 
-- Preserve the public entry paths under `skills/`.
+- Preserve public entry paths under `skills/` unless an intentional rename is fully migrated across runtime references, documentation, tests, evaluations, community forms, and release notes.
 - Prefer a narrow rule over a mandatory phase, artifact, or tool.
 - Do not require a PRD, subagent, issue tracker, shell, or test method for every task.
 - Add or update a focused test when a deterministic contract changes.

@@ -7,7 +7,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SKILLS = {
-    "spec-workflow": ROOT / "skills" / "spec-workflow",
+    "align-project-requirements": ROOT / "skills" / "align-project-requirements",
     "drive-large-project": ROOT / "skills" / "drive-large-project",
     "organize-ai-project-files": ROOT / "skills" / "organize-ai-project-files",
 }
@@ -84,6 +84,7 @@ class SkillContractTests(unittest.TestCase):
                 self.assertIn("display_name:", metadata)
                 self.assertIn("short_description:", metadata)
                 self.assertIn("default_prompt:", metadata)
+                self.assertIn("$" + name, metadata)
 
     def test_skill_folders_contain_no_repository_docs(self) -> None:
         banned_names = {"README.md", "CHANGELOG.md", "INSTALLATION_GUIDE.md"}
@@ -93,18 +94,18 @@ class SkillContractTests(unittest.TestCase):
                 self.assertFalse(actual & banned_names)
 
     def test_matrix_handoffs_are_explicit(self) -> None:
-        spec = read_skill("spec-workflow")
+        spec = read_skill("align-project-requirements")
         drive = read_skill("drive-large-project")
         organize = read_skill("organize-ai-project-files")
         self.assertIn("drive-large-project", spec)
         self.assertIn("organize-ai-project-files", spec)
-        self.assertIn("spec-workflow", drive)
+        self.assertIn("align-project-requirements", drive)
         self.assertIn("organize-ai-project-files", drive)
-        self.assertIn("spec-workflow", organize)
+        self.assertIn("align-project-requirements", organize)
         self.assertIn("drive-large-project", organize)
 
     def test_small_tasks_remain_direct(self) -> None:
-        self.assertIn("Skip for small", frontmatter(read_skill("spec-workflow"))["description"])
+        self.assertIn("Skip for small", frontmatter(read_skill("align-project-requirements"))["description"])
         self.assertIn("Skip for small", frontmatter(read_skill("drive-large-project"))["description"])
         self.assertIn("Simple placement", read_skill("organize-ai-project-files"))
 
@@ -123,7 +124,7 @@ class SkillContractTests(unittest.TestCase):
             with self.subTest(phrase=phrase):
                 self.assertIn(phrase, drive)
 
-        self.assertIn("This skill owns desired behavior", read_skill("spec-workflow"))
+        self.assertIn("This skill owns desired behavior", read_skill("align-project-requirements"))
         organize = read_skill("organize-ai-project-files")
         self.assertIn("`drive-large-project` owns execution continuity", organize)
         self.assertIn("This skill owns topology", organize)

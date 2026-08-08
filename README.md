@@ -17,7 +17,7 @@
 npx skills add KKLL2025/lightweight-project-skills
 ```
 
-One repository, three composable skills: align material decisions, resume long-running delivery from evidence, and reorganize project folders without losing files or breaking path consumers. Choose one skill or all three when prompted.
+One repository, three composable skills: **Align → Drive → Organize.** Align material decisions, resume long-running delivery from evidence, and reorganize project folders without losing files or breaking path consumers. Choose one skill or all three when prompted.
 
 Lightweight Project Skills assumes the model can make ordinary engineering decisions. It adds structure only where ambiguity, continuity, evidence, or filesystem safety makes structure useful. It does **not** require a PRD for every change, fixed phase files, a specific issue tracker, Bash, TDD for every task, or a fresh subagent for every step.
 
@@ -28,13 +28,13 @@ Lightweight Project Skills assumes the model can make ordinary engineering decis
 
 | Situation | Use | Owns |
 |---|---|---|
-| The material outcome, user, boundary, or acceptance is unclear | [`spec-workflow`](skills/spec-workflow/SKILL.md) | Desired behavior, material decisions, assumptions, observable acceptance |
+| The material outcome, user, boundary, or acceptance is unclear | [`align-project-requirements`](skills/align-project-requirements/SKILL.md) | Desired behavior, material decisions, assumptions, observable acceptance |
 | Delivery spans turns, milestones, or long-running checks | [`drive-large-project`](skills/drive-large-project/SKILL.md) | Current state, milestones, evidence, resumable handoff, ordinary file placement |
 | The project tree or referenced paths need structural change | [`organize-ai-project-files`](skills/organize-ai-project-files/SKILL.md) | Topology, safe migration, protected assets, path consumers, output boundaries |
 | The task is small, explicit, reversible, and verifiable now | Execute directly | No management artifact is required |
 
 ```text
-unclear material outcome -> spec-workflow
+unclear material outcome -> align-project-requirements
 multi-turn delivery      -> drive-large-project
 structural path change   -> organize-ai-project-files
 small explicit task      -> execute directly
@@ -45,6 +45,9 @@ The skills coordinate without duplicating ownership. Requirements do not maintai
 During long delivery, `drive-large-project` reports completed outcome-sized milestones, re-anchors to the aligned outcome, boundaries, evidence, and live state, then continues unless a material blocker requires input. It does not invent timer-based interruptions or pretend to know a host's hidden context-compaction count; host-required progress heartbeats still apply.
 
 ## 30-second install
+
+> [!NOTE]
+> Upgrading from `v0.4.0-preview`? `spec-workflow` was renamed to `align-project-requirements`. Remove the old installed `spec-workflow` folder before reinstalling; keeping both active can produce duplicate routing.
 
 ### One command (recommended)
 
@@ -70,7 +73,7 @@ Copy one or all folders under `skills/` into the Agent Skills directory used by 
 
 ```powershell
 $target = Join-Path $env:USERPROFILE '.codex\skills'
-Copy-Item -Recurse -Force skills\spec-workflow $target
+Copy-Item -Recurse -Force skills\align-project-requirements $target
 Copy-Item -Recurse -Force skills\drive-large-project $target
 Copy-Item -Recurse -Force skills\organize-ai-project-files $target
 ```
@@ -79,7 +82,7 @@ Copy-Item -Recurse -Force skills\organize-ai-project-files $target
 
 ```sh
 mkdir -p ~/.codex/skills
-cp -R skills/spec-workflow ~/.codex/skills/
+cp -R skills/align-project-requirements ~/.codex/skills/
 cp -R skills/drive-large-project ~/.codex/skills/
 cp -R skills/organize-ai-project-files ~/.codex/skills/
 ```
@@ -89,7 +92,7 @@ Restart or refresh the harness after installation. For other Agent Skills-compat
 ## Example prompts
 
 ```text
-Use $spec-workflow to align this product change, then continue if no material decision blocks implementation.
+Use $align-project-requirements to align this product change, then continue if no material decision blocks implementation.
 
 Use $drive-large-project to resume from the live project state and complete the next unblocked outcome.
 
@@ -162,4 +165,4 @@ Project conduct is governed by [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md). Changes
 
 ## License
 
-MIT. See [LICENSE](LICENSE).
+MIT. See [LICENSE](LICENSE). Attribution for incorporated upstream work is preserved in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).

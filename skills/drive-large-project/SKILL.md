@@ -12,7 +12,7 @@ Keep a long project understandable and truthful while allowing Codex to make ord
 1. Read repository instructions and the smallest existing project index/handoff needed to orient.
 2. Inspect live Git and relevant files before trusting a previous status claim.
 3. Reuse existing scope, plan, acceptance, evidence, and layout artifacts. Do not create a second source of truth.
-4. If the desired outcome or material product boundary is unclear, use `spec-workflow`. Otherwise continue directly.
+4. If the desired outcome or material product boundary is unclear, use `align-project-requirements`. Otherwise continue directly.
 5. Resume at the first unfinished, unblocked outcome; do not replay completed work merely because conversation context was lost.
 
 Use this authority order when sources conflict: latest user decision, repository rules, approved alignment/design, task and acceptance owners, current handoff, then history. Repair stale summaries after verifying the live state.
@@ -74,7 +74,7 @@ Report without waiting for a milestone when evidence overturns the plan, a mater
 
 Do not estimate, persist, or act on hidden runtime compaction counts. When resuming an existing project across a thread or context boundary, after a cross-day gap or handoff, or from explicit summarized, materially incomplete, or conflicting context, ensure the active instructions are loaded and re-read the smallest current authority set. Re-read this `SKILL.md` directly when the host exposes it.
 
-Load `spec-workflow` only when desired behavior or another material boundary needs renewed alignment. Load `organize-ai-project-files` only when topology, multiple referenced paths, or protected assets require structural work. Before release or a completion claim, re-check this skill's evidence and completion boundaries. If re-anchoring finds no material deviation, continue without creating an approval step.
+Load `align-project-requirements` only when desired behavior or another material boundary needs renewed alignment. Load `organize-ai-project-files` only when topology, multiple referenced paths, or protected assets require structural work. Before release or a completion claim, re-check this skill's evidence and completion boundaries. If re-anchoring finds no material deviation, continue without creating an approval step.
 
 ## Handle long-running and release work
 

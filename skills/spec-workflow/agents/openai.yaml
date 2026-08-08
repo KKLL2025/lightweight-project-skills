@@ -1,4 +1,0 @@
-interface:
-  display_name: "Project Requirement Alignment"
-  short_description: "Align goals, boundaries, assumptions, and acceptance"
-  default_prompt: "Use $spec-workflow to align this project change with the lightest useful specification."

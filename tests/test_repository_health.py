@@ -14,6 +14,7 @@ class RepositoryHealthTests(unittest.TestCase):
             "README.md",
             "README.zh-CN.md",
             "LICENSE",
+            "THIRD_PARTY_NOTICES.md",
             "CHANGELOG.md",
             "ROADMAP.md",
             "CONTRIBUTING.md",
@@ -30,6 +31,13 @@ class RepositoryHealthTests(unittest.TestCase):
         missing = [name for name in required if not (ROOT / name).is_file()]
         self.assertEqual(missing, [])
 
+    def test_upstream_attribution_is_preserved(self):
+        notices = (ROOT / "THIRD_PARTY_NOTICES.md").read_text(encoding="utf-8")
+        self.assertIn("align-project-requirements", notices)
+        self.assertIn("TencentCloudBase/CloudBase-AI-Toolkit", notices)
+        self.assertIn("Copyright (c) 2025 Tencent CloudBase", notices)
+        self.assertIn("MIT License", notices)
+
     def test_version_is_consistent(self):
         version = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
         self.assertEqual(version, EXPECTED_VERSION)
@@ -40,13 +48,37 @@ class RepositoryHealthTests(unittest.TestCase):
     def test_public_skill_entries_are_documented(self):
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
         for name in (
-            "spec-workflow",
+            "align-project-requirements",
             "drive-large-project",
             "organize-ai-project-files",
         ):
             skill = ROOT / "skills" / name / "SKILL.md"
             self.assertTrue(skill.is_file(), str(skill))
             self.assertIn("skills/{}/SKILL.md".format(name), readme)
+
+    def test_retired_skill_name_is_not_an_active_entry(self):
+        self.assertFalse((ROOT / "skills" / "spec-workflow").exists())
+        active_surfaces = [
+            "README.md",
+            "README.zh-CN.md",
+            "examples/README.md",
+            "evals/cases.json",
+            ".github/ISSUE_TEMPLATE/bug_report.yml",
+            ".github/ISSUE_TEMPLATE/feature_request.yml",
+        ]
+        for name in active_surfaces:
+            content = (ROOT / name).read_text(encoding="utf-8")
+            if name.startswith("README"):
+                content = "\n".join(
+                    line
+                    for line in content.splitlines()
+                    if not (
+                        "v0.4.0-preview" in line
+                        and "spec-workflow" in line
+                        and "align-project-requirements" in line
+                    )
+                )
+            self.assertNotIn("spec-workflow", content, name)
 
     def test_local_markdown_links_resolve(self):
         link_pattern = re.compile(r"!?\[[^\]]*\]\(([^)]+)\)")
