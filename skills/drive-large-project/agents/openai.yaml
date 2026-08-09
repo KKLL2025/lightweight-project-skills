@@ -1,4 +1,4 @@
 interface:
   display_name: "Drive Large Projects"
-  short_description: "Run large projects with truthful state and milestone updates"
-  default_prompt: "Use $drive-large-project to continue this project autonomously with truthful state, proportional verification, and non-blocking milestone updates."
+  short_description: "Drive adaptive milestones with evidence and handoffs"
+  default_prompt: "Use $drive-large-project to continue this project with adaptive execution boundaries, truthful evidence, and resumable handoffs."

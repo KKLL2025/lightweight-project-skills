@@ -1,11 +1,17 @@
 ---
 name: organize-ai-project-files
-description: Design, establish, audit, and safely migrate clean project-folder structures for AI-assisted development. Use when creating a project tree, grouping AI runtime files, project-control documents, and actual product files; cleaning a cluttered root; separating assets and outputs; repairing layout drift; or moving referenced paths without losing Git history, user assets, commands, evidence, or release truth.
+description: Design, establish, inspect, and safely migrate project-folder structures for AI-assisted development. Use only when directory topology, file placement, a cluttered project root, asset/output separation, layout drift, or referenced path movement is part of the requested outcome. Do not trigger for ordinary code, content, business, or security audits when paths and folder roles are not changing.
 ---
 
 # Organize AI Project Files
 
 Make the project easy for a person and a fresh AI agent to navigate. Treat structural moves as compatibility changes; treat ordinary file placement as a lightweight housekeeping decision.
+
+## Confirm this is a layout task
+
+- The word "audit" alone is not a layout trigger. Do not expand an ordinary code, business, content, or security review into folder governance or red-team work.
+- If paths, root topology, folder roles, assets, and output boundaries are unchanged, leave the structure alone.
+- When an existing layout contract is stable and no drift is evident, perform only the smallest placement or reference check required by the active task.
 
 ## Decide the topology
 

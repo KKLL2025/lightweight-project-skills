@@ -29,7 +29,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--handoff", type=Path, help="Optional non-empty handoff Markdown path")
     parser.add_argument("--max-handoff-lines", type=int, default=240)
     parser.add_argument("--max-handoff-chars", type=int, default=20_000)
-    parser.add_argument("--strict-context", action="store_true", help="Treat context-size warnings as errors")
+    parser.add_argument(
+        "--strict-context",
+        action="store_true",
+        help="Treat context-size and canonical handoff-hygiene warnings as errors",
+    )
     parser.add_argument(
         "--handoff-ledger-check",
         choices=("off", "warn", "error"),
@@ -79,6 +83,72 @@ _COMPLETION_WORD = (
     r"(?:complete|completed|done|verified|passed|closed|"
     r"已完成|完成|已验证|验收通过|已通过|已关闭)"
 )
+
+_CURRENT_SECTION_HEADINGS = {
+    "current outcome and stage",
+    "current state",
+    "当前目标和阶段",
+    "当前状态",
+}
+_NEXT_ACTION_HEADINGS = {
+    "exact next action",
+    "next action",
+    "精确下一步",
+    "下一步",
+}
+_CLOSED_HISTORY_HEADINGS = {
+    "closed history",
+    "closed-history",
+    "closed chronology",
+    "已关闭历史",
+    "历史流水账",
+    "完整时间线",
+}
+
+
+def _markdown_h2_headings(text: str) -> list[str]:
+    """Return normalized level-two headings outside fenced code blocks."""
+    headings: list[str] = []
+    fence_marker: str | None = None
+    for line in text.splitlines():
+        stripped = line.strip()
+        fence_match = re.match(r"^(`{3,}|~{3,})", stripped)
+        if fence_match:
+            marker = fence_match.group(1)[0]
+            if fence_marker is None:
+                fence_marker = marker
+            elif fence_marker == marker:
+                fence_marker = None
+            continue
+        if fence_marker is not None:
+            continue
+        match = re.fullmatch(r"##\s+(.+?)\s*#*", stripped)
+        if match:
+            headings.append(re.sub(r"\s+", " ", match.group(1)).strip().casefold())
+    return headings
+
+
+def handoff_hygiene_findings(handoff_text: str) -> list[str]:
+    """Check explicit canonical headings without guessing from prose."""
+    headings = _markdown_h2_headings(handoff_text)
+    findings: list[str] = []
+    current_sections = sum(heading in _CURRENT_SECTION_HEADINGS for heading in headings)
+    next_sections = sum(heading in _NEXT_ACTION_HEADINGS for heading in headings)
+    closed_sections = [heading for heading in headings if heading in _CLOSED_HISTORY_HEADINGS]
+
+    if current_sections > 1:
+        findings.append(
+            f"handoff has {current_sections} canonical current-state sections; keep one current owner"
+        )
+    if next_sections > 1:
+        findings.append(
+            f"handoff has {next_sections} canonical next-action sections; keep one exact next action"
+        )
+    if closed_sections:
+        findings.append(
+            "handoff contains an explicit closed-history section; move closed chronology to linked history"
+        )
+    return findings
 
 
 def _id_pattern(item_id: str) -> str:
@@ -232,6 +302,7 @@ def validate() -> int:
                     f"handoff has {len(handoff_text)} characters; keep the hot handoff current-only "
                     f"(limit {args.max_handoff_chars})"
                 )
+            context_warnings.extend(handoff_hygiene_findings(handoff_text))
     elif args.handoff_ledger_check != "off":
         errors.append("--handoff-ledger-check requires --handoff")
 

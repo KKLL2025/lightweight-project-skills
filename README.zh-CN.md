@@ -42,12 +42,9 @@ Lightweight Project Skills 假设现代模型能够自主处理普通工程判�
 
 三个 skill 互相路由，但不重复维护同一事实。需求文档不维护执行进度，handoff 不取代验收账本，文件夹名称也不能证明已经正式发布。
 
-在长期交付中，`drive-large-project` 会在具有可观察结果的里程碑完成后汇报，并根据已对齐目标、边界、证据和项目真实状态重新校准；没有实质阻塞就继续推进。它不会自行设置固定时间打断，也不会假装知道宿主隐藏的上下文压缩次数；宿主要求的进度心跳仍然照常执行。
+在长期交付中，`drive-large-project` 会在具有可观察结果的里程碑完成后汇报，并根据已对齐目标、边界、证据和项目真实状态重新校准，再结合任务规模、风险、成本和用户的连续推进意图选择下一个执行边界。它不会自行设置固定时间打断，也不会假装知道宿主隐藏的上下文压缩次数；宿主要求的进度心跳仍然照常执行。
 
 ## 30 秒安装
-
-> [!NOTE]
-> 从 `v0.4.0-preview` 升级时请注意：`spec-workflow` 已更名为 `align-project-requirements`。重新安装前，只移除此前从本仓库安装的旧 `spec-workflow` 副本；请先核对来源，不要删除其他提供方或插件中的同名 skill。同时启用本仓库的新旧副本可能造成重复触发。
 
 ### 一条命令（推荐）
 
@@ -89,6 +86,8 @@ cp -R skills/organize-ai-project-files ~/.codex/skills/
 
 安装后重启或刷新运行时。其他 Agent Skills 兼容运行时应使用其官方 skills 目录，不要直接套用 Codex 路径。
 
+升级兼容说明：`v0.4.0-preview` 中的 `spec-workflow` 现名为 `align-project-requirements`。只应移除从本仓库安装的旧副本，不要影响其他提供方或插件中的旧同名 skill；同时启用本仓库的新旧副本可能造成重复触发。
+
 ## 使用示例
 
 ```text
@@ -124,7 +123,7 @@ project/
 python -m unittest discover -s tests -v
 ```
 
-CI 在 Windows/Linux 的 Python 3.11 和 3.13 上执行测试，覆盖 skill 合同、布局边界、纯移动/改名、重复内容、路径逃逸、符号链接策略、连续性账本、中文路径、仓库链接和公开仓库卫生。
+CI 在 Windows/Linux 的 Python 3.11 和 3.13 上执行测试，覆盖 skill 合同、布局边界、纯移动/改名、重复内容、路径逃逸、符号链接策略、连续性账本与 handoff 卫生、中文路径、仓库链接和公开仓库卫生。
 
 [`evals/cases.json`](evals/cases.json) 包含正例、反例和压力场景，并将原始提示与预期行为分离，便于进行不泄露答案的前向测试。
 

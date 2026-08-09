@@ -17,16 +17,17 @@ Turn intent into a usable decision boundary without turning every request into a
 
 ## Build the lightest useful alignment
 
-Confirm these six concerns, in conversation or in an existing project artifact:
+Confirm these concerns, in conversation or in an existing project artifact:
 
 1. **Outcome:** what observable result should exist for the user or operator.
 2. **Current facts:** what the live project, runtime, or source evidence shows now.
-3. **Boundary:** what is in scope and explicitly out of scope.
+3. **Boundary:** what is in scope, explicitly out of scope, and which reviews are intentionally excluded.
 4. **Acceptance:** how a person can tell the change works, including important failure behavior.
 5. **Decisions and assumptions:** material choices already made, unresolved choices, and safe defaults selected autonomously.
-6. **Authority:** what Codex may do locally and what still requires the user or an external party.
+6. **Execution entry:** the first executable outcome, material sequencing constraints, and evidence that would justify reordering when the work spans outcomes.
+7. **Authority and trust:** what Codex may do locally, what requires a user or external party, and any threat model or changed trust boundary relevant to validation.
 
-For direct execution, establish only the outcome, observable check, and authority needed to act safely; infer the other concerns from verified project facts unless they change the result.
+For direct execution, establish only the outcome, observable check, and authority needed to act safely; infer the other concerns from verified project facts unless they change the result. Omit sequencing, threat-model, and review-exclusion fields when they have no material effect.
 
 Do not mistake a requested implementation detail for the underlying goal. Challenge a proposed solution only when it would materially damage the stated outcome, safety, compatibility, or authority boundary.
 
@@ -47,7 +48,7 @@ Read [alignment-card.md](references/alignment-card.md) only when creating or rep
 
 ## Hand off cleanly
 
-- If implementation is expected to span multiple turns, milestones, or external checks, hand `drive-large-project` the outcome, observable acceptance, unresolved material decisions, and authority limits.
+- If implementation is expected to span multiple turns, milestones, or external checks, hand `drive-large-project` the outcome, observable acceptance, first executable outcome, material sequence or reorder conditions, unresolved decisions, relevant trust boundaries, and authority limits.
 - If alignment changes project roots, multiple or referenced output paths, protected assets, or a broad directory migration, use `organize-ai-project-files` for layout decisions and move safety.
 - This skill owns desired behavior and decision boundaries. It does not own long-running execution status, acceptance evidence state, or filesystem migration.
 
