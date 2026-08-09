@@ -196,6 +196,52 @@ class ValidateContinuityTests(unittest.TestCase):
         self.assertEqual(result.returncode, 1)
         self.assertIn("requires --handoff", result.stderr)
 
+    def test_canonical_handoff_hygiene_warns_or_fails_in_strict_mode(self) -> None:
+        self.write_handoff(
+            "# Project handoff\n\n"
+            "## Current state\nEnough current detail exists to resume the active project safely.\n\n"
+            "## Current outcome and stage\nThe same current state is duplicated here.\n\n"
+            "## Exact next action\nRun the focused verification.\n\n"
+            "## Next action\nPublish after verification.\n\n"
+            "## Closed history\nOld test runs and completed tasks remain in the hot handoff.\n"
+        )
+        warned = self.run_validator("--handoff", "control/handoff.md")
+        self.assertEqual(warned.returncode, 0, warned.stderr)
+        self.assertIn("canonical current-state sections", warned.stdout)
+        self.assertIn("canonical next-action sections", warned.stdout)
+        self.assertIn("explicit closed-history section", warned.stdout)
+
+        failed = self.run_validator(
+            "--handoff", "control/handoff.md", "--strict-context"
+        )
+        self.assertEqual(failed.returncode, 1)
+        self.assertIn("context budget: handoff has 2 canonical next-action sections", failed.stderr)
+
+    def test_custom_handoff_does_not_trigger_semantic_guessing(self) -> None:
+        self.write_handoff(
+            "# 恢复入口\n\n"
+            "## 工作焦点\n当前证据足以继续这个项目。\n\n"
+            "## 候选动作\n先验证接口，再根据结果选择后续动作。\n\n"
+            "历史基线只是普通正文中的说明，不应被猜测成独立章节。\n"
+        )
+        result = self.run_validator(
+            "--handoff", "control/handoff.md", "--strict-context"
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertNotIn("canonical", result.stdout + result.stderr)
+
+    def test_template_headings_inside_fence_are_not_handoff_sections(self) -> None:
+        self.write_handoff(
+            "# Current handoff\n\n"
+            "The active project state is described here with enough detail to resume safely.\n\n"
+            "```markdown\n## Exact next action\n## Next action\n## Closed history\n```\n\n"
+            "The fenced headings are a documentation example, not active handoff sections.\n"
+        )
+        result = self.run_validator(
+            "--handoff", "control/handoff.md", "--strict-context"
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+
 
 if __name__ == "__main__":
     unittest.main()

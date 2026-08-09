@@ -1,11 +1,11 @@
 ---
 name: drive-large-project
-description: Drive medium-to-large software or product projects across multiple turns or days while preserving scope, current state, clean project structure, evidence-backed acceptance, and resumable handoffs. Use when the user asks Codex to continue autonomously, finish or resume a staged project, coordinate milestones or long-running checks, or deliver an aligned specification. Skip for small fixes and one-turn changes.
+description: Drive medium-to-large projects across turns or days while preserving scope, truthful state, evidence-backed acceptance, and resumable handoffs. Use when the user asks Codex to continue autonomously, resume staged work, coordinate milestones or long-running checks, or deliver an aligned specification. Skip for small fixes and one-turn changes.
 ---
 
 # Drive Large Projects
 
-Keep a long project understandable and truthful while allowing Codex to make ordinary engineering decisions without repeated confirmation.
+Keep long work truthful and resumable without repeated confirmation.
 
 ## Start from reality
 
@@ -45,7 +45,7 @@ During each milestone, correct simple placement drift as part of the work when t
 - Add an acceptance ledger only when multiple criteria, external validation, or evidence gaps must survive across sessions.
 - Store raw logs, screenshots, manifests, and old milestone details outside the default read set.
 
-When templates are needed, read [artifact-templates.md](references/artifact-templates.md). When project documents are growing or duplicated, or recovery context is summarized or uncertain, read [context-lifecycle.md](references/context-lifecycle.md).
+When templates are needed, read [artifact-templates.md](references/artifact-templates.md). When project documents are growing or duplicated, or recovery context is summarized or uncertain, read [context-lifecycle.md](references/context-lifecycle.md). When several outcomes or modules must be ordered, validation may become expensive, or delegated work needs coordination, read [execution-control.md](references/execution-control.md).
 
 Give each changing fact one owner: alignment owns desired behavior; tasks own execution state; the acceptance ledger owns evidence state; the handoff summarizes the current stage and next action; the layout contract owns folder roles. References may point to these facts but must not independently maintain competing copies.
 
@@ -62,13 +62,17 @@ For the active milestone:
 7. Update the task owner, acceptance owner when present, and concise handoff.
 8. At the completion of each outcome-sized milestone, re-anchor against the aligned outcome, relevant non-goals and authority boundaries, acceptance evidence, live project state, and the next unblocked result.
 9. Send a brief user-visible milestone update with the verified result and evidence, material gaps or risks, and the next milestone.
-10. Continue to the next unblocked milestone without asking for routine permission.
+10. Select the next execution boundary proportionally instead of continuing or stopping mechanically.
+
+Complete small, clear work directly. For stateful, resource-heavy, cross-module, or multi-agent work, default to one major outcome per user-visible execution batch. Related outcomes may share a batch for small or explicitly continuous low-risk work when evidence and recovery remain intact. "Do everything" or "do not stop" does not make substantial work low-risk or authorize silent major-outcome crossings. Monitoring does not conceal new development.
+
+Cross modules only for the active outcome, dependency, vertical path, blocker bypass, or high-risk seam. Record a short reason in the existing plan when evidence materially reorders work; do not opportunistically rescan or recreate the roadmap.
 
 Do not claim more than the evidence establishes. Code written, locally checked, packaged candidate, externally accepted, and formally released are different states. Reopen an acceptance item when later changes invalidate its evidence.
 
-Use the runtime's progress channel when it supports intermediate updates; otherwise report at the next user-visible output boundary. Update canonical task, acceptance, and handoff owners before summarizing them in conversation. Do not split milestones merely to create updates, invent a time-based reporting cadence when the host does not require one, repeat unchanged status, or turn a milestone update into a permission gate. Follow any host-required progress heartbeat without treating it as a project milestone or approval gate.
+Use the runtime's progress channel when available; otherwise report at the next user-visible output boundary. Update canonical owners first. Delegated-agent messages are internal evidence, not user-visible progress; the coordinating agent summarizes results. Do not split milestones merely to create updates, invent a time-based reporting cadence when the host does not require one, repeat unchanged status, or turn an update into a permission gate. Treat any host-required progress heartbeat separately.
 
-Report without waiting for a milestone when evidence overturns the plan, a material scope or authority boundary changes, a real blocker appears, or work is about to stop, hand off, release, or claim completion. Ask only when the existing authority rules require a user decision; otherwise state the adjustment and continue.
+Report immediately when evidence overturns the plan, a material scope, order, assumption, or authority boundary changes, a real blocker appears, or before stopping, handoff, release, or completion. Announce expensive or long work only when useful for control or recovery. Ask only when authority requires a user decision; otherwise adjust and continue without creating an approval step.
 
 ## Refresh context on observable events
 

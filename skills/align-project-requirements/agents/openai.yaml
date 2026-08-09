@@ -1,4 +1,4 @@
 interface:
   display_name: "Align Project Requirements"
-  short_description: "Align goals, boundaries, assumptions, and acceptance"
-  default_prompt: "Use $align-project-requirements to align this project change with the lightest useful requirements boundary."
+  short_description: "Align outcomes, sequence, trust, and acceptance"
+  default_prompt: "Use $align-project-requirements to align this change, its first executable outcome, and only the material boundaries."

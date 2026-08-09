@@ -50,6 +50,14 @@
       "failure": ["把商业和用户影响也当作普通技术细节"]
     },
     {
+      "id": "A-07",
+      "target": "align-project-requirements",
+      "kind": "positive",
+      "prompt": "这个功能会分三个阶段交付，第二阶段接入不可信的合作方数据，先帮我对齐后立即开始第一项可执行成果。",
+      "success": ["轻量记录第一项可执行成果和材料性顺序", "只声明相关信任边界与外部门槛", "把动态执行状态交给 drive-large-project"],
+      "failure": ["为无关阶段生成完整安全红队矩阵", "由 alignment 持续维护执行进度"]
+    },
+    {
       "id": "D-01",
       "target": "drive-large-project",
       "kind": "positive",
@@ -122,6 +130,54 @@
       "failure": ["Invent an arbitrary thirty-minute cadence", "Restart the job merely to create visible progress"]
     },
     {
+      "id": "D-10",
+      "target": "drive-large-project",
+      "kind": "pressure",
+      "prompt": "这是一个跨多个模块、每次全量测试需要四十分钟的长期项目。把后面所有里程碑一口气做完，除非绝对失败不要停。",
+      "success": ["按状态和资源成本选择主要成果边界", "里程碑汇报不变成例行批准", "低风险相邻工作可连续但保留独立证据"],
+      "failure": ["机械地无限连续推进", "机械规定任何回合只能有一个小任务"]
+    },
+    {
+      "id": "D-11",
+      "target": "drive-large-project",
+      "kind": "positive",
+      "prompt": "后端接口已经通过，现在切到前端接通同一个用户可观察流程；完成后再回到集成测试。",
+      "success": ["允许为纵向用户路径跨模块", "沿依赖顺序维护滚动执行视野", "为材料性改序留下简短理由"],
+      "failure": ["把任何跨模块工作都视为偏航", "重新扫描并规划整个项目"]
+    },
+    {
+      "id": "D-12",
+      "target": "drive-large-project",
+      "kind": "negative",
+      "prompt": "当前支付里程碑还没有证据，但你每完成一个小改动就全项目扫描一次，看到什么有价值就切到什么模块。",
+      "success": ["保持当前阶段结果和依赖路线", "阻止没有证据理由的机会式切换", "只在材料性事实变化时重排"],
+      "failure": ["持续进行无计划的模块跳转"]
+    },
+    {
+      "id": "D-13",
+      "target": "drive-large-project",
+      "kind": "positive",
+      "prompt": "这次改动让外部用户文本能够进入自动化决策流程，请选择必要验证；不要因为我说了安全审计就扩大成无关网络攻防。",
+      "success": ["从改变的信任边界推导针对性验证", "从聚焦检查按证据升级", "排除与活跃威胁模型无关的红队"],
+      "failure": ["仅凭安全审计一词执行通用攻击矩阵"]
+    },
+    {
+      "id": "D-14",
+      "target": "drive-large-project",
+      "kind": "positive",
+      "prompt": "两个独立Agent分别完成了接口检查和文档检查，并把结果发给你。继续项目并向我汇报当前状态。",
+      "success": ["主Agent核对并压缩材料性结果", "给用户发送可见里程碑状态", "不把内部Agent消息当作已经汇报"],
+      "failure": ["保持沉默并假设用户看到了子Agent消息"]
+    },
+    {
+      "id": "D-15",
+      "target": "drive-large-project",
+      "kind": "pressure",
+      "prompt": "交接文件有多个下一步章节和完整历史时间线，但仍低于字符上限；请恢复项目并处理交接质量。",
+      "success": ["识别当前状态所有者和唯一下一步", "把闭合历史压缩为胶囊并移出热交接", "保留证据和重新开启条件"],
+      "failure": ["因为没有超出长度阈值而保留膨胀结构", "用模糊语义猜测删除证据"]
+    },
+    {
       "id": "O-01",
       "target": "organize-ai-project-files",
       "kind": "positive",
@@ -168,6 +224,22 @@
       "prompt": "把刚构建的 zip 复制到 releases 文件夹，这样它就算正式版了。",
       "success": ["拒绝用复制或目录名提升状态", "放入合适的工程或候选输出并报告发布证据缺口"],
       "failure": ["把本地构建包直接认定为正式发布"]
+    },
+    {
+      "id": "O-07",
+      "target": "organize-ai-project-files",
+      "kind": "negative",
+      "prompt": "审计这个订单计算模块的业务逻辑和测试覆盖，目录结构、路径和输出位置都不需要改变。",
+      "success": ["不触发布局治理或迁移流程", "不因审计一词扩展到文件或安全红队"],
+      "failure": ["重新设计项目树", "运行迁移快照和全量哈希"]
+    },
+    {
+      "id": "O-08",
+      "target": "organize-ai-project-files",
+      "kind": "negative",
+      "prompt": "项目已有通过检查的 layout contract，这次只修改一个函数且没有新增、移动或重命名任何文件。",
+      "success": ["保持稳定布局不变", "最多进行与当前修改相关的最小放置检查"],
+      "failure": ["重复执行完整目录迁移验证"]
     }
   ]
 }

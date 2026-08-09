@@ -42,12 +42,9 @@ small explicit task      -> execute directly
 
 The skills coordinate without duplicating ownership. Requirements do not maintain execution status, handoffs do not become acceptance ledgers, and folder names do not prove release state.
 
-During long delivery, `drive-large-project` reports completed outcome-sized milestones, re-anchors to the aligned outcome, boundaries, evidence, and live state, then continues unless a material blocker requires input. It does not invent timer-based interruptions or pretend to know a host's hidden context-compaction count; host-required progress heartbeats still apply.
+During long delivery, `drive-large-project` reports completed outcome-sized milestones, re-anchors to the aligned outcome, boundaries, evidence, and live state, then selects the next execution boundary from task size, risk, cost, and the user's continuous-execution intent. It does not invent timer-based interruptions or pretend to know a host's hidden context-compaction count; host-required progress heartbeats still apply.
 
 ## 30-second install
-
-> [!NOTE]
-> Upgrading from `v0.4.0-preview`? `spec-workflow` was renamed to `align-project-requirements`. Before reinstalling, remove only the old `spec-workflow` copy that came from this repository; verify its source first and do not delete an unrelated provider or plugin skill with the same name. Keeping this repository's old and new copies active can produce duplicate routing.
 
 ### One command (recommended)
 
@@ -89,6 +86,8 @@ cp -R skills/organize-ai-project-files ~/.codex/skills/
 
 Restart or refresh the harness after installation. For other Agent Skills-compatible runtimes, use that runtime's documented skill directory rather than assuming the Codex path.
 
+Upgrade compatibility: the `v0.4.0-preview` entry `spec-workflow` is now `align-project-requirements`. Remove only an old copy installed from this repository; unrelated provider or plugin skills with the former name must remain untouched. Keeping both repository versions active can cause duplicate routing.
+
 ## Example prompts
 
 ```text
@@ -124,7 +123,7 @@ The runtime skills have no third-party Python dependency. Run the repository sui
 python -m unittest discover -s tests -v
 ```
 
-CI runs the suite on Windows and Linux with Python 3.11 and 3.13. It covers skill contracts, layout boundaries, content-preserving moves, duplicate files, path escape, symlink policy, continuity-ledger validation, UTF-8 paths, repository links, and public-repository hygiene.
+CI runs the suite on Windows and Linux with Python 3.11 and 3.13. It covers skill contracts, layout boundaries, content-preserving moves, duplicate files, path escape, symlink policy, continuity-ledger and handoff-hygiene validation, UTF-8 paths, repository links, and public-repository hygiene.
 
 The catalog in [`evals/cases.json`](evals/cases.json) contains positive, negative, and pressure prompts. It separates raw prompts from expected behavior so evaluators can run blind forward tests.
 

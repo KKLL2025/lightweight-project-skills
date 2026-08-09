@@ -4,6 +4,19 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+### Added
+
+- Added an adaptive execution-control reference covering macro routing, rolling execution horizons, evidence-based cross-module switching, validation escalation, delegated reporting, and heavy-work budgeting.
+- Added conservative handoff-hygiene warnings for duplicate canonical current/next-action sections and explicit closed-history sections, with strict-mode promotion and no semantic guessing from custom prose.
+- Added focused behavior cases for adaptive execution boundaries, planned module switching, trust-boundary validation, delegated progress, handoff hygiene, and layout non-triggers.
+
+### Changed
+
+- Extended requirements alignment with optional first-outcome, sequencing, reorder, excluded-review, trust-boundary, and external-gate handoff fields without making them mandatory for direct tasks.
+- Replaced unconditional milestone continuation with proportional execution batches that preserve autonomous low-risk progress without hiding substantial stateful work.
+- Tightened folder-governance triggering so ordinary code, content, business, and security audits do not activate layout migration when paths and folder roles are unchanged.
+- Kept the former alignment-skill name as a compact upgrade compatibility note instead of a prominent README callout.
+
 ### Planned
 
 - Broader repeated behavior evaluations across more than one model/runtime.

@@ -115,7 +115,10 @@ class SkillContractTests(unittest.TestCase):
             "completion of each outcome-sized milestone",
             "re-anchor against the aligned outcome",
             "brief user-visible milestone update",
-            "next unblocked milestone",
+            "select the next execution boundary proportionally",
+            "one major outcome per user-visible execution batch",
+            '"do everything" or "do not stop" does not make substantial work low-risk',
+            "delegated-agent messages are internal evidence",
             "permission gate",
             "continue without creating an approval step",
             "host-required progress heartbeat",
@@ -128,6 +131,39 @@ class SkillContractTests(unittest.TestCase):
         organize = read_skill("organize-ai-project-files")
         self.assertIn("`drive-large-project` owns execution continuity", organize)
         self.assertIn("This skill owns topology", organize)
+
+    def test_alignment_hands_off_execution_and_trust_boundaries(self) -> None:
+        alignment = read_skill("align-project-requirements").casefold()
+        for phrase in (
+            "first executable outcome",
+            "material sequencing constraints",
+            "evidence that would justify reordering",
+            "threat model or changed trust boundary",
+            "reviews are intentionally excluded",
+        ):
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, alignment)
+
+    def test_layout_trigger_rejects_unrelated_audits(self) -> None:
+        organize = read_skill("organize-ai-project-files").casefold()
+        description = frontmatter(read_skill("organize-ai-project-files"))["description"].casefold()
+        self.assertIn("do not trigger for ordinary code, content, business, or security audits", description)
+        self.assertIn('the word "audit" alone is not a layout trigger', organize)
+        self.assertIn("paths, root topology, folder roles, assets, and output boundaries are unchanged", organize)
+
+    def test_execution_reference_preserves_adaptive_routing_and_validation(self) -> None:
+        reference = (
+            SKILLS["drive-large-project"] / "references" / "execution-control.md"
+        ).read_text(encoding="utf-8").casefold()
+        for phrase in (
+            "maintain two planning levels",
+            "switch modules for a reason",
+            "derive security validation from the active threat model",
+            "do not prescribe a fixed candidate count",
+            "do not repeat an unchanged full test suite",
+        ):
+            with self.subTest(phrase=phrase):
+                self.assertIn(phrase, reference)
 
     def test_progress_refresh_uses_observable_events_not_timers_or_counts(self) -> None:
         drive = read_skill("drive-large-project").casefold()
