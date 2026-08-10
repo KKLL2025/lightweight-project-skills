@@ -4,11 +4,21 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+### Planned
+
+- Broader repeated behavior evaluations across more than one model/runtime.
+- More complete real-project fixtures and installation verification.
+
+## [0.6.0-preview] - 2026-08-11
+
 ### Added
 
 - Added an adaptive execution-control reference covering macro routing, rolling execution horizons, evidence-based cross-module switching, validation escalation, delegated reporting, and heavy-work budgeting.
 - Added conservative handoff-hygiene warnings for duplicate canonical current/next-action sections and explicit closed-history sections, with strict-mode promotion and no semantic guessing from custom prose.
 - Added focused behavior cases for adaptive execution boundaries, planned module switching, trust-boundary validation, delegated progress, handoff hygiene, and layout non-triggers.
+- Added three public, reproducible worked scenarios that expose the intended boundary of each skill without presenting them as benchmark results.
+- Added a tiered behavior-evaluation protocol that separates worked examples, exploratory pairs, repeated comparisons, and cross-runtime benchmarks.
+- Added a local-first GitHub integration guide and a redacted real-project case-report issue form.
 
 ### Changed
 
@@ -16,11 +26,12 @@ All notable changes to this project are documented here. The format follows [Kee
 - Replaced unconditional milestone continuation with proportional execution batches that preserve autonomous low-risk progress without hiding substantial stateful work.
 - Tightened folder-governance triggering so ordinary code, content, business, and security audits do not activate layout migration when paths and folder roles are unchanged.
 - Kept the former alignment-skill name as a compact upgrade compatibility note instead of a prominent README callout.
+- Reframed the README around the project's evidence boundary instead of a generic list of marketing pain points.
+- Added a behavior-change gate that requires an observed failure and a non-trigger boundary before a general skill rule can grow.
 
-### Planned
+### Preserved
 
-- Broader repeated behavior evaluations across more than one model/runtime.
-- More complete real-project fixtures and installation verification.
+- Kept all three runtime `SKILL.md` files unchanged in this documentation-and-evidence iteration. Candidate terminology, ticket-dependency, and handoff-redaction rules did not yet demonstrate a general gap that justified expanding the core instructions.
 
 ## [0.5.0-preview] - 2026-08-08
 
@@ -58,6 +69,7 @@ All notable changes to this project are documented here. The format follows [Kee
 
 - Windows hosted-runner UTF-8 output and equivalent long/8.3 symlink target spellings.
 
-[Unreleased]: https://github.com/KKLL2025/lightweight-project-skills/compare/v0.5.0-preview...HEAD
+[Unreleased]: https://github.com/KKLL2025/lightweight-project-skills/compare/v0.6.0-preview...HEAD
+[0.6.0-preview]: https://github.com/KKLL2025/lightweight-project-skills/releases/tag/v0.6.0-preview
 [0.5.0-preview]: https://github.com/KKLL2025/lightweight-project-skills/releases/tag/v0.5.0-preview
 [0.4.0-preview]: https://github.com/KKLL2025/lightweight-project-skills/releases/tag/v0.4.0-preview

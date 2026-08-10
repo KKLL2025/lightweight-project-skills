@@ -2,7 +2,7 @@
 
 # Lightweight Project Skills
 
-**Three lightweight Agent Skills that keep AI projects aligned, resumable, and structurally safe—without turning every task into ceremony.**
+**Lightweight project control for solo builders working with AI agents across long-lived, file-heavy projects.**
 
 [简体中文](README.zh-CN.md)
 
@@ -17,12 +17,12 @@
 npx skills add KKLL2025/lightweight-project-skills
 ```
 
-One repository, three composable skills: **Align → Drive → Organize.** Align material decisions, resume long-running delivery from evidence, and reorganize project folders without losing files or breaking path consumers. Choose one skill or all three when prompted.
+This project starts from one rule: leave ordinary choices to the model; verify the facts that are expensive to get wrong. A tentative idea is not approved scope, a handoff is not live project state, and a tidier folder is not evidence that a migration preserved the project.
 
-Lightweight Project Skills assumes the model can make ordinary engineering decisions. It adds structure only where ambiguity, continuity, evidence, or filesystem safety makes structure useful. It does **not** require a PRD for every change, fixed phase files, a specific issue tracker, Bash, TDD for every task, or a fresh subagent for every step.
+The repository separates those failure surfaces into three composable skills: **Align → Drive → Organize.** Use one or combine them as the work demands. They do **not** require a PRD for every change, fixed phase files, a specific issue tracker, Bash, TDD for every task, or a fresh subagent for every step.
 
 > [!IMPORTANT]
-> `0.5.0-preview` is a public preview. The deterministic checks are tested, but behavior evidence is still limited to a small Codex sample. Test these skills in your own runtime before relying on them for critical work.
+> `0.6.0-preview` is a public preview. The deterministic checks are tested, but behavior evidence is still limited to a small Codex sample. Test these skills in your own runtime before relying on them for critical work.
 
 ## Choose the right skill
 
@@ -98,7 +98,7 @@ Use $drive-large-project to resume from the live project state and complete the 
 Use $organize-ai-project-files to clean this project root without breaking framework-native paths or losing user assets.
 ```
 
-See [examples](examples/README.md) for routing examples and the three-zone versus compatible-repository layouts.
+See [examples](examples/README.md) for routing examples, reproducible scenarios, and the three-zone versus compatible-repository layouts.
 
 ## Folder governance
 
@@ -114,6 +114,8 @@ project/
 ```
 
 Existing framework repositories use compatibility mode. Required files such as `package.json`, `src/`, `app/`, CI configuration, or monorepo manifests stay where their tools expect them.
+
+GitHub is an optional delivery surface, not a runtime dependency. See the [GitHub integration guide](docs/github-integration.md) for branch, commit, pull-request, authorization, and release boundaries that preserve the three skills' local-first behavior.
 
 ## Verification
 
@@ -157,7 +159,7 @@ No benchmark badge or superiority claim is published without reproducible eviden
 
 - Read [CONTRIBUTING.md](CONTRIBUTING.md) before changing a skill or evaluation.
 - Use [GitHub Discussions](https://github.com/KKLL2025/lightweight-project-skills/discussions) for questions.
-- Use an issue form for reproducible bugs or feature proposals.
+- Use an issue form for reproducible bugs, focused feature proposals, or a redacted real-project case report.
 - Report security problems privately as described in [SECURITY.md](SECURITY.md).
 
 Project conduct is governed by [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md). Changes are recorded in [CHANGELOG.md](CHANGELOG.md).

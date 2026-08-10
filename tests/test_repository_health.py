@@ -5,7 +5,7 @@ from urllib.parse import unquote
 
 
 ROOT = Path(__file__).resolve().parents[1]
-EXPECTED_VERSION = "0.5.0-preview"
+EXPECTED_VERSION = "0.6.0-preview"
 
 
 class RepositoryHealthTests(unittest.TestCase):
@@ -25,6 +25,7 @@ class RepositoryHealthTests(unittest.TestCase):
             ".github/dependabot.yml",
             ".github/PULL_REQUEST_TEMPLATE.md",
             ".github/ISSUE_TEMPLATE/bug_report.yml",
+            ".github/ISSUE_TEMPLATE/case_report.yml",
             ".github/ISSUE_TEMPLATE/feature_request.yml",
             ".github/workflows/ci.yml",
         ]
@@ -64,6 +65,7 @@ class RepositoryHealthTests(unittest.TestCase):
             "examples/README.md",
             "evals/cases.json",
             ".github/ISSUE_TEMPLATE/bug_report.yml",
+            ".github/ISSUE_TEMPLATE/case_report.yml",
             ".github/ISSUE_TEMPLATE/feature_request.yml",
         ]
         for name in active_surfaces:

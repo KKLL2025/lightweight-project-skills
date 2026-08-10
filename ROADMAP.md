@@ -2,6 +2,12 @@
 
 The project stays lightweight unless evidence shows that more machinery is necessary.
 
+## Evidence grows in stages
+
+Worked scenarios make the intended boundary reviewable. A single with-skill/without-skill pair is exploratory. Repeated isolated comparisons can support a narrow behavior claim. Cross-runtime comparisons and independent real-project reports are required before stable performance claims.
+
+These stages are cumulative evidence levels, not one large test project that every preview must finish. See [`evals/README.md`](evals/README.md) for the minimal protocol.
+
 ## Before `v1.0.0`
 
 - Expand the evaluation catalog to at least 12 scenarios per skill.

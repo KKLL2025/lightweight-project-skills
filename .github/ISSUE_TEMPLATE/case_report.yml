@@ -1,0 +1,69 @@
+name: Real-project case report
+description: Share a redacted success, failure, or ambiguous result from using one of the skills.
+title: "[Case]: "
+body:
+  - type: markdown
+    attributes:
+      value: A case report is evidence for learning, not an endorsement or benchmark result. Remove credentials, personal data, private project material, and machine-specific absolute paths.
+  - type: dropdown
+    id: component
+    attributes:
+      label: Skill
+      options:
+        - align-project-requirements
+        - drive-large-project
+        - organize-ai-project-files
+        - More than one skill
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+      placeholder: 0.6.0-preview or commit SHA
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Agent runtime, model, operating system, and relevant tools. Do not include account identifiers.
+    validations:
+      required: true
+  - type: textarea
+    id: situation
+    attributes:
+      label: Project situation
+      description: Describe the project type, task scale, and material constraints using public or anonymized information.
+    validations:
+      required: true
+  - type: textarea
+    id: prompt
+    attributes:
+      label: Original prompt
+      description: Paste the redacted prompt as issued, without rewriting it to match the expected result.
+    validations:
+      required: true
+  - type: textarea
+    id: observed
+    attributes:
+      label: Observed behavior and evidence
+      description: Describe what happened and link safe outputs, diffs, checks, or logs when available.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior or useful outcome
+      description: State what you expected and whether the actual result was useful, harmful, or ambiguous.
+    validations:
+      required: true
+  - type: checkboxes
+    id: boundaries
+    attributes:
+      label: Publication boundary
+      options:
+        - label: I removed credentials, personal data, private project material, and machine-specific absolute paths.
+          required: true
+        - label: I understand one case report does not establish a general performance claim.
+          required: true
