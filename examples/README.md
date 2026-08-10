@@ -1,5 +1,13 @@
 # Examples
 
+These examples explain expected decisions, not benchmark results. Each reproducible scenario links to the matching catalog case so a reviewer can inspect the prompt and scoring boundary without treating one run as a general performance claim.
+
+## Reproducible scenarios
+
+- [Keep a small task small](cases/01-small-task-without-ceremony.md) — `align-project-requirements` stays out of an explicit, reversible edit.
+- [Recover from conflicting project state](cases/02-resume-from-conflicting-state.md) — `drive-large-project` verifies live owners instead of trusting a stale handoff.
+- [Move referenced paths without losing assets](cases/03-safe-structural-migration.md) — `organize-ai-project-files` treats a directory move as a compatibility change.
+
 ## Route by material risk, not repository size
 
 | Request | Route | Why |

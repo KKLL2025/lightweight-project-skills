@@ -2,7 +2,7 @@
 
 # Lightweight Project Skills
 
-**让 AI 项目保持需求对齐、长期可续接、目录结构安全，又不把每个任务都变成繁重流程的三个轻量 Agent Skills。**
+**面向使用 AI Agent 独立推进长期、多文件项目的轻量项目控制层。**
 
 [English](README.md)
 
@@ -17,12 +17,12 @@
 npx skills add KKLL2025/lightweight-project-skills
 ```
 
-一个仓库，三个可组合 skill：**Align → Drive → Organize（对齐 → 推进 → 整理）。** 只对齐实质决策、依据证据续接长期交付、安全整理项目目录而不丢文件或破坏路径引用。安装时可以选择其中一个，也可以选择全部三个。
+这个项目只从一条规则出发：普通选择交给模型判断，错了代价很高的事实必须验证。暂定想法不等于已批准范围，handoff 不等于项目实时状态，目录看起来更整齐也不能证明迁移没有破坏项目。
 
-Lightweight Project Skills 假设现代模型能够自主处理普通工程判断，只在需求歧义、跨回合连续性、证据真实性或文件系统安全确实需要时增加结构。它**不要求**每次修改都写 PRD、采用固定阶段文件、绑定某个 Issue 系统、使用 Bash、所有任务强制 TDD，或每一步都派发新 agent。
+仓库把这些失败面分给三个可组合 skill：**Align → Drive → Organize（对齐 → 推进 → 整理）。** 根据任务只用其中一个，或者按需组合。它们**不要求**每次修改都写 PRD、采用固定阶段文件、绑定某个 Issue 系统、使用 Bash、所有任务强制 TDD，或每一步都派发新 agent。
 
 > [!IMPORTANT]
-> `0.5.0-preview` 是公开预览版。确定性工具已有测试，但行为证据仍主要来自小规模 Codex 试运行。关键项目使用前请在自己的模型和运行时中验证。
+> `0.6.0-preview` 是公开预览版。确定性工具已有测试，但行为证据仍主要来自小规模 Codex 试运行。关键项目使用前请在自己的模型和运行时中验证。
 
 ## 选择正确的 skill
 
@@ -98,7 +98,7 @@ cp -R skills/organize-ai-project-files ~/.codex/skills/
 使用 $organize-ai-project-files 整理项目根目录，不要破坏框架原生路径，也不要丢失用户资产。
 ```
 
-更多触发和目录案例见 [examples](examples/README.md)。
+更多触发、可复现场景和目录案例见 [examples](examples/README.md)。
 
 ## 文件夹治理
 
@@ -114,6 +114,8 @@ project/
 ```
 
 成熟框架仓库采用兼容模式。`package.json`、`src/`、`app/`、CI 或 monorepo 清单等框架入口继续留在工具要求的位置。
+
+GitHub 是可选的交付表面，不是三个 skill 的运行依赖。分支、提交、PR、外部授权和发布边界见 [GitHub 集成指南](docs/github-integration.md)。
 
 ## 验证
 
@@ -157,7 +159,7 @@ CI 在 Windows/Linux 的 Python 3.11 和 3.13 上执行测试，覆盖 skill 合
 
 - 修改 skill 或评测前阅读 [CONTRIBUTING.md](CONTRIBUTING.md)。
 - 普通问题使用 [GitHub Discussions](https://github.com/KKLL2025/lightweight-project-skills/discussions)。
-- 可复现 Bug 或功能建议使用 Issue 表单。
+- 可复现 Bug、聚焦的功能建议或脱敏后的真实项目案例使用 Issue 表单。
 - 安全问题按 [SECURITY.md](SECURITY.md) 私密报告。
 
 社区行为遵循 [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)，版本变化记录在 [CHANGELOG.md](CHANGELOG.md)。

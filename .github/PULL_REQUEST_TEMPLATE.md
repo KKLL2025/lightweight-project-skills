@@ -18,3 +18,5 @@
 - [ ] `python -m unittest discover -s tests -v` passes locally.
 - [ ] User-visible changes are documented.
 - [ ] The change keeps ordinary model judgment lightweight by default.
+- [ ] New skill rules address an observed gap and replace or narrow existing wording where possible instead of accumulating parallel instructions.
+- [ ] Documentation keeps the project's evidence-led distinction instead of defaulting to interchangeable AI-generated copy.

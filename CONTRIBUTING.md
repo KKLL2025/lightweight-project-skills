@@ -31,6 +31,26 @@ If you have the Agent Skills structure validator installed, also run it once for
 - Distinguish structural checks from model-behavior evidence.
 - Never include credentials, private project material, internal reports, or machine-specific absolute paths.
 
+### Behavior-change gate
+
+Do not append a rule merely because it sounds safer or more professional. Before changing a `SKILL.md` behavior:
+
+1. Capture an observable failure, recurring friction, or missing decision boundary.
+2. Check whether the existing skill already covers it and the failure came from triggering, stale installation, or runtime behavior instead.
+3. Prefer clarifying, replacing, or narrowing an existing rule over adding a parallel rule.
+4. State when the new rule stays inactive so small and unrelated work does not inherit more ceremony.
+5. Add a focused catalog case and any deterministic regression test the change permits.
+6. Re-read all three ownership boundaries and remove wording that duplicates another skill.
+
+If the evidence supports only a project-specific convention, document it in that project rather than promoting it into this general repository.
+
+## Documentation and positioning
+
+- Lead from the project's actual mechanism and verified boundary, not a generic problem/solution template.
+- Do not turn familiar AI copy patterns, extra headings, repeated triads, or added detail into a substitute for evidence.
+- Preserve useful structure when revising. Rewrite only the surface whose purpose, reader, or evidence has changed.
+- Keep claims traceable to a test, reproducible scenario, case report, or explicitly labelled design intent.
+
 ## Pull request checklist
 
 - [ ] The change has one clear purpose.
