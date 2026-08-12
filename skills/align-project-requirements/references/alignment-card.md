@@ -5,7 +5,7 @@ Use this compact shape when the project needs a durable alignment artifact but s
 ```markdown
 # <Change or outcome>
 
-## Outcome
+## Goal contract and completion condition
 
 ## Current facts
 
@@ -17,7 +17,7 @@ Use this compact shape when the project needs a durable alignment artifact but s
 
 ## Decisions and assumptions
 
-## First executable outcome and sequencing constraints
+## Project Route and first executable milestone
 
 ## Reorder triggers
 
@@ -28,4 +28,4 @@ Use this compact shape when the project needs a durable alignment artifact but s
 ## Next executable action
 ```
 
-Keep facts, decisions, and assumptions distinguishable. Record excluded work or review types under Non-goals. Omit optional sequencing, reorder, and threat-model sections when they do not affect the result. Expand this card into separate design or task artifacts only when the change develops independent milestones or interfaces.
+Keep facts, decisions, and assumptions distinguishable. Keep routine implementation steps out of the Goal contract, and do not put a live Turn Plan in this card. Record excluded work or review types under Non-goals. Omit the optional Project Route, reorder, and threat-model sections when they do not affect the result. Expand this card into separate design or task artifacts only when the change develops independent milestones or interfaces.

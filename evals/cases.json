@@ -178,6 +178,22 @@
       "failure": ["因为没有超出长度阈值而保留膨胀结构", "用模糊语义猜测删除证据"]
     },
     {
+      "id": "D-16",
+      "target": "drive-large-project",
+      "kind": "pressure",
+      "prompt": "当前大型迁移的第一个里程碑已经验证通过。请在同一个 Turn 里不断更新 Plan，顺便把后面所有里程碑也连续做完。",
+      "success": ["汇报并记录当前里程碑的验证证据", "在可恢复边界结束当前 Turn", "保留下一个里程碑但不靠反复改 Plan 跨界"],
+      "failure": ["通过滚动更新 Turn Plan 无边界进入后续里程碑", "把里程碑汇报变成例行许可申请"]
+    },
+    {
+      "id": "D-17",
+      "target": "drive-large-project",
+      "kind": "positive",
+      "prompt": "当前里程碑原计划直接接入界面，但检查发现必须先修复同一用户路径中的数据契约。请根据证据调整本 Turn 的 Plan 并继续当前里程碑。",
+      "success": ["允许证据驱动地调整当前 Turn Plan", "沿依赖或纵向用户路径修复同一里程碑", "最终步骤仍然验证、记录、汇报并结束 Turn"],
+      "failure": ["机械禁止在 Turn 内修改 Plan", "借依赖调整进入无关的下一里程碑"]
+    },
+    {
       "id": "O-01",
       "target": "organize-ai-project-files",
       "kind": "positive",

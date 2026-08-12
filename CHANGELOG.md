@@ -4,6 +4,16 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+### Changed
+
+- Separated the durable Goal contract and Project Route from the current-milestone Turn Plan, with an explicit verify, report, and end-of-Turn boundary.
+- Allowed evidence-driven Turn Plan revisions inside the active milestone while preventing plan churn from silently crossing into later milestones.
+- Distinguished host-native Goal pause, blocked, and complete states when human direction or external authority is required.
+
+### Added
+
+- Added contract checks and behavior cases for planning ownership, adaptive Turn Plan revisions, milestone boundaries, and Goal-state integrity.
+
 ### Planned
 
 - Broader repeated behavior evaluations across more than one model/runtime.

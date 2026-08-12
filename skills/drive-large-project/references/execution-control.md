@@ -4,16 +4,18 @@ Read this reference when several outcomes or modules must be sequenced, work may
 
 ## Maintain two planning levels
 
-Use a macro route only when the project has meaningful staging or dependencies. Capture the current product stage, dependency or vertical-delivery order, external gates, contracts that must stabilize first, work that can proceed independently, acceptance order, and deliberately deferred areas.
+Use a Project Route only when the project has meaningful staging or dependencies. Let the alignment owner capture major milestones, dependency or vertical-delivery order, external gates, contracts that must stabilize first, acceptance order, and deliberately deferred areas. Do not turn it into a detailed forecast of every implementation step.
 
-Under that route, keep a rolling execution horizon containing only:
+Under that route, keep live milestone state containing only:
 
 - the current stage outcome and active milestone;
 - the next useful outcome candidates and their entry conditions;
 - dependencies or external gates;
 - evidence that would justify changing the order.
 
-Do not prescribe a fixed candidate count or turn distant guesses into commitments. Give changing execution state one existing owner, such as the project task plan; summarize only the current entry in the handoff.
+For each Turn, create a Turn Plan limited to the current milestone. Make the final plan item close the Turn by verifying the result, recording evidence, reporting milestone state, and stopping at a resumable boundary. Evidence may justify revising implementation steps, dependency order, validation, or scope inside that milestone. Do not use repeated plan revisions to enter the next milestone.
+
+Do not prescribe a fixed candidate count or turn distant guesses into commitments. Give changing execution state one existing owner, such as the project task plan; keep the host Turn Plan ephemeral unless it is needed for recovery, and summarize only the current entry in the handoff.
 
 ## Switch modules for a reason
 
@@ -24,11 +26,17 @@ When new evidence materially reorders the route, update the plan owner and recor
 ## Select a user-visible execution batch
 
 - Complete small, explicit, reversible, cheaply verified work in one batch.
-- For stateful, resource-heavy, cross-module, or delegated work, prefer one major outcome before the next user-visible boundary.
+- For stateful, resource-heavy, cross-module, or delegated work, prefer one current milestone per Turn, ending at a verified and resumable boundary even when that milestone remains unfinished.
 - Continue through closely related outcomes when the user requested continuous execution, risk and cost remain controlled, and every outcome retains separate evidence.
 - Keep monitoring and waiting attached to the recorded job. Do not use monitoring time to start unrelated development.
 
 A milestone update is not a request for routine permission. Stop only for a real authority boundary, material decision, unsafe or irreversible action, exhausted useful work, or an explicit user stopping condition.
+
+## Control the long-running Goal
+
+Treat the Goal as the bounded project result plus its durable completion, validation, and authority constraints. Re-anchor to it at the start of each Turn when the host exposes a long-running Goal; do not rely on an assumed automatic re-read. Change it only for a material change to the final result or its boundary, not for routine implementation discoveries.
+
+Milestone completion is not Goal completion. When human input is required, close the current Turn and request or use the host's native pause mechanism when available. A pause preserves resumable state; a blocker means progress is actually prevented under the host's own rules. Never misuse blocked or complete as a substitute for ending a Turn.
 
 ## Report observable events
 

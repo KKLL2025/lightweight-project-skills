@@ -112,11 +112,10 @@ class SkillContractTests(unittest.TestCase):
     def test_milestone_updates_reanchor_without_becoming_a_gate(self) -> None:
         drive = read_skill("drive-large-project").casefold()
         required = (
-            "completion of each outcome-sized milestone",
-            "re-anchor against the aligned outcome",
-            "brief user-visible milestone update",
-            "select the next execution boundary proportionally",
-            "one major outcome per user-visible execution batch",
+            "at milestone completion",
+            "re-anchor against the goal contract",
+            "brief user-visible update",
+            "default to one current milestone per turn",
             '"do everything" or "do not stop" does not make substantial work low-risk',
             "delegated-agent messages are internal evidence",
             "permission gate",
@@ -127,7 +126,7 @@ class SkillContractTests(unittest.TestCase):
             with self.subTest(phrase=phrase):
                 self.assertIn(phrase, drive)
 
-        self.assertIn("This skill owns desired behavior", read_skill("align-project-requirements"))
+        self.assertIn("This skill owns the Goal contract, desired behavior", read_skill("align-project-requirements"))
         organize = read_skill("organize-ai-project-files")
         self.assertIn("`drive-large-project` owns execution continuity", organize)
         self.assertIn("This skill owns topology", organize)
@@ -135,8 +134,8 @@ class SkillContractTests(unittest.TestCase):
     def test_alignment_hands_off_execution_and_trust_boundaries(self) -> None:
         alignment = read_skill("align-project-requirements").casefold()
         for phrase in (
-            "first executable outcome",
-            "material sequencing constraints",
+            "first executable milestone",
+            "major milestones",
             "evidence that would justify reordering",
             "threat model or changed trust boundary",
             "reviews are intentionally excluded",
@@ -164,6 +163,42 @@ class SkillContractTests(unittest.TestCase):
         ):
             with self.subTest(phrase=phrase):
                 self.assertIn(phrase, reference)
+
+    def test_goal_route_and_turn_plan_have_distinct_owners(self) -> None:
+        alignment = read_skill("align-project-requirements")
+        drive = read_skill("drive-large-project")
+        reference = (
+            SKILLS["drive-large-project"] / "references" / "execution-control.md"
+        ).read_text(encoding="utf-8")
+
+        for phrase in (
+            "Goal contract",
+            "Project Route",
+            "not a live plan for one Turn",
+            "does not own the live Turn Plan",
+        ):
+            with self.subTest(owner="alignment", phrase=phrase):
+                self.assertIn(phrase, alignment)
+
+        for phrase in (
+            "At the start of each Turn inside a long-running Goal",
+            "Turn Plan for this milestone only",
+            "Do not use repeated updates to cross into the next milestone",
+            "never misuse blocked or complete to stop execution",
+        ):
+            with self.subTest(owner="drive", phrase=phrase):
+                self.assertIn(phrase, drive)
+
+        self.assertIn("Evidence may justify revising implementation steps", reference)
+        self.assertIn("Do not use repeated plan revisions to enter the next milestone", reference)
+        self.assertIn("Never misuse blocked or complete as a substitute for ending a Turn", reference)
+
+    def test_turn_boundary_keeps_adaptive_exceptions(self) -> None:
+        drive = read_skill("drive-large-project")
+        self.assertIn("the milestone may continue in a later Turn", drive)
+        self.assertIn("only for small work or explicitly continuous low-risk work", drive)
+        self.assertNotIn("never update the Turn Plan", drive)
+        self.assertNotIn("every Turn must complete exactly one milestone", drive)
 
     def test_progress_refresh_uses_observable_events_not_timers_or_counts(self) -> None:
         drive = read_skill("drive-large-project").casefold()
