@@ -19,15 +19,15 @@ Turn intent into a usable decision boundary without turning every request into a
 
 Confirm these concerns, in conversation or in an existing project artifact:
 
-1. **Outcome:** what observable result should exist for the user or operator.
+1. **Goal contract:** the bounded final result, observable completion condition, and small set of non-negotiable constraints that must remain stable across the project. Keep routine steps and temporary implementation choices out of it.
 2. **Current facts:** what the live project, runtime, or source evidence shows now.
 3. **Boundary:** what is in scope, explicitly out of scope, and which reviews are intentionally excluded.
 4. **Acceptance:** how a person can tell the change works, including important failure behavior.
 5. **Decisions and assumptions:** material choices already made, unresolved choices, and safe defaults selected autonomously.
-6. **Execution entry:** the first executable outcome, material sequencing constraints, and evidence that would justify reordering when the work spans outcomes.
+6. **Project Route:** when the work has meaningful stages, record the major milestones, dependencies or external gates, first executable milestone, and evidence that would justify reordering. This is the project-level route, not a live plan for one Turn.
 7. **Authority and trust:** what Codex may do locally, what requires a user or external party, and any threat model or changed trust boundary relevant to validation.
 
-For direct execution, establish only the outcome, observable check, and authority needed to act safely; infer the other concerns from verified project facts unless they change the result. Omit sequencing, threat-model, and review-exclusion fields when they have no material effect.
+For direct execution, establish only the bounded outcome, observable check, and authority needed to act safely; infer the other concerns from verified project facts unless they change the result. Omit the Project Route, threat-model, and review-exclusion fields when they have no material effect.
 
 Do not mistake a requested implementation detail for the underlying goal. Challenge a proposed solution only when it would materially damage the stated outcome, safety, compatibility, or authority boundary.
 
@@ -48,9 +48,9 @@ Read [alignment-card.md](references/alignment-card.md) only when creating or rep
 
 ## Hand off cleanly
 
-- If implementation is expected to span multiple turns, milestones, or external checks, hand `drive-large-project` the outcome, observable acceptance, first executable outcome, material sequence or reorder conditions, unresolved decisions, relevant trust boundaries, and authority limits.
+- If implementation is expected to span multiple Turns, milestones, or external checks, hand `drive-large-project` the Goal contract, observable acceptance, Project Route and first executable milestone, reorder conditions, unresolved decisions, relevant trust boundaries, and authority limits. Let that skill own the live milestone state and Turn Plan.
 - If alignment changes project roots, multiple or referenced output paths, protected assets, or a broad directory migration, use `organize-ai-project-files` for layout decisions and move safety.
-- This skill owns desired behavior and decision boundaries. It does not own long-running execution status, acceptance evidence state, or filesystem migration.
+- This skill owns the Goal contract, desired behavior, Project Route, and decision boundaries. It does not own the live Turn Plan, long-running execution status, acceptance evidence state, or filesystem migration.
 
 ## Finish
 
