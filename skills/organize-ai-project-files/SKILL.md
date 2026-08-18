@@ -1,27 +1,39 @@
 ---
 name: organize-ai-project-files
-description: Design, establish, inspect, and safely migrate project-folder structures for AI-assisted development. Use only when directory topology, file placement, a cluttered project root, asset/output separation, layout drift, or referenced path movement is part of the requested outcome. Do not trigger for ordinary code, content, business, or security audits when paths and folder roles are not changing.
+description: "Organize AI-assisted project files so a person or fresh Agent can understand the project progressively and reach relevant information with minimal exploration. Use when establishing a project structure, cleaning a confusing workspace, improving project-level navigation, deciding top-level artifact placement, or performing meaningful structural moves. Prefer a recognizable project entrance while preserving mature repositories and framework-native structures. Do not use for ordinary implementation when project organization is not itself a problem."
 ---
 
 # Organize AI Project Files
 
-Make the project easy for a person and a fresh AI agent to navigate. Treat structural moves as compatibility changes; treat ordinary file placement as a lightweight housekeeping decision.
+Make the project easy to enter, navigate, understand, and continue without forcing a person or Agent to explore the whole workspace.
 
-## Confirm this is a layout task
+Organize for progressive discovery and maintainability, not for control, security, or proof.
 
-- The word "audit" alone is not a layout trigger. Do not expand an ordinary code, business, content, or security review into folder governance or red-team work.
-- If paths, root topology, folder roles, assets, and output boundaries are unchanged, leave the structure alone.
-- When an existing layout contract is stable and no drift is evident, perform only the smallest placement or reference check required by the active task.
+## Keep the responsibility narrow
 
-## Decide the topology
+This skill owns:
 
-Read [layout-standard.md](references/layout-standard.md) when creating a tree or choosing between layouts.
+- project-level directory topology;
+- top-level organization and navigation;
+- placement of project-level artifacts;
+- structural cleanup and migration;
+- keeping major project areas understandable as the project grows.
 
-- Use the **three-zone shell** for new AI-led projects, mixed project containers, or when the user wants a clean main view with AI runtime, project control, and actual project files separated.
-- Use the **compatible repository layout** when an existing framework, CI system, package manager, or monorepo expects files at the repository root. Preserve those conventions and introduce only the missing control/output boundaries.
-- Never reorganize solely to make names visually uniform. The new structure must improve retrieval, ownership, output clarity, or safe continuation enough to justify path churn.
+It does not own requirements, Project Plan or Handoff content, execution sequencing, acceptance, release state, code-quality review, or unrelated security and operational audits.
 
-For the three-zone shell, keep only discovery files and these main categories at the root:
+`align-project-requirements` decides what the project should become.
+
+`drive-large-project` decides what execution context needs to survive.
+
+This skill decides how project information and project areas are arranged so they can be found efficiently.
+
+## Prefer a recognizable project entrance
+
+Use one concise project map as the canonical navigation source, preferably by reusing an existing README, host-native Agent entry, or established project index.
+
+Host-specific instruction files and human-facing documentation may both exist, but they should divide roles or link to the same map rather than maintain competing copies of the project structure.
+
+For a new multi-repository, mixed-asset, or AI-led project container, a consistent outer shell is useful:
 
 ```text
 project/
@@ -32,56 +44,140 @@ project/
 └── 03-project-workspace/
 ```
 
-Root adapters such as `CLAUDE.md`, `.gitignore`, and tool manifests may remain when required. Do not scatter specifications, logs, installers, drafts, exports, and source folders beside the three zones.
+Broadly:
 
-## Classify before placing
+- `01-ai-runtime/` contains project-specific Agent instructions, skills, prompts, helpers, and AI configuration;
+- `02-project-control/` contains project-level alignment, plans, continuity material, architecture, research, decisions, and other durable references;
+- `03-project-workspace/` contains product repositories, source projects, assets, data, outputs, and working material.
 
-- `01-ai-runtime/`: project-specific AI instructions, reusable skills, prompts, AI tool helpers, and AI configuration. Do not put product source or project status here.
-- `02-project-control/`: alignment, architecture, plans, continuity, acceptance, evidence, research, and history used to guide and resume the project.
-- `03-project-workspace/`: actual product/repository files, user assets, input data, outputs, exports, and temporary working data.
+The value of the common shell is a predictable entrance, not visual uniformity.
 
-Within the product workspace, preserve framework-native module and test structure. Do not force every technology into a generic `src/` shape.
+For a standard single repository whose framework, package manager, monorepo, CI, build, or deployment tooling expects files at the root, keep the product repository at that root. Add only the smallest compatible Agent entry, project map, or control area needed; do not wrap the repository inside `03-project-workspace/` solely to fit the template.
 
-## Apply proportional safety
+Standardize the project entrance, not every internal structure.
 
-### Simple placement or local cleanup
+## Preserve mature structures as coherent units
 
-Inspect the relevant files, Git state, and path references. Move or create the item in the obvious role, update affected links/configuration, and run the cheapest check that proves consumers still work. Do not demand a full-project snapshot for an independent draft or generated file with no consumers.
+Treat established repositories, framework projects, packages, monorepos, third-party components, datasets, or other mature subsystems as coherent units unless restructuring them is itself the task.
 
-### Structural migration
+Do not reorganize their internal source, tests, packages, configuration, or build structure merely to fit the outer project scheme.
 
-Use the full migration path when changing roots, moving multiple/referenced paths, relocating large or valuable untracked assets, or changing build/run/release locations:
+Ordinary file placement inside a mature subsystem follows that subsystem's conventions and normal Agent engineering judgment. This skill does not need to intervene.
 
-1. Discover the actual Git and working roots plus repository instructions.
-2. Inventory tracked, modified, ignored, and untracked files; protected assets; key sizes/counts; manifests; commands; and path consumers.
-3. Run `scripts/tree_snapshot.py create`. Use `--hash-mode all` when paths may be renamed or content preservation must be proved; a partial or unhashed snapshot is diagnostic evidence, not integrity proof.
-4. Produce an explicit source-to-destination map with role, consumers, rollback, and stop conditions.
-5. Resolve absolute source/destination paths and verify they remain inside the authorized workspace.
-6. Move explicit paths with one filesystem API, then update commands, manifests, ignores, indexes, evidence links, CI, and agent entry files.
-7. Compare renamed or moved trees with `--path-mode content`; use `exact` when paths must stay unchanged. Then run `scripts/audit_layout.py`, search stale paths, parse manifests, run focused build/test/smoke checks, and inspect Git state. Stop if a symlink resolves outside the authorized root rather than reading through it.
+## Design for progressive discovery
 
-Do not delete unknown files, caches, duplicates, historical candidates, or user assets merely because they appear untidy. Classification comes before deletion; deletion requires its own authority.
+A fresh Agent should be able to move from broad context to detailed implementation only as needed:
 
-## Keep a layout contract only when useful
+```text
+project entry
+    ↓
+major project area
+    ↓
+relevant subsystem or knowledge area
+    ↓
+local context when necessary
+    ↓
+actual files and implementation
+```
 
-Adapt `assets/project-layout.json` into the project when the layout will be maintained across sessions, contains protected paths, or has output/release boundaries worth auditing. Reuse an equivalent existing contract instead of adding another one.
+Navigation should help answer:
 
-The contract should identify development, control/reference, output, protected-asset, ephemeral, entry, and hot-continuity paths. Treat unclassified root entries as review items, not automatic failures to delete.
+- what major areas exist;
+- what each area is for;
+- where a particular kind of information belongs;
+- where to look next.
 
-Use output states only when the project produces deliverables:
+Keep navigation concise and point toward deeper sources instead of copying their contents.
 
-- **engineering output:** built or generated and checked locally;
-- **delivery candidate:** packaged for further verification;
-- **formal release:** fixed revision plus required release evidence and no open release gate.
+Do not create a README, index, or summary at every directory level. Add another navigation layer only when a real branching or discovery problem makes it useful. A clear mature directory may need no additional explanation.
 
-A copy, rename, hash, local build, mock, or folder label cannot upgrade an artifact's state.
+Do not require an Agent to scan the entire project tree merely to discover where relevant information lives, but also do not encourage guessing implementation from filenames or shallow summaries.
 
-## Coordinate with the other two skills
+## Place project-level material by role
 
-- `align-project-requirements` owns the desired outcome, non-goals, and acceptance boundaries. Store its durable artifacts under the control/alignment role.
-- `drive-large-project` owns execution continuity and keeps ordinary new files in their correct roles during development.
-- This skill owns topology, placement rules, structural migration, asset preservation, and path-consumer verification. It does not redefine product scope or claim acceptance.
+Use the narrowest existing location that matches the material's actual role.
 
-## Finish with evidence
+Prefer an existing suitable location over creating another category.
 
-Report the resulting root map, important subfolders, what moved or stayed, path consumers updated, preservation checks, commands run, Git state, and any unresolved item. For a simple placement task, keep the report proportionate; for a structural migration, include the full mapping and integrity evidence.
+Separate source, durable project references, generated outputs, temporary work, and Agent configuration when mixing them would make navigation meaningfully harder.
+
+Do not create folders merely for visual neatness. A structural distinction should improve navigation, retrieval, ownership, or maintainability enough to justify its existence.
+
+## Treat new and existing projects differently
+
+### New or clean projects
+
+Establish a simple compatible shell and useful entry points early when appropriate.
+
+Avoid elaborate indexes, registries, manifests, or control structures before the project has a reason to need them.
+
+### Existing or confusing projects
+
+Do not reorganize by guesswork.
+
+Start from the top level and the areas relevant to the requested cleanup. Understand deeper contents only when their role, dependencies, or destination cannot otherwise be determined.
+
+Identify mature subsystems that should stay intact, obviously misplaced or mixed material, relevant path consumers, and valuable or difficult-to-recover assets when they matter.
+
+Then make the smallest structural changes that materially improve the project.
+
+Do not turn cleanup into a full-project inventory or audit.
+
+Organization does not imply deletion. Do not delete or discard unknown, user-owned, or difficult-to-recover material merely because it appears redundant, temporary, or untidy. Deletion requires explicit authority or a clearly safe project-native cleanup rule.
+
+## Apply migration care proportionally
+
+Use normal engineering judgment for simple, reversible moves.
+
+When moving referenced files, update affected consumers and perform a reasonable check that the affected paths still work.
+
+Increase protection only when the actual migration warrants it, such as when:
+
+- many referenced paths are changing;
+- valuable or difficult-to-recreate assets are involved;
+- build, deployment, automation, or external systems depend heavily on paths;
+- a large migration would be expensive to undo.
+
+Use backups, inventories, mappings, integrity checks, or broader verification when those measures solve a real migration risk.
+
+Do not require universal snapshots, hashing, rollback maps, exhaustive repository audits, or full test suites for ordinary organization work.
+
+## Correct structural drift when it becomes a real problem
+
+As projects grow, structure may gradually become harder to navigate.
+
+Correct it when actual work reveals problems such as:
+
+- a cluttered project root;
+- temporary and durable material becoming mixed;
+- related project-level information being scattered;
+- navigation no longer representing the real project;
+- a new major subsystem having no understandable place.
+
+Do not periodically scan the project merely to prove that the structure is still clean.
+
+Do not reorganize stable areas simply because another naming scheme looks better.
+
+Structure maintenance should be triggered by observed friction or an explicit organization task, not by a recurring housekeeping ritual.
+
+## Coordinate without duplicating content
+
+This skill may create or maintain navigation that points toward plans, handoffs, stable knowledge, repositories, assets, and other project areas.
+
+It does not decide what those artifacts should contain.
+
+Do not duplicate their contents into navigation files.
+
+When another skill determines that information should exist, place it appropriately within the established structure and keep the navigation sufficient to find it.
+
+## Finish proportionally
+
+Report only the structural changes and unresolved issues that matter to the user or the next Agent.
+
+Keep simple placement or cleanup reports brief.
+
+For meaningful migrations, explain the resulting structure, important moves, and any unresolved path or asset issue.
+
+Do not create evidence packages or additional management documents merely to prove that organization occurred.
+
+A successful structure lets a fresh Agent reach the information needed for its current task with little unnecessary reading while leaving mature project internals intact.

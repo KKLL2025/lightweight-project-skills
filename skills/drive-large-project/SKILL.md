@@ -1,92 +1,205 @@
 ---
 name: drive-large-project
-description: Drive medium-to-large projects across turns or days while preserving scope, truthful state, evidence-backed acceptance, and resumable handoffs. Use when the user asks Codex to continue autonomously, resume staged work, coordinate milestones or long-running checks, or deliver an aligned specification. Skip for small fixes and one-turn changes.
+description: "Sustain projects that genuinely benefit from persistent planning and resumable context across multiple execution batches or Sessions. Use when the agreed scope, delivery depth, dependencies, duration, or recovery needs make it likely that progress would otherwise be lost, duplicated, or difficult to resume. Focus on continuity, practical coordination, bounded Turns, and compact handoffs rather than repeated verification, evidence collection, or heavy governance. Skip when normal Agent execution is sufficient."
 ---
 
 # Drive Large Projects
 
-Keep long work truthful and resumable without repeated confirmation.
+Keep substantial work moving across Turns and Sessions without losing direction, overloading context, or allowing project management to displace the actual work.
 
-## Start from reality
+The Agent's primary job is to advance the project.
 
-1. At the start of each Turn inside a long-running Goal, re-anchor to its contract and the smallest current authority set the host exposes; do not assume an automatic re-read.
-2. Inspect repository instructions, live Git, relevant files, and the smallest current index/handoff before trusting status claims.
-3. Reuse existing alignment, route, acceptance, execution, evidence, and layout owners. Do not create a second source of truth.
-4. If the desired outcome or material boundary is unclear, use `align-project-requirements`. Otherwise resume the first unfinished, unblocked milestone without replaying completed work.
+Use additional process only when it materially improves continuity, recovery, coordination, or a level of rigor the project actually requires.
 
-Use this authority order when sources conflict: latest user decision, repository rules, approved alignment/design, task and acceptance owners, current handoff, then history. Repair stale summaries after verifying the live state.
+## Enter only when persistent coordination is useful
 
-## Exercise judgment without ceremony
+Do not classify work as a large project from the task label alone.
 
-- Proceed through reversible in-scope analysis, code, tests, builds, documentation, and ordinary refactors. Decide routine technical details from project conventions and the aligned outcome.
-- Ask only when a choice materially changes product direction, privacy/legal posture, irreversible production data or permissions, spending, public release, external communication, or authority beyond the user's delegation.
-- Batch genuinely blocking questions. Continue other independent in-scope work when possible.
-- Add process only in response to actual project complexity or observed failure risk.
+The same request may need a quick implementation or a long multi-stage effort depending on the agreed delivery depth.
 
-## Keep the root and project tree clean during development
+Use this skill when persistent project state would materially improve execution, such as when:
 
-Follow `PROJECT_LAYOUT.json` or repository conventions. In the three-zone layout, use `01-ai-runtime/` for AI instructions and configuration, `02-project-control/` for governance and evidence, and `03-project-workspace/` for product work, assets, and outputs. Classify new root entries first and preserve framework-native structure.
+- meaningful work will span multiple bounded execution batches;
+- several stages, dependencies, or workstreams must remain coordinated;
+- progress would be costly or difficult to reconstruct later;
+- the project is expected to continue across Sessions;
+- losing the current route or working state would cause substantial repeated work.
 
-Correct simple placement drift when the move is local, reversible, and has no path consumers. Use `organize-ai-project-files` for new structures, root changes, multiple or referenced moves, output separation, or protected assets. Folder governance is continuous; structural migration is specialized.
+When `align-project-requirements` has established the project framework, use that understanding to decide whether this mode is actually needed.
 
-## Use only the durable state the project needs
+Do not force a clear project through alignment merely to activate this skill.
 
-- A one-turn task needs no new management documents.
-- A multi-turn project normally needs a short document router/index and a current-only handoff.
-- Add a durable task owner when several milestones must preserve execution state across Turns. Keep the current Turn Plan in the host unless persistence is needed for recovery.
-- Add an acceptance ledger only when multiple criteria, external validation, or evidence gaps must survive across sessions.
-- Store raw logs, screenshots, manifests, and old milestone details outside the default read set.
+## Recover only the context needed to continue
 
-Read [artifact-templates.md](references/artifact-templates.md) for templates, [context-lifecycle.md](references/context-lifecycle.md) for growing, duplicated, or uncertain recovery context, and [execution-control.md](references/execution-control.md) for ordered outcomes, expensive validation, or delegated work.
+When resuming work, establish enough context to understand:
 
-Give each changing fact one owner: alignment owns the Goal contract, desired behavior, and Project Route; tasks own milestone state; the host Turn Plan owns the current Turn; the acceptance ledger owns evidence; the handoff owns the current summary and next action; the layout contract owns folder roles. References may point to these facts but must not maintain competing copies.
+- the intended outcome and agreed delivery depth;
+- the current project route;
+- where execution currently stands;
+- what is active or unfinished;
+- what should happen next.
 
-## Work in outcome-sized milestones
+Prefer host-native and repository-native search, indexing, memory, planning, and session mechanisms when they already solve the need.
 
-For the active milestone:
+Use existing project navigation, the current project plan or roadmap, and the current Handoff when available. These are information roles, not mandatory separate files; reuse or combine existing artifacts when that reduces duplication.
 
-1. State the observable outcome and relevant boundary or acceptance IDs.
-2. Write a Turn Plan for this milestone only; its final item must verify, record evidence, report milestone state, and end the Turn.
-3. Inspect or reproduce current behavior.
-4. Implement the smallest coherent vertical slice.
-5. Run focused checks, then broader checks proportional to risk.
-6. Exercise the real user/runtime path when practical.
-7. Record evidence and gaps honestly; update the task, acceptance owner when present, and concise handoff.
-8. At milestone completion, re-anchor against the Goal contract, Project Route, non-goals, authority, evidence, live state, and next unblocked result.
-9. Send a brief user-visible update with the verified result, evidence, material gaps, and next milestone.
-10. End the Turn at the resumable boundary declared by the final plan item.
+If persistent continuity is genuinely needed and no suitable state exists, create only the lightest equivalent required to resume later.
 
-Revise the Turn Plan when evidence changes an assumption, dependency, validation path, or safe slice, but keep revisions inside the current milestone. Do not use repeated updates to cross into the next milestone or execute the whole project in one Turn.
+Read deeper project knowledge and implementation files only when the active work requires them.
 
-Complete small, clear work directly. For stateful, resource-heavy, cross-module, or multi-agent work, default to one current milestone per Turn; the milestone may continue in a later Turn if it cannot finish safely. Related outcomes may share a Turn only for small work or explicitly continuous low-risk work when evidence and recovery remain intact. "Do everything" or "do not stop" does not make substantial work low-risk or authorize silent milestone crossings. Monitoring does not conceal new development.
+Do not routinely replay project history, load every control document, inspect the whole repository, or re-establish facts that remain reasonably stable.
 
-Cross modules only for the active outcome, dependency, vertical path, blocker bypass, or high-risk seam. Record a short reason in the existing plan when evidence materially reorders work; do not opportunistically rescan or recreate the roadmap.
+A fresh Session should be able to understand the project progressively instead of loading the entire project at once or guessing from filenames.
 
-Do not claim more than the evidence establishes. Code written, locally checked, packaged candidate, externally accepted, and formally released are different states. Reopen an acceptance item when later changes invalidate its evidence.
+When a recovery summary is observed to conflict with a newer user decision or the current relevant project state, treat the summary as stale and update it. Do not force reality to match the summary or turn recovery into a full-project audit.
 
-Use the runtime's progress channel or the next user-visible boundary. Update canonical owners first. Delegated-agent messages are internal evidence; the coordinator summarizes them. Do not split milestones merely to create updates, invent a time-based reporting cadence when the host does not require one, repeat unchanged status, or turn updates into a permission gate. Treat any host-required progress heartbeat separately.
+This skill defines what execution context needs to survive and how it is used. `organize-ai-project-files` owns how that information is arranged in the project filesystem.
 
-Report when evidence overturns the plan, a material boundary changes, a blocker appears, or before stopping, handoff, release, or completion. Announce expensive work only for useful control or recovery. Ask only when authority requires a decision; otherwise adjust without creating an approval step.
+## Keep project control proportional
 
-Keep Goal state honest: routine discoveries do not rewrite it, milestone completion does not complete it, and human direction ends the Turn through the host's pause mechanism when available. Follow host semantics for `blocked`; never misuse blocked or complete to stop execution. Read [execution-control.md](references/execution-control.md) for the planning and Goal-state rules.
+Different projects require different levels of rigor.
 
-## Refresh context on observable events
+An internal prototype, ordinary product feature, exploratory experiment, formal benchmark, production release, and high-risk system should not automatically receive the same process.
 
-Do not estimate, persist, or act on hidden runtime compaction counts. After a context boundary, cross-day gap, handoff, or from explicit summarized, materially incomplete, or conflicting context, load active instructions and the smallest current authority set. Re-read this `SKILL.md` directly when the host exposes it.
+Increase validation, documentation, coordination, traceability, or formality when the project's actual purpose, risk, observed problems, or user requirements justify it.
 
-Load `align-project-requirements` only for renewed material alignment and `organize-ai-project-files` only for structural work. Before release or completion, re-check evidence and completion boundaries. If nothing material changed, continue without creating an approval step.
+Do not reduce rigor when the project genuinely requires strong reproducibility, formal acceptance, irreversible operations, or release controls. But do not impose those standards on ordinary work by default.
 
-## Handle long-running and release work
+Time, tokens, repeated checks, documentation maintenance, and context consumption are project costs.
 
-- Record a long-running command, code identity, start time, process/job identifier, progress location, and terminal condition. Resume monitoring instead of starting duplicates.
-- Preserve useful failure evidence and diagnose before restarting a costly run.
-- Treat release as a separate evidence boundary: fixed revision, declared worktree state, appropriate tests/builds, artifact manifest/hashes, known gaps, and required external acceptance.
-- Never promote an artifact through a folder name, copied file, mock result, or unverified status flag.
+## Let normal Agent capabilities handle normal work
 
-Run `scripts/validate_continuity.py` only when the project already uses its compatible JSON acceptance ledger; pass project-relative paths only. When the handoff consistently cites acceptance IDs, add `--handoff-ledger-check warn` during recovery or `error` in an established CI gate. This check compares explicit IDs and status words, not arbitrary prose, and never replaces comparison with live project state.
+Do not prescribe ordinary coding, debugging, testing, research, implementation, or routine technical judgment merely because the work belongs to a large project.
 
-## Leave a resumable boundary
+Do not turn every local fix, experiment, file change, or implementation decision into a milestone, audit, acceptance event, or evidence record.
 
-At a durable stopping point, keep the handoff current and compact: objective/stage, verified results, unfinished or blocked work, live Git/worktree state, recent checks, risks, and one exact next action. Move closed chronology to linked history instead of appending indefinitely.
+This skill does not add a separate verification layer, but it does not waive checks required by the task, project conventions, or normal engineering judgment.
 
-Declare completion only when the aligned definition of done is met and no required work remains. Report engineering completion and outstanding external acceptance separately.
+This skill controls the long-running process around the work, not every action inside it.
+
+## Maintain one practical project route
+
+Prefer the project framework produced by `align-project-requirements`, or an existing roadmap or plan.
+
+Do not create another plan merely because this skill became active.
+
+Keep only durable project-level information that future execution needs, such as:
+
+- intended outcome and delivery standard;
+- major stages or milestones;
+- important dependencies or gates;
+- current overall route and meaningful progress;
+- unresolved project-level issues that affect later work.
+
+Treat the route as the best current plan, not a frozen implementation contract.
+
+The Agent may reorder stages, change implementation sequence, or choose a better technical route when actual development justifies it.
+
+Do not silently redefine the user's current requirements baseline or intended outcome.
+
+Update the route only when something materially changes for future execution. Do not use it as an activity log.
+
+For each changing project fact, prefer one primary maintained location rather than keeping competing copies in the plan, Handoff, module notes, and other documents.
+
+## Keep the Handoff as current working memory
+
+The Handoff exists so the next Turn or a fresh Session can continue without reconstructing the project.
+
+Keep only information that materially helps continuation, normally:
+
+- current stage or work area;
+- recent important results;
+- active or unfinished work;
+- new findings or problems that still affect upcoming work;
+- the most useful next action.
+
+The Handoff is not project history and not a second knowledge base.
+
+Update it at a useful execution boundary when the resumable state has materially changed. A simple current update is sufficient; do not add a separate review cycle merely to maintain it.
+
+The same current facts should normally support both the Handoff update and the concise progress report to the user.
+
+Prefer replacement, compression, and removal of obsolete material over indefinite appending.
+
+When information becomes stable long-term project knowledge, let it live in the project's existing durable knowledge mechanism rather than keeping it permanently in active Handoff context.
+
+Stable knowledge should preserve useful high-level understanding, responsibilities, interfaces, and important decisions rather than duplicate implementation details.
+
+## Work in bounded execution batches
+
+A Turn is an execution batch, not a synonym for a milestone.
+
+At the beginning of a Turn, select a bounded batch in the host's plan or working context. It may contain several closely related small steps or one coherent part of a difficult milestone.
+
+Make meaningful progress within that boundary. Necessary adjustments inside the same outcome are allowed, but do not repeatedly redefine the batch to absorb the next major outcome.
+
+When the batch is completed, materially blocked, or reaches a decision that belongs with the user:
+
+- preserve project state that materially changed;
+- update the Handoff when useful;
+- give the user a concise report of progress, important issues, and likely next work;
+- end the Turn and return control to the user.
+
+Milestones organize the project route. Turn boundaries keep execution manageable. They do not need to coincide.
+
+The Agent keeps the project ready for a fresh Session, but only the user decides whether to start one.
+
+## Trust settled state until reality gives a reason not to
+
+Previously established work and facts should normally remain usable when nothing relevant has changed.
+
+Do not automatically repeat checks because a new Turn began, a milestone ended, a Session resumed, or a report is being written.
+
+Recheck something when the active work depends on a fact that may reasonably have changed, or when implementation changes, observed failure, contradictory information, an invalidated assumption, or project-specific risk gives a concrete reason.
+
+Checks should be triggered by reality, not by workflow position.
+
+## Handle long-running work without duplicating it
+
+When a command, experiment, training run, migration, benchmark, or other task is expensive or difficult to repeat, preserve enough identity and current state to recognize and resume the existing work.
+
+Do not start a duplicate merely because execution moved to another Turn or Session.
+
+Record only the information actually needed to locate, understand, or resume that task. Do not turn this into a general logging requirement for ordinary commands.
+
+## Adapt execution without changing the user's goal
+
+Long projects should evolve as implementation reveals new information.
+
+Resolve ordinary technical discoveries and implementation decisions autonomously. Adjust the practical project route when reality makes another sequence or approach more effective.
+
+When execution exposes a material requirement misunderstanding, important new constraint, major product or business trade-off, or another decision that reasonably belongs with the user, return that issue to focused `align-project-requirements`.
+
+Do not restart the entire alignment process for a local issue. Resolve the relevant question, update the project-level understanding when necessary, and continue.
+
+## Avoid self-auditing workflows
+
+No rule in this skill should become a recurring self-audit loop.
+
+These rules guide execution; they are not checkpoints that must be repeatedly re-verified before the Agent may continue.
+
+Do not repeatedly confirm that every rule was followed, every boundary remains unchanged, every completed step remains valid, or every document is synchronized unless current reality gives a specific reason to doubt it.
+
+Project control exists to make execution more stable, not to make the Agent continuously prove that it is under control.
+
+## Coordinate responsibilities
+
+`align-project-requirements` owns understanding the user's real need, the current requirements baseline, the delivery standard, and requirement-level revision.
+
+`drive-large-project` owns sustained execution, the evolving practical route, active project state, bounded Turn execution, and resumable working context.
+
+`organize-ai-project-files` owns project directory topology, file placement, navigation structure, and structural migrations.
+
+Do not duplicate another skill's responsibility merely for convenience.
+
+## Finish or pause cleanly
+
+Before stopping, preserve only enough current state for later work to continue effectively.
+
+Do not create acceptance ledgers, evidence archives, detailed histories, release manifests, hashes, or additional management artifacts unless the actual project has a concrete need for them.
+
+Do not confuse local progress with completion of the whole project.
+
+Declare completion according to the delivery standard actually agreed for that project, without manufacturing additional work solely to increase certainty.
+
+A successful use of this skill should make the project easier to continue, understand, and finish while keeping most Agent effort focused on the project itself.

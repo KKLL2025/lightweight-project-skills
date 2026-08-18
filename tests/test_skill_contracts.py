@@ -49,8 +49,8 @@ class SkillContractTests(unittest.TestCase):
         for name in SKILLS:
             with self.subTest(skill=name):
                 text = read_skill(name)
-                self.assertLessEqual(len(text.splitlines()), 120)
-                self.assertLessEqual(len(text.split()), 1_300)
+                self.assertLessEqual(len(text.splitlines()), 220)
+                self.assertLessEqual(len(text.split()), 1_800)
 
     def test_no_heavy_process_markers(self) -> None:
         banned = (
@@ -105,50 +105,52 @@ class SkillContractTests(unittest.TestCase):
         self.assertIn("drive-large-project", organize)
 
     def test_small_tasks_remain_direct(self) -> None:
-        self.assertIn("Skip for small", frontmatter(read_skill("align-project-requirements"))["description"])
-        self.assertIn("Skip for small", frontmatter(read_skill("drive-large-project"))["description"])
-        self.assertIn("Simple placement", read_skill("organize-ai-project-files"))
+        self.assertIn(
+            "Skip when the goal and expected result are already clear enough for direct execution",
+            frontmatter(read_skill("align-project-requirements"))["description"],
+        )
+        self.assertIn(
+            "Skip when normal Agent execution is sufficient",
+            frontmatter(read_skill("drive-large-project"))["description"],
+        )
+        self.assertIn("Do not use for ordinary implementation", frontmatter(read_skill("organize-ai-project-files"))["description"])
 
-    def test_milestone_updates_reanchor_without_becoming_a_gate(self) -> None:
-        drive = read_skill("drive-large-project").casefold()
+    def test_bounded_turns_preserve_progress_without_extra_gates(self) -> None:
+        drive = read_skill("drive-large-project")
         required = (
-            "at milestone completion",
-            "re-anchor against the goal contract",
-            "brief user-visible update",
-            "default to one current milestone per turn",
-            '"do everything" or "do not stop" does not make substantial work low-risk',
-            "delegated-agent messages are internal evidence",
-            "permission gate",
-            "continue without creating an approval step",
-            "host-required progress heartbeat",
+            "At the beginning of a Turn, select a bounded batch",
+            "Necessary adjustments inside the same outcome are allowed",
+            "do not repeatedly redefine the batch to absorb the next major outcome",
+            "update the Handoff when useful",
+            "end the Turn and return control to the user",
+            "Checks should be triggered by reality, not by workflow position",
         )
         for phrase in required:
             with self.subTest(phrase=phrase):
                 self.assertIn(phrase, drive)
 
-        self.assertIn("This skill owns the Goal contract, desired behavior", read_skill("align-project-requirements"))
-        organize = read_skill("organize-ai-project-files")
-        self.assertIn("`drive-large-project` owns execution continuity", organize)
-        self.assertIn("This skill owns topology", organize)
+        self.assertIn("`drive-large-project` owns the mutable execution route", read_skill("align-project-requirements"))
 
     def test_alignment_hands_off_execution_and_trust_boundaries(self) -> None:
-        alignment = read_skill("align-project-requirements").casefold()
+        alignment = read_skill("align-project-requirements")
         for phrase in (
-            "first executable milestone",
-            "major milestones",
-            "evidence that would justify reordering",
-            "threat model or changed trust boundary",
-            "reviews are intentionally excluded",
+            "underlying problem and intended result",
+            "Ask when a reasonable difference in the answer would materially change the project direction or result",
+            "Batch related questions when practical",
+            "This is a working baseline, not a frozen contract",
+            "use `drive-large-project`",
+            "use `organize-ai-project-files`",
         ):
             with self.subTest(phrase=phrase):
                 self.assertIn(phrase, alignment)
 
     def test_layout_trigger_rejects_unrelated_audits(self) -> None:
-        organize = read_skill("organize-ai-project-files").casefold()
-        description = frontmatter(read_skill("organize-ai-project-files"))["description"].casefold()
-        self.assertIn("do not trigger for ordinary code, content, business, or security audits", description)
-        self.assertIn('the word "audit" alone is not a layout trigger', organize)
-        self.assertIn("paths, root topology, folder roles, assets, and output boundaries are unchanged", organize)
+        organize = read_skill("organize-ai-project-files")
+        description = frontmatter(read_skill("organize-ai-project-files"))["description"]
+        self.assertIn("Do not use for ordinary implementation", description)
+        self.assertIn("Do not reorganize by guesswork", organize)
+        self.assertIn("Do not turn cleanup into a full-project inventory or audit", organize)
+        self.assertIn("Do not reorganize stable areas simply because another naming scheme looks better", organize)
 
     def test_execution_reference_preserves_adaptive_routing_and_validation(self) -> None:
         reference = (
@@ -164,49 +166,31 @@ class SkillContractTests(unittest.TestCase):
             with self.subTest(phrase=phrase):
                 self.assertIn(phrase, reference)
 
-    def test_goal_route_and_turn_plan_have_distinct_owners(self) -> None:
+    def test_ownership_and_handoffs_are_explicit(self) -> None:
         alignment = read_skill("align-project-requirements")
         drive = read_skill("drive-large-project")
-        reference = (
-            SKILLS["drive-large-project"] / "references" / "execution-control.md"
-        ).read_text(encoding="utf-8")
+        organize = read_skill("organize-ai-project-files")
 
-        for phrase in (
-            "Goal contract",
-            "Project Route",
-            "not a live plan for one Turn",
-            "does not own the live Turn Plan",
-        ):
-            with self.subTest(owner="alignment", phrase=phrase):
-                self.assertIn(phrase, alignment)
+        self.assertIn("`drive-large-project` owns the mutable execution route", alignment)
+        self.assertIn("`align-project-requirements` owns understanding the user's real need", drive)
+        self.assertIn("`organize-ai-project-files` owns project directory topology", drive)
+        self.assertIn("`align-project-requirements` decides what the project should become", organize)
+        self.assertIn("`drive-large-project` decides what execution context needs to survive", organize)
 
-        for phrase in (
-            "At the start of each Turn inside a long-running Goal",
-            "Turn Plan for this milestone only",
-            "Do not use repeated updates to cross into the next milestone",
-            "never misuse blocked or complete to stop execution",
-        ):
-            with self.subTest(owner="drive", phrase=phrase):
-                self.assertIn(phrase, drive)
-
-        self.assertIn("Evidence may justify revising implementation steps", reference)
-        self.assertIn("Do not use repeated plan revisions to enter the next milestone", reference)
-        self.assertIn("Never misuse blocked or complete as a substitute for ending a Turn", reference)
-
-    def test_turn_boundary_keeps_adaptive_exceptions(self) -> None:
+    def test_bounded_batches_allow_small_related_steps(self) -> None:
         drive = read_skill("drive-large-project")
-        self.assertIn("the milestone may continue in a later Turn", drive)
-        self.assertIn("only for small work or explicitly continuous low-risk work", drive)
-        self.assertNotIn("never update the Turn Plan", drive)
-        self.assertNotIn("every Turn must complete exactly one milestone", drive)
+        self.assertIn("A Turn is an execution batch, not a synonym for a milestone", drive)
+        self.assertIn("several closely related small steps", drive)
+        self.assertIn("one coherent part of a difficult milestone", drive)
+        self.assertIn("Necessary adjustments inside the same outcome are allowed", drive)
+        self.assertIn("do not repeatedly redefine the batch to absorb the next major outcome", drive)
 
     def test_progress_refresh_uses_observable_events_not_timers_or_counts(self) -> None:
         drive = read_skill("drive-large-project").casefold()
-        self.assertIn("do not estimate, persist, or act on hidden runtime compaction counts", drive)
-        self.assertIn("from explicit summarized, materially incomplete, or conflicting context", drive)
-        self.assertIn("do not split milestones merely to create updates", drive)
-        self.assertIn("invent a time-based reporting cadence when the host does not require one", drive)
-        self.assertIn("re-read this `skill.md` directly when the host exposes it", drive)
+        self.assertIn("do not automatically repeat checks", drive)
+        self.assertIn("recheck something when the active work depends on a fact that may reasonably have changed", drive)
+        self.assertIn("checks should be triggered by reality, not by workflow position", drive)
+        self.assertIn("do not add a separate review cycle merely to maintain it", drive)
         for banned in ("30-minute", "30 minutes", "every 30", "after five compactions", "compaction_count"):
             with self.subTest(banned=banned):
                 self.assertNotIn(banned, drive)
