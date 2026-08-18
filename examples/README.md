@@ -14,7 +14,7 @@ These examples explain expected decisions, not benchmark results. Each reproduci
 |---|---|---|
 | “Fix this explicit typo and run the focused test.” | Direct execution | Small, reversible, and observable in one turn |
 | “Improve onboarding so new-user retention increases.” | `align-project-requirements` | Target behavior and success measure are material choices |
-| “Resume the project; the handoff says complete but the acceptance ledger disagrees.” | `drive-large-project` | Live state, evidence, and recovery must survive across turns |
+| “Resume the project; the handoff says complete but the authoritative project state record disagrees.” | `drive-large-project` | Live state, evidence, and recovery must survive across turns |
 | “Move several referenced asset and output directories without breaking CI.” | `organize-ai-project-files` | Structural migration has path consumers and preservation risk |
 
 ## New AI-led project container
@@ -28,10 +28,8 @@ project/
 │   ├── prompts/
 │   └── tools/
 ├── 02-project-control/
-│   ├── alignment/
-│   ├── continuity/
-│   ├── acceptance/
-│   └── evidence/
+│   ├── alignment/       # only when durable alignment is genuinely needed
+│   └── continuity/      # only when resumable working memory is genuinely needed
 └── 03-project-workspace/
     ├── product/
     ├── assets/
@@ -51,7 +49,7 @@ existing-repo/
 ├── tests/
 ├── .github/
 ├── 01-ai-runtime/       # only when project-specific AI resources exist
-└── 02-project-control/  # alignment, continuity, acceptance, and evidence
+└── 02-project-control/  # alignment, continuity, and project-specific records when needed
 ```
 
 Do not move framework-required roots into `03-project-workspace` merely to make the tree visually uniform. Compatibility is part of correctness.

@@ -1,104 +1,61 @@
 # Durable Project Artifact Templates
 
-Use only the smallest artifacts the project lacks. Reuse project-native formats and keep one owner per changing fact.
+Use only the smallest durable artifact the project actually lacks. These are optional shapes, not required schemas. Reuse the project's existing README, roadmap, plan, issue, design document, or handoff when it already serves the information role.
 
-## Three-zone default locations
+Keep one primary owner for each changing fact and do not create a second control tree merely because a three-zone layout is available.
 
-| Concern | Default path |
-|---|---|
-| Alignment and scope | `02-project-control/alignment/` |
-| Architecture and decisions | `02-project-control/architecture/` |
-| Plans and tasks | `02-project-control/planning/` |
-| Document router | `02-project-control/continuity/PROJECT_INDEX.md` |
-| Current handoff | `02-project-control/continuity/PROJECT_HANDOFF.md` |
-| Acceptance ledger | `02-project-control/acceptance/ledger.json` |
-| Raw evidence | `02-project-control/evidence/` |
-| Closed history | `02-project-control/history/` |
+## Example locations by information role
 
-Adapt these paths for a compatible existing repository. Do not create a second control tree.
+| Role | Example location | Use only when |
+|---|---|---|
+| Canonical project map | Existing `README.md` or project index | The project has a real navigation problem |
+| Alignment baseline | Project-native specification or `02-project-control/alignment/` | Later review or coordination needs durable alignment |
+| Project route | Existing roadmap or plan | Stages, dependencies, or recovery need persistence |
+| Current Handoff | Existing continuity area or `02-project-control/continuity/PROJECT_HANDOFF.md` | A later Turn or Session needs resumable working memory |
+| Project-specific acceptance or evidence | Existing project-native location | Formal acceptance, reproducibility, or external checks genuinely require it |
 
-## Minimal document router
+Adapt paths for a compatible existing repository. Do not wrap a mature repository or create folders for visual neatness.
+
+## Minimal project map
 
 ```markdown
-# Project Index
+# Project Map
 
-## Always read
-- `AGENTS.md` — stable rules and navigation.
-- `PROJECT_HANDOFF.md` — current stage and next action.
+## Start here
+- `AGENTS.md` — stable rules, if present.
+- `README.md` — project purpose and entry points.
 
 ## Read for the active work
 - `<path>` — owns <concern>; read when <condition>.
 
-## Historical or evidentiary
-- `<path>` — read only for <audit, regression, or acceptance ID>.
+## Deeper sources
+- `<path>` — read only when the active task needs it.
 ```
 
-Keep progress counts and chronology out of the router.
+Keep progress counts, activity logs, and copied document contents out of the map.
 
-## Current-only handoff
+## Current Handoff
 
 ```markdown
 # Project Handoff
 
-## Current outcome and stage
-## Verified results
-## In progress
-## Unfinished, blocked, or externally pending
-## Risks and invariants
-## Git/worktree and recent checks
-## Exact next action
+## Current work area or stage
+## Important recent results
+## Active or unfinished work
+## New issues, constraints, or external dependencies
+## Most useful next action
 ```
 
-Reference task and acceptance IDs. Replace stale current-state text; move closed chronology to history.
+Replace obsolete current-state text instead of appending an indefinite history. Add repository or worktree details only when they materially help the next resume.
 
-## Acceptance ledger
-
-Create only when acceptance state must survive several tasks, agents, or external checks.
-
-```json
-{
-  "schemaVersion": 1,
-  "scope": "path/to/alignment-or-spec",
-  "updatedAt": "YYYY-MM-DD",
-  "items": [
-    {
-      "id": "A-01",
-      "title": "Observable outcome",
-      "status": "not_started",
-      "evidence": [],
-      "gaps": ["Exact missing work or proof"]
-    }
-  ]
-}
-```
-
-Compatible states: `not_started`, `in_progress`, `blocked`, `implemented_pending`, `verified`, `abandoned`.
-
-## Milestone capsule
+## Bounded outcome note
 
 ```markdown
-### <Outcome>
-- Acceptance: <IDs or observable boundary>
-- Likely modules: <paths/components>
-- Verification: <focused and proportional checks>
-- External dependency: <if any>
-- Recovery rule: <only when material>
+### <Bounded outcome>
+- Result: <what changed or was learned>
+- Remaining: <unfinished or externally pending work>
+- Check: <focused validation when useful>
+- Next action: <the most useful continuation>
 ```
 
-## Closed-history capsule
-
-```markdown
-### YYYY-MM-DD: <milestone>
-- Outcome: <delivered result>
-- Decision: <durable choice and rationale>
-- Invariant: <what future work must preserve>
-- Evidence: <path, revision, or command>
-- Reopen when: <condition that invalidates the result>
-```
-
-## Exact next action
-
-```text
-Implement <bounded outcome> in <module>, preserving <invariant>.
-First verify with <command or observation>.
-```
+Use a separate acceptance record, evidence archive, release manifest, or detailed history only when the project has a concrete need for it. Those artifacts are not defaults of this skill.

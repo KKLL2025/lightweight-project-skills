@@ -17,9 +17,9 @@
 npx skills add KKLL2025/lightweight-project-skills
 ```
 
-这个项目只从一条规则出发：普通选择交给模型判断，错了代价很高的事实必须验证。暂定想法不等于已批准范围，handoff 不等于项目实时状态，目录看起来更整齐也不能证明迁移没有破坏项目。
+这个项目只从一条规则出发：普通选择交给模型判断，错了代价很高的事实必须验证。暂定想法不等于已批准范围，handoff 不能替代对相关项目实时状态的核实，目录看起来更整齐也不能证明迁移没有破坏项目。
 
-仓库把这些失败面分给三个可组合 skill：**Align → Drive → Organize（对齐 → 推进 → 整理）。** 根据任务只用其中一个，或者按需组合。它们**不要求**每次修改都写 PRD、采用固定阶段文件、绑定某个 Issue 系统、使用 Bash、所有任务强制 TDD，或每一步都派发新 agent。
+仓库把这些失败面分给三个可组合 skill：**Align → Drive → Organize（对齐 → 推进 → 整理）。** 根据任务只用其中一个，或者按需组合。它们**不要求**每次修改都写 PRD、采用固定阶段文件、绑定某个 Issue 系统，或强制使用某种 shell、测试或委派方式。
 
 > [!IMPORTANT]
 > `0.6.0-preview` 是公开预览版。确定性工具已有测试，但行为证据仍主要来自小规模 Codex 试运行。关键项目使用前请在自己的模型和运行时中验证。
@@ -28,9 +28,9 @@ npx skills add KKLL2025/lightweight-project-skills
 
 | 情况 | 使用 | 负责内容 |
 |---|---|---|
-| 实质目标、用户、边界或验收仍不清楚 | [`align-project-requirements`](skills/align-project-requirements/SKILL.md) | 期望行为、实质决策、假设、可观察验收 |
-| 交付跨回合、里程碑或长期运行检查 | [`drive-large-project`](skills/drive-large-project/SKILL.md) | 当前状态、里程碑、证据、可恢复交接、普通文件放置 |
-| 项目树或被引用路径需要结构变化 | [`organize-ai-project-files`](skills/organize-ai-project-files/SKILL.md) | 拓扑、安全迁移、受保护资产、路径消费者、输出边界 |
+| 实质需求、关键决策、交付深度或可观察标准仍不清楚 | [`align-project-requirements`](skills/align-project-requirements/SKILL.md) | 用户真实需求、实质决策、假设、交付标准 |
+| 执行需要跨多个有边界的批次、阶段、依赖或会话恢复 | [`drive-large-project`](skills/drive-large-project/SKILL.md) | 持续执行、可调整路线、活动状态、有边界的批次、可恢复 handoff |
+| 项目树、文件放置、导航或被引用路径需要结构变化 | [`organize-ai-project-files`](skills/organize-ai-project-files/SKILL.md) | 目录拓扑、文件放置、导航、结构迁移 |
 | 任务小、明确、可逆并能立即验证 | 直接执行 | 不需要新建管理文档 |
 
 ```text
@@ -40,9 +40,9 @@ npx skills add KKLL2025/lightweight-project-skills
 明确的小任务   -> 直接执行
 ```
 
-三个 skill 互相路由，但不重复维护同一事实。需求文档不维护执行进度，handoff 不取代验收账本，文件夹名称也不能证明已经正式发布。
+三个 skill 互相路由，但不重复维护同一事实。Align 负责需求基线和交付标准，Drive 负责可调整路线、活动状态、有边界的执行和可恢复 handoff，Organize 负责拓扑、放置和导航。handoff 是当前工作记忆，不是项目历史；文件夹名称也不能证明已经完成或正式发布。
 
-在长期交付中，`drive-large-project` 会在具有可观察结果的里程碑完成后汇报，并根据已对齐目标、边界、证据和项目真实状态重新校准，再结合任务规模、风险、成本和用户的连续推进意图选择下一个执行边界。它不会自行设置固定时间打断，也不会假装知道宿主隐藏的上下文压缩次数；宿主要求的进度心跳仍然照常执行。
+在较长交付中，`drive-large-project` 会先选择一个有边界的执行批次。批次可以包含几个紧密相关的小步骤，也可以是困难里程碑中的一个连贯部分。当批次完成、实质受阻，或出现应由用户决定的问题时，它会保留已改变的状态，在有用时更新 handoff，简要汇报进展并结束本回合。里程碑用于组织项目路线，但不必与回合边界重合。只有现实出现理由时才重新检查已稳定的事实，而不是因为回合或会话发生变化就例行重查。
 
 ## 30 秒安装
 
@@ -125,7 +125,7 @@ GitHub 是可选的交付表面，不是三个 skill 的运行依赖。分支、
 python -m unittest discover -s tests -v
 ```
 
-CI 在 Windows/Linux 的 Python 3.11 和 3.13 上执行测试，覆盖 skill 合同、布局边界、纯移动/改名、重复内容、路径逃逸、符号链接策略、连续性账本与 handoff 卫生、中文路径、仓库链接和公开仓库卫生。
+CI 在 Windows/Linux 的 Python 3.11 和 3.13 上执行测试，覆盖 skill 合同、布局边界、纯移动/改名、重复内容、路径逃逸、符号链接策略、连续性与 handoff 卫生、中文路径、仓库链接和公开仓库卫生。
 
 [`evals/cases.json`](evals/cases.json) 包含正例、反例和压力场景，并将原始提示与预期行为分离，便于进行不泄露答案的前向测试。
 

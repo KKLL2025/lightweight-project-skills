@@ -152,16 +152,16 @@ class SkillContractTests(unittest.TestCase):
         self.assertIn("Do not turn cleanup into a full-project inventory or audit", organize)
         self.assertIn("Do not reorganize stable areas simply because another naming scheme looks better", organize)
 
-    def test_execution_reference_preserves_adaptive_routing_and_validation(self) -> None:
+    def test_execution_reference_matches_bounded_batch_model(self) -> None:
         reference = (
             SKILLS["drive-large-project"] / "references" / "execution-control.md"
         ).read_text(encoding="utf-8").casefold()
         for phrase in (
-            "maintain two planning levels",
-            "switch modules for a reason",
-            "derive security validation from the active threat model",
-            "do not prescribe a fixed candidate count",
-            "do not repeat an unchanged full test suite",
+            "maintain one practical project route",
+            "select a bounded execution batch",
+            "milestones organize the project route",
+            "do not repeat checks merely because",
+            "preserve enough identity and current state",
         ):
             with self.subTest(phrase=phrase):
                 self.assertIn(phrase, reference)

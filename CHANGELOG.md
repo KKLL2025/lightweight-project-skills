@@ -6,13 +6,14 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ### Changed
 
-- Separated the durable Goal contract and Project Route from the current-milestone Turn Plan, with an explicit verify, report, and end-of-Turn boundary.
-- Allowed evidence-driven Turn Plan revisions inside the active milestone while preventing plan churn from silently crossing into later milestones.
-- Distinguished host-native Goal pause, blocked, and complete states when human direction or external authority is required.
+- Reworked `align-project-requirements` around material uncertainty, focused questions, an evolving working baseline, and proportional handoff to direct execution, `drive-large-project`, or `organize-ai-project-files`.
+- Reworked `drive-large-project` around one practical project route, compact current handoffs, bounded execution batches, reality-triggered rechecks, and clean Turn boundaries rather than a milestone-specific Turn Plan or host Goal-state protocol.
+- Narrowed `organize-ai-project-files` to project topology, placement, navigation, and structural migration while preserving mature repository internals and avoiding guesswork or housekeeping audits.
 
-### Added
+### Updated
 
-- Added contract checks and behavior cases for planning ownership, adaptive Turn Plan revisions, milestone boundaries, and Goal-state integrity.
+- Synchronized the public READMEs, optional reference templates, and behavior cases with the current ownership and execution boundaries.
+- Updated the contract tests for the bounded-batch reference and removed stale Goal, Turn Plan, heartbeat, and hidden-compaction expectations from the public guidance.
 
 ### Planned
 

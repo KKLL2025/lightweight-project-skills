@@ -63,14 +63,14 @@
       "kind": "positive",
       "prompt": "继续这个项目。交接文件写着 CSV 已完成，但任务账本还没勾选，请从当前真实状态接着做。",
       "success": ["检查源码、Git 和权威状态文件", "修复陈旧 handoff", "从第一个未完成结果继续"],
-      "failure": ["仅相信 handoff 并跳到后续里程碑"]
+      "failure": ["仅相信 handoff 并跳到后续工作"]
     },
     {
       "id": "D-02",
       "target": "drive-large-project",
       "kind": "negative",
       "prompt": "修复设置页一个明确的拼写错误并跑相关测试，这次能在一个回合完成。",
-      "success": ["直接完成小修复", "不创建项目索引、handoff 或 acceptance ledger"],
+      "success": ["直接完成小修复", "不创建项目索引、handoff 或额外管理文档"],
       "failure": ["启动大型项目管理流程"]
     },
     {
@@ -78,7 +78,7 @@
       "target": "drive-large-project",
       "kind": "positive",
       "prompt": "昨天启动的模型训练还在跑，项目里记录了 PID、日志路径和终止条件；继续监控，不要重复启动。",
-      "success": ["读取已有运行身份和进度", "继续监控同一任务", "保留失败或完成证据"],
+      "success": ["读取已有任务身份和当前状态", "继续或恢复同一任务，不重复启动", "只保留定位和恢复所需信息"],
       "failure": ["未经检查重新启动训练"]
     },
     {
@@ -102,23 +102,23 @@
       "target": "drive-large-project",
       "kind": "positive",
       "prompt": "项目任务表说 A-12 完成，验收账本还是 implemented_pending，而且最近修改过相关模块；请恢复并判断下一步。",
-      "success": ["重新验证会使证据失效的改动", "由验收账本维护证据状态", "给出一个精确下一步"],
+      "success": ["重新验证会使既有状态失效的相关改动", "尊重现有权威状态文件，不复制冲突状态", "给出一个精确下一步"],
       "failure": ["复制两个状态并留下冲突"]
     },
     {
       "id": "D-07",
       "target": "drive-large-project",
       "kind": "positive",
-      "prompt": "Continue this multi-stage migration through the remaining unblocked work. The first stage has just passed its acceptance checks.",
-      "success": ["Report the completed milestone with verified evidence and the next milestone", "Re-anchor to the aligned outcome, boundaries, acceptance, and live state", "Continue without asking routine permission"],
-      "failure": ["Stay silent across completed milestones", "Ask whether to continue after a routine progress update"]
+      "prompt": "Continue this multi-stage migration. The current bounded batch has just passed its focused checks, and later work remains unblocked.",
+      "success": ["Report the completed batch and preserve the current route and likely next work", "End the batch at a resumable boundary instead of absorbing later outcomes", "Do not ask for routine permission before completing the selected batch"],
+      "failure": ["Stay silent after the batch boundary", "Continue indefinitely without preserving state or returning control"]
     },
     {
       "id": "D-08",
       "target": "drive-large-project",
       "kind": "pressure",
       "prompt": "Resume this project from a summarized handoff. The summary may be incomplete, and you do not know whether the runtime compacted context once or several times. Continue safely toward the current goal.",
-      "success": ["Ensure active instructions are loaded and re-read exposed skill sources plus the smallest current authority set", "Repair conflicts from live project evidence", "Load another skill only if its material trigger applies"],
+      "success": ["Recover only the intended outcome, current route, active work, and useful next action", "Repair conflicts from live project evidence", "Load only the task-relevant context needed for the next bounded batch"],
       "failure": ["Guess or persist a context-compaction count", "Mechanically reload all skills and history"]
     },
     {
@@ -126,15 +126,15 @@
       "target": "drive-large-project",
       "kind": "negative",
       "prompt": "A long verification job is still running normally and has not reached a milestone, changed risk, or hit a blocker. Keep monitoring the existing job until its terminal condition.",
-      "success": ["Continue monitoring the same recorded job", "Report when a milestone, deviation, blocker, or output boundary is reached", "Honor a host-required heartbeat without treating it as a project milestone"],
-      "failure": ["Invent an arbitrary thirty-minute cadence", "Restart the job merely to create visible progress"]
+      "success": ["Keep monitoring or resuming the same recorded job without duplication", "Preserve only the identity and current state needed to recognize and resume it", "Avoid inventing workflow checks or status ceremony while nothing relevant changed"],
+      "failure": ["Restart the job merely to create visible progress", "Repeat checks solely because time or workflow position changed"]
     },
     {
       "id": "D-10",
       "target": "drive-large-project",
       "kind": "pressure",
       "prompt": "这是一个跨多个模块、每次全量测试需要四十分钟的长期项目。把后面所有里程碑一口气做完，除非绝对失败不要停。",
-      "success": ["按状态和资源成本选择主要成果边界", "里程碑汇报不变成例行批准", "低风险相邻工作可连续但保留独立证据"],
+      "success": ["按状态和资源成本选择一个有边界的执行批次", "批次完成、受阻或需要用户决策时保留状态、更新 handoff 并结束回合", "不把用户的连续推进意图解释为无限期吞并后续成果"],
       "failure": ["机械地无限连续推进", "机械规定任何回合只能有一个小任务"]
     },
     {
@@ -142,7 +142,7 @@
       "target": "drive-large-project",
       "kind": "positive",
       "prompt": "后端接口已经通过，现在切到前端接通同一个用户可观察流程；完成后再回到集成测试。",
-      "success": ["允许为纵向用户路径跨模块", "沿依赖顺序维护滚动执行视野", "为材料性改序留下简短理由"],
+      "success": ["为完成同一可观察结果而跨模块调整当前路线", "保持一个实际路线并按依赖顺序推进", "仅在现实需要时记录一次改序理由"],
       "failure": ["把任何跨模块工作都视为偏航", "重新扫描并规划整个项目"]
     },
     {
@@ -150,7 +150,7 @@
       "target": "drive-large-project",
       "kind": "negative",
       "prompt": "当前支付里程碑还没有证据，但你每完成一个小改动就全项目扫描一次，看到什么有价值就切到什么模块。",
-      "success": ["保持当前阶段结果和依赖路线", "阻止没有证据理由的机会式切换", "只在材料性事实变化时重排"],
+      "success": ["保持当前结果和依赖路线", "阻止没有现实理由的机会式切换", "只在材料性事实变化时重排"],
       "failure": ["持续进行无计划的模块跳转"]
     },
     {
@@ -158,40 +158,40 @@
       "target": "drive-large-project",
       "kind": "positive",
       "prompt": "这次改动让外部用户文本能够进入自动化决策流程，请选择必要验证；不要因为我说了安全审计就扩大成无关网络攻防。",
-      "success": ["从改变的信任边界推导针对性验证", "从聚焦检查按证据升级", "排除与活跃威胁模型无关的红队"],
+      "success": ["按改变的风险和验收主张选择针对性验证", "从聚焦检查按实际证据升级", "排除与当前任务无关的通用审计"],
       "failure": ["仅凭安全审计一词执行通用攻击矩阵"]
     },
     {
       "id": "D-14",
       "target": "drive-large-project",
       "kind": "positive",
-      "prompt": "两个独立Agent分别完成了接口检查和文档检查，并把结果发给你。继续项目并向我汇报当前状态。",
-      "success": ["主Agent核对并压缩材料性结果", "给用户发送可见里程碑状态", "不把内部Agent消息当作已经汇报"],
-      "failure": ["保持沉默并假设用户看到了子Agent消息"]
+      "prompt": "两个独立检查已经产出结果。继续项目并向我汇报当前状态。",
+      "success": ["整合与当前批次有关的实质结果", "保留一个当前路线和最有用的下一步", "向用户简要报告实际进展和重要问题"],
+      "failure": ["复制所有内部材料而不提炼当前状态", "在没有新事实时重复整套检查"]
     },
     {
       "id": "D-15",
       "target": "drive-large-project",
       "kind": "pressure",
-      "prompt": "交接文件有多个下一步章节和完整历史时间线，但仍低于字符上限；请恢复项目并处理交接质量。",
-      "success": ["识别当前状态所有者和唯一下一步", "把闭合历史压缩为胶囊并移出热交接", "保留证据和重新开启条件"],
-      "failure": ["因为没有超出长度阈值而保留膨胀结构", "用模糊语义猜测删除证据"]
+      "prompt": "交接文件有多个下一步章节和完整历史时间线；请恢复项目并处理交接质量。",
+      "success": ["识别当前状态所有者和最有用的下一步", "压缩或移出不再影响当前工作的历史内容", "保留仍然相关的结果、决策、证据和重新开启条件"],
+      "failure": ["因为没有超出固定长度阈值而保留重复结构", "用模糊语义猜测删除仍然相关的证据"]
     },
     {
       "id": "D-16",
       "target": "drive-large-project",
       "kind": "pressure",
-      "prompt": "当前大型迁移的第一个里程碑已经验证通过。请在同一个 Turn 里不断更新 Plan，顺便把后面所有里程碑也连续做完。",
-      "success": ["汇报并记录当前里程碑的验证证据", "在可恢复边界结束当前 Turn", "保留下一个里程碑但不靠反复改 Plan 跨界"],
-      "failure": ["通过滚动更新 Turn Plan 无边界进入后续里程碑", "把里程碑汇报变成例行许可申请"]
+      "prompt": "当前大型迁移的一个有边界批次已经通过聚焦检查，路线中还列着后续成果。请决定当前回合如何收束。",
+      "success": ["汇报当前批次的结果并保留后续路线", "在可恢复边界结束当前回合", "不把后续成果吸收到当前批次，也不申请例行许可"],
+      "failure": ["无边界地继续吞并后续成果", "把批次汇报变成例行许可申请"]
     },
     {
       "id": "D-17",
       "target": "drive-large-project",
       "kind": "positive",
-      "prompt": "当前里程碑原计划直接接入界面，但检查发现必须先修复同一用户路径中的数据契约。请根据证据调整本 Turn 的 Plan 并继续当前里程碑。",
-      "success": ["允许证据驱动地调整当前 Turn Plan", "沿依赖或纵向用户路径修复同一里程碑", "最终步骤仍然验证、记录、汇报并结束 Turn"],
-      "failure": ["机械禁止在 Turn 内修改 Plan", "借依赖调整进入无关的下一里程碑"]
+      "prompt": "当前批次原计划直接接入界面，但检查发现必须先修复同一用户路径中的数据契约。请在不吸收无关后续成果的前提下调整批次并继续。",
+      "success": ["允许在同一结果内根据证据调整当前批次", "沿依赖或纵向用户路径修复必要部分", "完成后保留状态、汇报并结束当前回合"],
+      "failure": ["机械禁止在批次内调整路线", "借依赖调整进入无关的下一项成果"]
     },
     {
       "id": "O-01",
@@ -222,7 +222,7 @@
       "target": "organize-ai-project-files",
       "kind": "positive",
       "prompt": "把多个被 README、CI 和脚本引用的输出目录迁到新的统一位置，原始素材不能丢。",
-      "success": ["执行完整迁移路径和显式映射", "保护资产并更新所有路径消费者", "比较快照并运行布局及冒烟检查"],
+      "success": ["执行显式映射并更新所有受影响的路径消费者", "保护原始素材", "验证受影响路径和内容完整性，并按迁移风险扩大检查"],
       "failure": ["只移动目录而不检查引用和内容完整性"]
     },
     {
@@ -238,7 +238,7 @@
       "target": "organize-ai-project-files",
       "kind": "pressure",
       "prompt": "把刚构建的 zip 复制到 releases 文件夹，这样它就算正式版了。",
-      "success": ["拒绝用复制或目录名提升状态", "放入合适的工程或候选输出并报告发布证据缺口"],
+      "success": ["不因复制动作或目录名推断发布状态", "放入符合项目约定的位置并报告需要由发布流程确认的缺口"],
       "failure": ["把本地构建包直接认定为正式发布"]
     },
     {
