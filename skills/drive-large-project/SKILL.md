@@ -1,6 +1,6 @@
 ---
 name: drive-large-project
-description: "Sustain projects that genuinely benefit from persistent planning and resumable context across multiple execution batches or Sessions. Use when the agreed scope, delivery depth, dependencies, duration, or recovery needs make it likely that progress would otherwise be lost, duplicated, or difficult to resume. Focus on continuity, practical coordination, bounded Turns, and compact handoffs rather than repeated verification, evidence collection, or heavy governance. Skip when normal Agent execution is sufficient."
+description: "Use when a sufficiently defined project will likely span multiple execution batches or Sessions and losing its route, progress, dependencies, or working state would cause costly reconstruction, duplication, or coordination problems. Typical triggers include multi-stage implementation, long-running experiments, coordinated workstreams, or resuming an ongoing project. Skip one-turn work and projects that normal Agent execution can complete or resume without persistent coordination."
 ---
 
 # Drive Large Projects
@@ -28,6 +28,10 @@ Use this skill when persistent project state would materially improve execution,
 When `align-project-requirements` has established the project framework, use that understanding to decide whether this mode is actually needed.
 
 Do not force a clear project through alignment merely to activate this skill.
+
+Execution capacity does not redefine project scope. If the agreed outcome cannot fit in one Turn or Session, decompose execution across bounded batches rather than silently converting the project into a smaller prototype, MVP, or partial substitute.
+
+A prototype or narrower intermediate slice may be useful as part of the route, but it does not replace the agreed final outcome unless the user changes that outcome.
 
 ## Recover only the context needed to continue
 
@@ -127,7 +131,7 @@ Stable knowledge should preserve useful high-level understanding, responsibiliti
 
 ## Work in bounded execution batches
 
-A Turn is an execution batch, not a synonym for a milestone.
+A Turn is an execution batch, not a synonym for a milestone.A bounded Turn limits how much work is attempted at once; it does not redefine the size or ambition of the project itself.
 
 At the beginning of a Turn, select a bounded batch in the host's plan or working context. It may contain several closely related small steps or one coherent part of a difficult milestone.
 

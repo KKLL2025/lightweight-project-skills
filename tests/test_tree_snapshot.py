@@ -143,6 +143,29 @@ class TreeSnapshotTests(unittest.TestCase):
         self.assertFalse(payload["contentVerified"])
         self.assertEqual(payload["unhashedFiles"], {"before": 1, "after": 1})
 
+    def test_create_defaults_to_metadata_only_snapshot(self) -> None:
+        (self.root / "ordinary.bin").write_bytes(b"content")
+        output = Path(self.temporary.name) / "snapshot.json"
+        result = subprocess.run(
+            [
+                sys.executable,
+                str(SCRIPT),
+                "create",
+                "--root",
+                str(self.root),
+                "--output",
+                str(output),
+            ],
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            check=False,
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        snapshot = json.loads(output.read_text(encoding="utf-8"))
+        self.assertEqual(snapshot["hashMode"], "none")
+        self.assertNotIn("sha256", snapshot["files"][0])
+
     def test_internal_symlink_is_recorded_without_reading_target(self) -> None:
         target = self.root / "target.txt"
         target.write_text("inside", encoding="utf-8")

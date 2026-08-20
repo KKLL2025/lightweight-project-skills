@@ -86,6 +86,53 @@ class SkillContractTests(unittest.TestCase):
                 self.assertIn("default_prompt:", metadata)
                 self.assertIn("$" + name, metadata)
 
+    def test_runtime_metadata_preserves_activation_boundaries(self) -> None:
+        align = (SKILLS["align-project-requirements"] / "agents" / "openai.yaml").read_text(
+            encoding="utf-8"
+        ).casefold()
+        drive = (SKILLS["drive-large-project"] / "agents" / "openai.yaml").read_text(
+            encoding="utf-8"
+        ).casefold()
+        organize = (SKILLS["organize-ai-project-files"] / "agents" / "openai.yaml").read_text(
+            encoding="utf-8"
+        ).casefold()
+
+        self.assertIn("only when material", align)
+        self.assertIn("otherwise execute the clear task directly", align)
+        self.assertIn("only when persistent coordination is useful", drive)
+        self.assertIn("preserving only the state needed to resume", drive)
+        self.assertIn("only when project-level organization is the task or an observed obstacle", organize)
+        self.assertIn("smallest compatible structural change", organize)
+
+    def test_optional_references_do_not_create_default_control_layers(self) -> None:
+        alignment_card = (
+            SKILLS["align-project-requirements"] / "references" / "alignment-card.md"
+        ).read_text(encoding="utf-8").casefold()
+        artifacts = (
+            SKILLS["drive-large-project"] / "references" / "artifact-templates.md"
+        ).read_text(encoding="utf-8").casefold()
+        context = (
+            SKILLS["drive-large-project"] / "references" / "context-lifecycle.md"
+        ).read_text(encoding="utf-8").casefold()
+        execution = (
+            SKILLS["drive-large-project"] / "references" / "execution-control.md"
+        ).read_text(encoding="utf-8").casefold()
+
+        self.assertIn("only when the project genuinely needs", alignment_card)
+        self.assertIn("not a frozen contract or a live execution plan", alignment_card)
+        self.assertIn("optional shapes, not required schemas", artifacts)
+        self.assertIn("not a recurring checklist", context)
+        self.assertIn("adds no mandatory artifact or approval ceremony", execution)
+
+    def test_layout_reference_keeps_audits_and_release_state_conditional(self) -> None:
+        layout = (
+            SKILLS["organize-ai-project-files"] / "references" / "layout-standard.md"
+        ).read_text(encoding="utf-8")
+        self.assertIn("可选模式", layout)
+        self.assertIn("不要为了视觉统一创建索引、交接、验收、证据、历史或布局契约", layout)
+        self.assertIn("正式发布和外部验收由项目已有机制负责", layout)
+        self.assertIn("不要扩展成无关的全项目审计", layout)
+
     def test_skill_folders_contain_no_repository_docs(self) -> None:
         banned_names = {"README.md", "CHANGELOG.md", "INSTALLATION_GUIDE.md"}
         for name, skill_dir in SKILLS.items():
@@ -106,14 +153,17 @@ class SkillContractTests(unittest.TestCase):
 
     def test_small_tasks_remain_direct(self) -> None:
         self.assertIn(
-            "Skip when the goal and expected result are already clear enough for direct execution",
+            "Skip when the desired result and important boundaries are clear enough for direct execution",
             frontmatter(read_skill("align-project-requirements"))["description"],
         )
         self.assertIn(
-            "Skip when normal Agent execution is sufficient",
+            "Skip one-turn work and projects that normal Agent execution can complete or resume without persistent coordination",
             frontmatter(read_skill("drive-large-project"))["description"],
         )
-        self.assertIn("Do not use for ordinary implementation", frontmatter(read_skill("organize-ai-project-files"))["description"])
+        self.assertIn(
+            "Skip ordinary implementation, routine file creation, and local placement",
+            frontmatter(read_skill("organize-ai-project-files"))["description"],
+        )
 
     def test_bounded_turns_preserve_progress_without_extra_gates(self) -> None:
         drive = read_skill("drive-large-project")
@@ -147,7 +197,7 @@ class SkillContractTests(unittest.TestCase):
     def test_layout_trigger_rejects_unrelated_audits(self) -> None:
         organize = read_skill("organize-ai-project-files")
         description = frontmatter(read_skill("organize-ai-project-files"))["description"]
-        self.assertIn("Do not use for ordinary implementation", description)
+        self.assertIn("Skip ordinary implementation, routine file creation, and local placement", description)
         self.assertIn("Do not reorganize by guesswork", organize)
         self.assertIn("Do not turn cleanup into a full-project inventory or audit", organize)
         self.assertIn("Do not reorganize stable areas simply because another naming scheme looks better", organize)

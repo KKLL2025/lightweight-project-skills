@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate a large-project acceptance ledger and optional handoff file."""
+"""Validate an existing formal acceptance ledger and optional related files."""
 
 from __future__ import annotations
 
@@ -24,6 +24,14 @@ ALLOWED_STATUSES = {
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", type=Path, required=True, help="Project root")
+    parser.add_argument(
+        "--formal-acceptance",
+        action="store_true",
+        help=(
+            "Confirm that the project explicitly uses a formal acceptance ledger; "
+            "this validator is not for ordinary project continuity"
+        ),
+    )
     parser.add_argument("--acceptance", type=Path, required=True, help="Acceptance JSON path")
     parser.add_argument("--index", type=Path, help="Optional non-empty project document index")
     parser.add_argument("--handoff", type=Path, help="Optional non-empty handoff Markdown path")
@@ -146,7 +154,8 @@ def handoff_hygiene_findings(handoff_text: str) -> list[str]:
         )
     if closed_sections:
         findings.append(
-            "handoff contains an explicit closed-history section; move closed chronology to linked history"
+            "handoff contains an explicit closed-history section; compress, remove, or move it "
+            "only when that would make current recovery easier"
         )
     return findings
 
@@ -215,6 +224,11 @@ def validate() -> int:
     warnings: list[str] = []
     context_warnings: list[str] = []
 
+    if not args.formal_acceptance:
+        errors.append(
+            "formal acceptance validation requires --formal-acceptance; "
+            "do not use this tool as an ordinary continuity check"
+        )
     if not root.is_dir():
         errors.append(f"project root does not exist: {root}")
     acceptance_path = resolve_project_path(root, args.acceptance, "acceptance", errors)
@@ -289,8 +303,6 @@ def validate() -> int:
             except (OSError, UnicodeError) as exc:
                 errors.append(f"cannot read handoff: {exc}")
         if handoff_text is not None:
-            if len(handoff_text.strip()) < 80:
-                errors.append("handoff is missing or too short to preserve project state")
             line_count = len(handoff_text.splitlines())
             if line_count > args.max_handoff_lines:
                 context_warnings.append(
@@ -321,9 +333,7 @@ def validate() -> int:
                 index_text = index_path.read_text(encoding="utf-8-sig")
             except (OSError, UnicodeError) as exc:
                 errors.append(f"cannot read project document index: {exc}")
-        if index_text is not None:
-            if len(index_text.strip()) < 80:
-                errors.append("project document index is missing or too short to route context")
+        # An existing project may intentionally use a very small native index.
 
     if args.strict_context and context_warnings:
         errors.extend(f"context budget: {warning}" for warning in context_warnings)
@@ -335,7 +345,7 @@ def validate() -> int:
 
 def report(errors: list[str], warnings: list[str], counts: Counter[str]) -> int:
     if errors:
-        print("Continuity validation failed:", file=sys.stderr)
+        print("Formal acceptance validation failed:", file=sys.stderr)
         for error in errors:
             print(f"- {error}", file=sys.stderr)
         for warning in warnings:
@@ -343,9 +353,9 @@ def report(errors: list[str], warnings: list[str], counts: Counter[str]) -> int:
         return 1
 
     summary = ", ".join(f"{status}={counts[status]}" for status in sorted(counts))
-    print(f"Continuity validation passed ({summary})")
+    print(f"Formal acceptance validation passed ({summary})")
     for warning in warnings:
-        print(f"Continuity warning: {warning}")
+        print(f"Formal acceptance warning: {warning}")
     return 0
 
 

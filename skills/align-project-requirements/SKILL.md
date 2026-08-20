@@ -1,6 +1,6 @@
 ---
 name: align-project-requirements
-description: "Discover and align what the user actually needs before committing to a solution. Use when material uncertainty remains about the underlying problem, intended outcome, delivery depth, users, constraints, or trade-offs, or when a clearly requested solution appears to rest on a material misconception that could change the outcome. Act like an experienced consultant: inspect available context, identify genuine information gaps, discuss important uncertainties as deeply as the project needs, challenge assumptions with justified professional advice, and form a practical initial project framework. Skip when the goal and expected result are already clear enough for direct execution; do not turn routine work into a requirements ceremony."
+description: "Use when a broad or underspecified project request, such as planning, building, or changing a game, website, app, feature, workflow, or system, would require the Agent to invent requirements that could materially change the result. Trigger when the outcome, scope, delivery depth, constraints, or trade-offs are unclear, or when the proposed solution may rest on a material misconception. Skip when the desired result and important boundaries are clear enough for direct execution."
 ---
 
 # Align Project Requirements
@@ -40,7 +40,17 @@ Ask when a reasonable difference in the answer would materially change the proje
 
 Do not ask the user for facts that can reasonably be learned from the project or available sources.
 
-Batch related questions when practical. When a low-risk assumption is easy to revise, state it and continue instead of interrupting the user.
+Batch related questions when practical. When an assumption concerns only a reversible implementation detail and does not materially change the user's intended outcome, scope, delivery depth, or success criteria, state it when useful and continue instead of interrupting the user.
+
+## Separate requirement authority from implementation autonomy
+
+The Agent may choose ordinary technical, architectural, and implementation details autonomously when those choices stay within the user's intended outcome.
+
+Permission to choose the implementation or technical route does not by itself delegate authority to redefine product scope, user-facing behavior, delivery depth, or success criteria.
+
+When multiple plausible choices would produce materially different outcomes, treat that difference as a requirement-level decision. Resolve it with the user unless the user has clearly delegated that class of decision.
+
+Do not use the capacity of the current Turn, Session, toolset, or execution environment as a reason to silently narrow the user's intended outcome. If the agreed outcome requires more work than one execution batch can contain, preserve the outcome and let the execution mode handle the additional work.
 
 ## Let discovery take the depth the project needs
 
@@ -50,7 +60,9 @@ For substantial, unfamiliar, or ambiguous projects, continue discussion across m
 
 Use professional judgment to decide when enough is understood to form a credible direction and delivery standard.
 
-A small, familiar task may need little or no discussion. A large or uncertain project may need several rounds of investigation, recommendation, feedback, and refinement.
+A small task whose material outcome and boundaries are already clear may need little or no discussion. Familiarity with the domain alone does not make a large or underspecified project aligned.
+
+A large or uncertain project may need several rounds of investigation, recommendation, feedback, and refinement.
 
 Do not prolong discovery merely to make the specification look complete.
 
@@ -87,11 +99,15 @@ Do not create requirement IDs, acceptance ledgers, authority matrices, risk regi
 
 Alignment does not automatically make a task a large project.
 
-After the project is understood:
+Move from alignment to execution when the intended outcome and material boundaries are understood well enough that implementation will not silently choose among unresolved requirement-level alternatives.
 
 - execute directly when normal Agent execution is sufficient;
 - use `drive-large-project` when the agreed delivery depth, duration, stages, dependencies, or recovery needs genuinely benefit from persistent coordination;
 - use `organize-ai-project-files` only when project structure or file organization is materially part of the problem.
+
+Do not reduce the agreed scope merely to make it fit one Turn or Session. When the intended outcome is larger than one execution batch, preserve that outcome and use `drive-large-project` when persistent coordination would materially help.
+
+Do not begin substantial implementation that commits the project to one side of an unresolved material decision that reasonably belongs with the user.
 
 Do not escalate straightforward work into a project-management workflow merely because clarification was useful.
 

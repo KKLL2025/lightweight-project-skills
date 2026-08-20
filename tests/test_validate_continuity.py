@@ -69,6 +69,7 @@ class ValidateContinuityTests(unittest.TestCase):
                 str(SCRIPT),
                 "--root",
                 str(self.root),
+                "--formal-acceptance",
                 "--acceptance",
                 "control/acceptance.json",
                 *extra,
@@ -88,7 +89,25 @@ class ValidateContinuityTests(unittest.TestCase):
             "error",
         )
         self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertIn("Continuity validation passed", result.stdout)
+        self.assertIn("Formal acceptance validation passed", result.stdout)
+
+    def test_requires_explicit_formal_acceptance_mode(self) -> None:
+        result = subprocess.run(
+            [
+                sys.executable,
+                str(SCRIPT),
+                "--root",
+                str(self.root),
+                "--acceptance",
+                "control/acceptance.json",
+            ],
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            check=False,
+        )
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("requires --formal-acceptance", result.stderr)
 
     def test_invalid_status_fails(self) -> None:
         self.write_ledger(second_status="almost_done")
@@ -118,6 +137,7 @@ class ValidateContinuityTests(unittest.TestCase):
                     str(SCRIPT),
                     "--root",
                     str(self.root),
+                    "--formal-acceptance",
                     "--acceptance",
                     "control/acceptance.json",
                 ]
@@ -195,6 +215,18 @@ class ValidateContinuityTests(unittest.TestCase):
         result = self.run_validator("--handoff-ledger-check", "warn")
         self.assertEqual(result.returncode, 1)
         self.assertIn("requires --handoff", result.stderr)
+
+    def test_short_native_handoff_and_index_are_allowed(self) -> None:
+        self.write_handoff("# Now\n\nContinue A.")
+        (self.root / "control" / "index.md").write_text("# Map\n", encoding="utf-8")
+        result = self.run_validator(
+            "--handoff",
+            "control/handoff.md",
+            "--index",
+            "control/index.md",
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertNotIn("too short", result.stdout + result.stderr)
 
     def test_canonical_handoff_hygiene_warns_or_fails_in_strict_mode(self) -> None:
         self.write_handoff(

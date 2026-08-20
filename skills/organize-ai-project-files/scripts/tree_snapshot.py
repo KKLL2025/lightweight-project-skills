@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Create or compare content-oriented filesystem snapshots for safe moves."""
+"""Create or compare snapshots for high-risk moves that need preservation evidence."""
 
 from __future__ import annotations
 
@@ -53,8 +53,11 @@ def common_parser(parser: argparse.ArgumentParser) -> None:
     parser.add_argument(
         "--hash-mode",
         choices=("none", "critical", "all"),
-        default="critical",
-        help="Hash no files, critical files, or all files",
+        default=None,
+        help=(
+            "Hash no files, critical files, or all files; create defaults to none, "
+            "compare inherits the before snapshot"
+        ),
     )
     parser.add_argument(
         "--critical-max-mib",
@@ -304,7 +307,7 @@ def main() -> int:
             snapshot = build_snapshot(
                 root,
                 excludes,
-                args.hash_mode,
+                args.hash_mode or "none",
                 args.critical_max_mib,
             )
             output.parent.mkdir(parents=True, exist_ok=True)
@@ -319,12 +322,14 @@ def main() -> int:
 
         before = load_snapshot(Path(args.before).resolve())
         effective_hash_mode = args.hash_mode
-        if args.hash_mode == "critical" and before.get("hashMode") in {
+        if effective_hash_mode is None and before.get("hashMode") in {
             "none",
             "critical",
             "all",
         }:
             effective_hash_mode = before["hashMode"]
+        if effective_hash_mode is None:
+            effective_hash_mode = "none"
         after = build_snapshot(
             Path(args.root),
             list(args.exclude),

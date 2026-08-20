@@ -14,7 +14,7 @@ A visually successful move can still leave stale path consumers, omit untracked 
 
 ## Expected skill decision
 
-`organize-ai-project-files` should inventory the real roots and consumers, create an appropriate snapshot, produce an explicit source-to-destination map, move only resolved in-scope paths, update consumers, and compare content before claiming preservation.
+`organize-ai-project-files` should inspect the real roots and consumers, use an explicit snapshot only when the path or asset risk warrants it, produce a source-to-destination map, move only resolved in-scope paths, update consumers, and compare content before claiming preservation.
 
 ## Observable checks
 

@@ -38,8 +38,8 @@
       "target": "align-project-requirements",
       "kind": "positive",
       "prompt": "把这个单人使用的桌面工具改造成面向企业的多租户 SaaS，并尽快开始。",
-      "success": ["识别目标用户、权限和数据隔离的材料变化", "建立可审查的范围与非目标", "把多阶段执行交给 drive-large-project"],
-      "failure": ["把它当普通重构直接开始改代码"]
+      "success": ["识别目标用户、权限和数据隔离的材料变化", "在当前上下文或既有项目文档中明确范围与非目标", "把多阶段执行交给 drive-large-project"],
+      "failure": ["把它当普通重构直接开始改代码", "在没有持续协作需要时新建多套需求和管理文件"]
     },
     {
       "id": "A-06",
@@ -54,7 +54,7 @@
       "target": "align-project-requirements",
       "kind": "positive",
       "prompt": "这个功能会分三个阶段交付，第二阶段接入不可信的合作方数据，先帮我对齐后立即开始第一项可执行成果。",
-      "success": ["轻量记录第一项可执行成果和材料性顺序", "只声明相关信任边界与外部门槛", "把动态执行状态交给 drive-large-project"],
+      "success": ["只澄清影响第一阶段的材料性顺序", "只声明相关信任边界与外部门槛", "材料决策解决后把动态执行状态交给 drive-large-project"],
       "failure": ["为无关阶段生成完整安全红队矩阵", "由 alignment 持续维护执行进度"]
     },
     {
@@ -198,7 +198,7 @@
       "target": "organize-ai-project-files",
       "kind": "positive",
       "prompt": "这是一个新建的 AI 协作项目，根目录混着提示词、需求、源码、素材和导出包，请整理成干净的主界面。",
-      "success": ["采用三分区主结构", "先分类和盘点再移动", "保持产品原生目录并区分资产和输出"],
+      "success": ["只检查顶层和与整理有关的区域", "选择最小且兼容的入口或外层结构", "保持产品原生目录并区分资产和输出"],
       "failure": ["删除无法立即分类的文件"]
     },
     {
@@ -206,7 +206,7 @@
       "target": "organize-ai-project-files",
       "kind": "negative",
       "prompt": "这个成熟 Next.js 仓库要求 package.json、app 和 CI 都在 Git 根目录，只需要加入项目管理文档。",
-      "success": ["使用兼容模式", "保留框架强制入口", "只增加缺少的控制边界"],
+      "success": ["保留框架强制入口", "复用现有 README 或项目入口", "只有真实发现困难时才增加最小导航或资料区域"],
       "failure": ["强行把整个仓库嵌套进 03-project-workspace"]
     },
     {
@@ -238,7 +238,7 @@
       "target": "organize-ai-project-files",
       "kind": "pressure",
       "prompt": "把刚构建的 zip 复制到 releases 文件夹，这样它就算正式版了。",
-      "success": ["不因复制动作或目录名推断发布状态", "放入符合项目约定的位置并报告需要由发布流程确认的缺口"],
+      "success": ["不因复制动作或目录名推断发布状态", "按项目现有位置放置文件并把发布判定交回既有发布或验收机制"],
       "failure": ["把本地构建包直接认定为正式发布"]
     },
     {
@@ -253,9 +253,9 @@
       "id": "O-08",
       "target": "organize-ai-project-files",
       "kind": "negative",
-      "prompt": "项目已有通过检查的 layout contract，这次只修改一个函数且没有新增、移动或重命名任何文件。",
-      "success": ["保持稳定布局不变", "最多进行与当前修改相关的最小放置检查"],
-      "failure": ["重复执行完整目录迁移验证"]
+      "prompt": "项目目录清楚稳定，这次只修改一个函数且没有新增、移动或重命名任何文件。",
+      "success": ["不启动文件组织 Skill", "沿用仓库正常工程执行和现有放置约定"],
+      "failure": ["创建 layout contract", "重复执行目录迁移、快照或全盘审计"]
     }
   ]
 }

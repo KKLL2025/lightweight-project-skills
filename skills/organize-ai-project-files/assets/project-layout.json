@@ -1,49 +1,13 @@
 {
   "schemaVersion": "1.0",
-  "topology": "shell-root",
+  "purpose": "Optional starting point for a project that already needs an explicit layout contract",
+  "topology": "single-repository",
   "roles": {
-    "developmentRoots": [
-      "03-project-workspace/product"
-    ],
-    "outputRoots": [
-      "03-project-workspace/outputs"
-    ],
-    "engineeringOutputs": [
-      "03-project-workspace/outputs/engineering"
-    ],
-    "candidateOutputs": [
-      "03-project-workspace/outputs/candidates"
-    ],
-    "formalReleases": [],
-    "referenceRoots": [
-      "02-project-control/research",
-      "02-project-control/history"
-    ],
-    "userAssetRoots": [
-      "03-project-workspace/assets/source",
-      "03-project-workspace/data/input"
-    ],
-    "ephemeralRoots": [
-      "03-project-workspace/temp"
-    ]
+    "developmentRoots": [],
+    "outputRoots": [],
+    "referenceRoots": [],
+    "userAssetRoots": [],
+    "ephemeralRoots": []
   },
-  "entryFiles": [
-    "AGENTS.md",
-    "README.md"
-  ],
-  "hotFiles": [
-    "02-project-control/continuity/PROJECT_INDEX.md",
-    "02-project-control/continuity/PROJECT_HANDOFF.md"
-  ],
-  "allowedRootEntries": [
-    ".git",
-    ".gitignore",
-    "AGENTS.md",
-    "CLAUDE.md",
-    "README.md",
-    "01-ai-runtime",
-    "02-project-control",
-    "03-project-workspace"
-  ],
-  "releaseEvidence": {}
+  "entryFiles": []
 }

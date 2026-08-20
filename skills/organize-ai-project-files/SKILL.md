@@ -1,6 +1,6 @@
 ---
 name: organize-ai-project-files
-description: "Organize AI-assisted project files so a person or fresh Agent can understand the project progressively and reach relevant information with minimal exploration. Use when establishing a project structure, cleaning a confusing workspace, improving project-level navigation, deciding top-level artifact placement, or performing meaningful structural moves. Prefer a recognizable project entrance while preserving mature repositories and framework-native structures. Do not use for ordinary implementation when project organization is not itself a problem."
+description: "Use when project-level file or directory organization is itself part of the task or an observed obstacle: establishing a project structure, cleaning a confusing workspace, improving navigation, deciding where major artifacts belong, or making structural moves that affect paths, repositories, assets, or outputs. Skip ordinary implementation, routine file creation, and local placement inside an understandable repository when no project-level organization problem exists."
 ---
 
 # Organize AI Project Files

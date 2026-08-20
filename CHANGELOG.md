@@ -14,6 +14,8 @@ All notable changes to this project are documented here. The format follows [Kee
 
 - Synchronized the public READMEs, optional reference templates, and behavior cases with the current ownership and execution boundaries.
 - Updated the contract tests for the bounded-batch reference and removed stale Goal, Turn Plan, heartbeat, and hidden-compaction expectations from the public guidance.
+- Synchronized all three core `SKILL.md` files with the current effective definitions, including runtime metadata, optional references, layout tools, and formal-acceptance validation behavior.
+- Kept layout audits and content snapshots opt-in and risk-proportional, and updated their regression tests and evaluation cases accordingly.
 
 ### Planned
 

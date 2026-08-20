@@ -1,4 +1,4 @@
 interface:
   display_name: "Organize AI Project Files"
   short_description: "Govern folders only when paths or roles change"
-  default_prompt: "Use $organize-ai-project-files to design or safely change this project's folder topology without disrupting paths or assets."
+  default_prompt: "Use $organize-ai-project-files only when project-level organization is the task or an observed obstacle; make the smallest compatible structural change."
