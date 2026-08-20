@@ -5,7 +5,7 @@ from urllib.parse import unquote
 
 
 ROOT = Path(__file__).resolve().parents[1]
-EXPECTED_VERSION = "0.6.0-preview"
+EXPECTED_VERSION = "0.7.0"
 
 
 class RepositoryHealthTests(unittest.TestCase):
