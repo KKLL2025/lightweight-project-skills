@@ -22,7 +22,7 @@ This project starts from one rule: leave ordinary choices to the model; verify t
 The repository separates those failure surfaces into three composable skills: **Align → Drive → Organize.** Use one or combine them as the work demands. They do **not** require a PRD for every change, fixed phase files, a specific issue tracker, or a particular shell, test, or delegation pattern.
 
 > [!IMPORTANT]
-> `0.6.0-preview` is a public preview. The deterministic checks are tested, but behavior evidence is still limited to a small Codex sample. Test these skills in your own runtime before relying on them for critical work.
+> `0.7.0` is the current release. The deterministic checks are tested, but behavior evidence is still limited to a small Codex sample. Test these skills in your own runtime before relying on them for critical work.
 
 ## Choose the right skill
 
@@ -133,7 +133,7 @@ Passing structural tests does not prove that every model follows a skill. Publis
 
 ## Verified and not yet verified
 
-Verified for this preview:
+Verified for this release:
 
 - all three skills pass the local skill structure validator;
 - the Python unit suite passes locally on Windows;

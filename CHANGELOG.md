@@ -4,6 +4,13 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+### Planned
+
+- Broader repeated behavior evaluations across more than one model/runtime.
+- More complete real-project fixtures and installation verification.
+
+## [0.7.0] - 2026-08-21
+
 ### Changed
 
 - Reworked `align-project-requirements` around material uncertainty, focused questions, an evolving working baseline, and proportional handoff to direct execution, `drive-large-project`, or `organize-ai-project-files`.
@@ -16,11 +23,6 @@ All notable changes to this project are documented here. The format follows [Kee
 - Updated the contract tests for the bounded-batch reference and removed stale Goal, Turn Plan, heartbeat, and hidden-compaction expectations from the public guidance.
 - Synchronized all three core `SKILL.md` files with the current effective definitions, including runtime metadata, optional references, layout tools, and formal-acceptance validation behavior.
 - Kept layout audits and content snapshots opt-in and risk-proportional, and updated their regression tests and evaluation cases accordingly.
-
-### Planned
-
-- Broader repeated behavior evaluations across more than one model/runtime.
-- More complete real-project fixtures and installation verification.
 
 ## [0.6.0-preview] - 2026-08-11
 
@@ -82,7 +84,8 @@ All notable changes to this project are documented here. The format follows [Kee
 
 - Windows hosted-runner UTF-8 output and equivalent long/8.3 symlink target spellings.
 
-[Unreleased]: https://github.com/KKLL2025/lightweight-project-skills/compare/v0.6.0-preview...HEAD
+[Unreleased]: https://github.com/KKLL2025/lightweight-project-skills/compare/v0.7.0...HEAD
+[0.7.0]: https://github.com/KKLL2025/lightweight-project-skills/releases/tag/v0.7.0
 [0.6.0-preview]: https://github.com/KKLL2025/lightweight-project-skills/releases/tag/v0.6.0-preview
 [0.5.0-preview]: https://github.com/KKLL2025/lightweight-project-skills/releases/tag/v0.5.0-preview
 [0.4.0-preview]: https://github.com/KKLL2025/lightweight-project-skills/releases/tag/v0.4.0-preview
