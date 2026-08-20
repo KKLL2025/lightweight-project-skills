@@ -1,4 +1,4 @@
 interface:
   display_name: "Drive Large Projects"
-  short_description: "Drive adaptive milestones with evidence and handoffs"
-  default_prompt: "Use $drive-large-project to continue this project with adaptive execution boundaries, truthful evidence, and resumable handoffs."
+  short_description: "Keep multi-session projects adaptive and resumable"
+  default_prompt: "Use $drive-large-project only when persistent coordination is useful; continue through bounded execution while preserving only the state needed to resume."

@@ -1,65 +1,40 @@
-# Adaptive Execution Control
+# Execution Control
 
-Read this reference when several outcomes or modules must be sequenced, work may consume substantial time or resources, or delegated work needs coordination. Keep simple tasks direct.
+Use this optional reference when work genuinely needs persistent coordination across several execution batches, stages, dependencies, or recovery points. It adds no mandatory artifact or approval ceremony.
 
-## Maintain two planning levels
+## Maintain one practical project route
 
-Use a Project Route only when the project has meaningful staging or dependencies. Let the alignment owner capture major milestones, dependency or vertical-delivery order, external gates, contracts that must stabilize first, acceptance order, and deliberately deferred areas. Do not turn it into a detailed forecast of every implementation step.
+Use the aligned working baseline and an existing roadmap or plan when available. Keep only the durable stages, dependencies, gates, unresolved project-level issues, and meaningful progress that future execution needs. Do not create another plan merely because this skill became active, and do not turn the route into an activity log.
 
-Under that route, keep live milestone state containing only:
+The route is the best current plan, not a frozen implementation contract. Reorder it when reality justifies a better sequence, update the route only when the change matters for future execution, and keep one primary owner for each changing fact.
 
-- the current stage outcome and active milestone;
-- the next useful outcome candidates and their entry conditions;
-- dependencies or external gates;
-- evidence that would justify changing the order.
+## Select a bounded execution batch
 
-For each Turn, create a Turn Plan limited to the current milestone. Make the final plan item close the Turn by verifying the result, recording evidence, reporting milestone state, and stopping at a resumable boundary. Evidence may justify revising implementation steps, dependency order, validation, or scope inside that milestone. Do not use repeated plan revisions to enter the next milestone.
+At the beginning of a Turn, choose a bounded batch. It may contain several closely related small steps or one coherent part of a difficult milestone. Necessary adjustments inside the same outcome are allowed, but do not repeatedly redefine the batch to absorb the next major outcome.
 
-Do not prescribe a fixed candidate count or turn distant guesses into commitments. Give changing execution state one existing owner, such as the project task plan; keep the host Turn Plan ephemeral unless it is needed for recovery, and summarize only the current entry in the handoff.
+When the batch is completed, materially blocked, or reaches a decision that belongs with the user:
 
-## Switch modules for a reason
+1. preserve project state that materially changed;
+2. update the Handoff when useful;
+3. report concise progress, important issues, and likely next work;
+4. end the Turn and return control to the user.
 
-Cross-module work is appropriate when it completes a vertical user path, follows a dependency, bypasses a real blocker with independent work, stabilizes a high-risk seam, or serves one observable outcome. Avoid repeated whole-project rescans and unrelated opportunistic work.
+Milestones organize the project route. Turn boundaries keep execution manageable and do not need to coincide with milestones.
 
-When new evidence materially reorders the route, update the plan owner and record one short reason. Reordering is not a reason to rewrite stable alignment or recreate the roadmap.
+## Trust settled state and handle expensive work carefully
 
-## Select a user-visible execution batch
+Do not repeat checks merely because a Turn, milestone, Session, or report boundary occurred. Recheck when a relevant fact may have changed, implementation changes, a failure or contradiction appears, an assumption is invalidated, or project-specific risk gives a concrete reason.
 
-- Complete small, explicit, reversible, cheaply verified work in one batch.
-- For stateful, resource-heavy, cross-module, or delegated work, prefer one current milestone per Turn, ending at a verified and resumable boundary even when that milestone remains unfinished.
-- Continue through closely related outcomes when the user requested continuous execution, risk and cost remain controlled, and every outcome retains separate evidence.
-- Keep monitoring and waiting attached to the recorded job. Do not use monitoring time to start unrelated development.
+For expensive commands, experiments, migrations, benchmarks, or other difficult-to-repeat work, preserve enough identity and current state to recognize and resume the existing task. Do not start a duplicate merely because execution moved to another Turn or Session.
 
-A milestone update is not a request for routine permission. Stop only for a real authority boundary, material decision, unsafe or irreversible action, exhausted useful work, or an explicit user stopping condition.
+## Keep validation proportional
 
-## Control the long-running Goal
+Use the cheapest check that can establish the active claim and broaden it only when the project's purpose, risk, observed failure, external acceptance, or user requirements justify it. This skill does not add a separate verification layer, and it does not turn every local change into a milestone, audit, acceptance event, or evidence record.
 
-Treat the Goal as the bounded project result plus its durable completion, validation, and authority constraints. Re-anchor to it at the start of each Turn when the host exposes a long-running Goal; do not rely on an assumed automatic re-read. Change it only for a material change to the final result or its boundary, not for routine implementation discoveries.
+## Coordinate responsibilities
 
-Milestone completion is not Goal completion. When human input is required, close the current Turn and request or use the host's native pause mechanism when available. A pause preserves resumable state; a blocker means progress is actually prevented under the host's own rules. Never misuse blocked or complete as a substitute for ending a Turn.
+`align-project-requirements` owns the user's real need, requirements baseline, delivery standard, and requirement-level revision.
 
-## Report observable events
+`drive-large-project` owns sustained execution, the evolving route, active project state, bounded Turn execution, and resumable working context.
 
-Always summarize a completed outcome-sized milestone. Also report when evidence changes the plan, scope/order/assumptions/authority materially change, a real blocker appears, or work is stopping, handing off, releasing, or claiming completion.
-
-Report the start of a long or expensive operation only when it gives the user useful control or recovery information. A delegated agent's message is not user-visible progress; the coordinating agent owns a concise summary of material results.
-
-Use the host's progress channel when available and otherwise use the next output boundary. Do not invent a timer, duplicate an unchanged status, or split work only to generate updates.
-
-## Escalate validation from evidence
-
-Choose the cheapest level that can establish the claim, then broaden only when risk or evidence requires it:
-
-1. Focused checks for the changed unit, file, or behavior.
-2. Integration checks when contracts, modules, persistence, configuration, or consumers interact.
-3. End-to-end, real-runtime, or external checks when the acceptance claim depends on them.
-
-Derive security validation from the active threat model and changed trust boundaries. Escalate when work changes untrusted input handling, instruction or code execution, identity, permissions, secrets, private data, external communication, or production control. Do not introduce generic security, network, privacy, abuse, or adversarial testing merely because a request says audit, risk, robustness, or validation.
-
-## Budget delegated and heavy work
-
-- Delegate or parallelize only independent work with a clear expected time, coverage, or review benefit.
-- Give delegated work a bounded outcome and require evidence; the coordinating agent integrates and reports it.
-- Do not repeat an unchanged full test suite, scan, build, or research pass without new code, new evidence, or a specific unresolved failure.
-- Preserve identifiers and logs for costly jobs so monitoring resumes the same work instead of starting duplicates.
-- If cost or duration becomes materially different from the authorized plan, report and reselect the execution boundary.
+`organize-ai-project-files` owns directory topology, file placement, navigation structure, and structural migrations.

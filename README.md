@@ -17,9 +17,9 @@
 npx skills add KKLL2025/lightweight-project-skills
 ```
 
-This project starts from one rule: leave ordinary choices to the model; verify the facts that are expensive to get wrong. A tentative idea is not approved scope, a handoff is not live project state, and a tidier folder is not evidence that a migration preserved the project.
+This project starts from one rule: leave ordinary choices to the model; verify the facts that are expensive to get wrong. A tentative idea is not approved scope, a handoff is not a substitute for relevant live project state, and a tidier folder is not evidence that a migration preserved the project.
 
-The repository separates those failure surfaces into three composable skills: **Align → Drive → Organize.** Use one or combine them as the work demands. They do **not** require a PRD for every change, fixed phase files, a specific issue tracker, Bash, TDD for every task, or a fresh subagent for every step.
+The repository separates those failure surfaces into three composable skills: **Align → Drive → Organize.** Use one or combine them as the work demands. They do **not** require a PRD for every change, fixed phase files, a specific issue tracker, or a particular shell, test, or delegation pattern.
 
 > [!IMPORTANT]
 > `0.6.0-preview` is a public preview. The deterministic checks are tested, but behavior evidence is still limited to a small Codex sample. Test these skills in your own runtime before relying on them for critical work.
@@ -28,9 +28,9 @@ The repository separates those failure surfaces into three composable skills: **
 
 | Situation | Use | Owns |
 |---|---|---|
-| The material outcome, user, boundary, or acceptance is unclear | [`align-project-requirements`](skills/align-project-requirements/SKILL.md) | Desired behavior, material decisions, assumptions, observable acceptance |
-| Delivery spans turns, milestones, or long-running checks | [`drive-large-project`](skills/drive-large-project/SKILL.md) | Current state, milestones, evidence, resumable handoff, ordinary file placement |
-| The project tree or referenced paths need structural change | [`organize-ai-project-files`](skills/organize-ai-project-files/SKILL.md) | Topology, safe migration, protected assets, path consumers, output boundaries |
+| The real need, material decisions, delivery depth, or observable standard is unclear | [`align-project-requirements`](skills/align-project-requirements/SKILL.md) | User need, material decisions, assumptions, delivery standard |
+| Execution needs several bounded batches, stages, dependencies, or recovery across sessions | [`drive-large-project`](skills/drive-large-project/SKILL.md) | Sustained execution, evolving route, active state, bounded batches, resumable handoff |
+| The project tree, file placement, navigation, or referenced paths need structural change | [`organize-ai-project-files`](skills/organize-ai-project-files/SKILL.md) | Directory topology, placement, navigation, structural migrations |
 | The task is small, explicit, reversible, and verifiable now | Execute directly | No management artifact is required |
 
 ```text
@@ -40,9 +40,9 @@ structural path change   -> organize-ai-project-files
 small explicit task      -> execute directly
 ```
 
-The skills coordinate without duplicating ownership. Requirements do not maintain execution status, handoffs do not become acceptance ledgers, and folder names do not prove release state.
+The skills coordinate without duplicating ownership. Alignment owns the requirements baseline and delivery standard; Drive owns the evolving route, active state, bounded execution, and resumable handoff; Organize owns topology, placement, and navigation. A handoff is current working memory rather than project history, and folder names do not prove completion or release state.
 
-During long delivery, `drive-large-project` reports completed outcome-sized milestones, re-anchors to the aligned outcome, boundaries, evidence, and live state, then selects the next execution boundary from task size, risk, cost, and the user's continuous-execution intent. It does not invent timer-based interruptions or pretend to know a host's hidden context-compaction count; host-required progress heartbeats still apply.
+During longer delivery, `drive-large-project` selects a bounded execution batch. It may contain several closely related steps or one coherent part of a difficult milestone. When the batch completes, becomes materially blocked, or reaches a decision that belongs with the user, it preserves changed state, updates the Handoff when useful, reports concise progress, and ends the Turn. Milestones organize the route, but Turn boundaries do not need to coincide with them. Stable facts are rechecked when reality gives a reason, not merely because a Turn or Session changed.
 
 ## 30-second install
 
@@ -125,7 +125,7 @@ The runtime skills have no third-party Python dependency. Run the repository sui
 python -m unittest discover -s tests -v
 ```
 
-CI runs the suite on Windows and Linux with Python 3.11 and 3.13. It covers skill contracts, layout boundaries, content-preserving moves, duplicate files, path escape, symlink policy, continuity-ledger and handoff-hygiene validation, UTF-8 paths, repository links, and public-repository hygiene.
+CI runs the suite on Windows and Linux with Python 3.11 and 3.13. It covers skill contracts, layout boundaries, content-preserving moves, duplicate files, path escape, symlink policy, continuity and handoff-hygiene validation, UTF-8 paths, repository links, and public-repository hygiene.
 
 The catalog in [`evals/cases.json`](evals/cases.json) contains positive, negative, and pressure prompts. It separates raw prompts from expected behavior so evaluators can run blind forward tests.
 

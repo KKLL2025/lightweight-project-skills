@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Read-only audit for an AI-collaboration project layout contract."""
+"""Optionally check paths declared by an existing project layout contract."""
 
 from __future__ import annotations
 
@@ -13,15 +13,10 @@ from typing import Any
 ROLE_KEYS = (
     "developmentRoots",
     "outputRoots",
-    "engineeringOutputs",
-    "candidateOutputs",
-    "formalReleases",
     "referenceRoots",
     "userAssetRoots",
     "ephemeralRoots",
 )
-CANDIDATE_MARKERS = ("candidate", "pending", "unverified", "候选", "待验收", "未验收")
-SOURCE_MARKERS = {".git", "src", "specs", "acceptance", "tests", "node_modules"}
 
 
 def parse_args() -> argparse.Namespace:
@@ -120,70 +115,29 @@ def main() -> int:
                     f"{dev_path.relative_to(root)} / {output_path.relative_to(root)}"
                 )
 
-    for key in ("engineeringOutputs", "candidateOutputs", "formalReleases"):
-        for path in resolved_roles.get(key, []):
-            if outputs and not is_under(path, outputs):
-                errors.append(f"{key} path is outside outputRoots: {path.relative_to(root)}")
-
-    for relative in relative_roles.get("candidateOutputs", []):
-        lowered = relative.casefold()
-        if not any(marker in lowered for marker in CANDIDATE_MARKERS):
-            warnings.append(f"candidate output lacks explicit candidate wording: {relative}")
-
     entry_files = contract.get("entryFiles", [])
-    hot_files = contract.get("hotFiles", [])
-    for label, values in (("entryFiles", entry_files), ("hotFiles", hot_files)):
-        if not isinstance(values, list) or not all(isinstance(item, str) for item in values):
-            errors.append(f"{label} must be an array of strings")
-            continue
-        for relative in values:
+    if not isinstance(entry_files, list) or not all(isinstance(item, str) for item in entry_files):
+        errors.append("entryFiles must be an array of strings")
+    else:
+        for relative in entry_files:
             try:
                 path = within(root, relative)
             except ValueError as exc:
                 errors.append(str(exc))
                 continue
             if not path.is_file():
-                errors.append(f"required {label} file does not exist: {relative}")
+                errors.append(f"declared entry file does not exist: {relative}")
 
-    allowed = contract.get("allowedRootEntries", [])
-    if not isinstance(allowed, list) or not all(isinstance(item, str) for item in allowed):
-        errors.append("allowedRootEntries must be an array of strings")
-        allowed = []
     actual_root_entries = sorted(item.name for item in root.iterdir())
-    unclassified = sorted(set(actual_root_entries) - set(allowed))
-    for name in unclassified:
-        warnings.append(f"unclassified root entry: {name}")
-
-    evidence = contract.get("releaseEvidence", {})
-    if not isinstance(evidence, dict):
-        errors.append("releaseEvidence must be an object")
-        evidence = {}
-    for release in relative_roles.get("formalReleases", []):
-        items = evidence.get(release)
-        if not isinstance(items, list) or not items:
-            errors.append(f"formal release has no declared evidence: {release}")
-            continue
-        for relative in items:
-            if not isinstance(relative, str):
-                errors.append(f"release evidence must be a string: {release}")
-                continue
-            try:
-                path = within(root, relative)
-            except ValueError as exc:
-                errors.append(str(exc))
-                continue
-            if not path.is_file():
-                errors.append(f"formal release evidence does not exist: {relative}")
-
-    for release_path in resolved_roles.get("formalReleases", []):
-        if not release_path.is_dir():
-            continue
-        for child in release_path.rglob("*"):
-            if child.name in SOURCE_MARKERS:
-                warnings.append(
-                    f"formal release contains source/control marker: "
-                    f"{child.relative_to(root)}"
-                )
+    unclassified: list[str] = []
+    if "allowedRootEntries" in contract:
+        allowed = contract["allowedRootEntries"]
+        if not isinstance(allowed, list) or not all(isinstance(item, str) for item in allowed):
+            errors.append("allowedRootEntries must be an array of strings")
+        else:
+            unclassified = sorted(set(actual_root_entries) - set(allowed))
+            for name in unclassified:
+                warnings.append(f"unclassified root entry: {name}")
 
     result = {
         "root": str(root),

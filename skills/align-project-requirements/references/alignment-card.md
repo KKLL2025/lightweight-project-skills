@@ -1,31 +1,31 @@
 # Alignment Card
 
-Use this compact shape when the project needs a durable alignment artifact but separate requirements, design, and task documents would add little value.
+Use this compact shape only when the project genuinely needs a durable alignment artifact and task context or an existing project-native document would not be enough.
 
 ```markdown
 # <Change or outcome>
 
-## Goal contract and completion condition
+## Problem and intended outcome
+
+## Relevant users or usage context
+
+## Delivery depth and observable standard
 
 ## Current facts
 
-## In scope
-
-## Non-goals
-
-## Observable acceptance
+## Requirements and constraints
 
 ## Decisions and assumptions
 
-## Project Route and first executable milestone
+## Unresolved questions
 
-## Reorder triggers
+## Recommended direction or alternatives
 
-## Relevant threat model or trust boundaries
+## Non-goals
 
-## Authority and external gates
+## Major stages or dependencies
 
-## Next executable action
+## Next practical action
 ```
 
-Keep facts, decisions, and assumptions distinguishable. Keep routine implementation steps out of the Goal contract, and do not put a live Turn Plan in this card. Record excluded work or review types under Non-goals. Omit the optional Project Route, reorder, and threat-model sections when they do not affect the result. Expand this card into separate design or task artifacts only when the change develops independent milestones or interfaces.
+This is a working baseline, not a frozen contract or a live execution plan. Omit sections that do not materially help. Keep facts, decisions, assumptions, and unresolved questions distinguishable; keep routine implementation steps and changing execution status in the project's existing plan or Handoff. `drive-large-project` owns the mutable execution route and progress. Do not create requirement IDs, acceptance ledgers, or other management artifacts unless the actual project has a concrete need for them.
