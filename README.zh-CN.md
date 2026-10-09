@@ -4,6 +4,8 @@
 
 **面向使用 AI Agent 独立推进长期、多文件项目的轻量项目控制层。**
 
+本 skills 组合可以帮助 Agent 长时间持续推进项目，但不保证适用于全部任务。请根据具体任务、模型与运行时选择使用。
+
 [English](README.md)
 
 [![CI](https://github.com/KKLL2025/lightweight-project-skills/actions/workflows/ci.yml/badge.svg)](https://github.com/KKLL2025/lightweight-project-skills/actions/workflows/ci.yml)
@@ -22,7 +24,7 @@ npx skills add KKLL2025/lightweight-project-skills
 仓库把这些失败面分给三个可组合 skill：**Align → Drive → Organize（对齐 → 推进 → 整理）。** 根据任务只用其中一个，或者按需组合。它们**不要求**每次修改都写 PRD、采用固定阶段文件、绑定某个 Issue 系统，或强制使用某种 shell、测试或委派方式。
 
 > [!IMPORTANT]
-> `0.7.0` 是当前发布版本。确定性工具已有测试，但行为证据仍主要来自小规模 Codex 试运行。关键项目使用前请在自己的模型和运行时中验证。
+> `0.7.1` 是当前发布版本。确定性工具已有测试，但行为证据仍主要来自小规模 Codex 试运行。关键项目使用前请在自己的模型和运行时中验证。
 
 ## 选择正确的 skill
 
@@ -119,9 +121,10 @@ GitHub 是可选的交付表面，不是三个 skill 的运行依赖。分支、
 
 ## 验证
 
-三个运行时 skill 不依赖第三方 Python 包。运行：
+三个运行时 skill 不依赖第三方 Python 包。仓库格式测试使用开发依赖 PyYAML，请先安装再运行：
 
 ```sh
+python -m pip install -r requirements-dev.txt
 python -m unittest discover -s tests -v
 ```
 
@@ -166,4 +169,4 @@ CI 在 Windows/Linux 的 Python 3.11 和 3.13 上执行测试，覆盖 skill 合
 
 ## 许可证
 
-MIT，见 [LICENSE](LICENSE)。所吸收上游工作的署名与许可证保留在 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
+MIT，见 [LICENSE](LICENSE)。

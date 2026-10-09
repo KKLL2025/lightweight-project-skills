@@ -9,6 +9,22 @@ All notable changes to this project are documented here. The format follows [Kee
 - Broader repeated behavior evaluations across more than one model/runtime.
 - More complete real-project fixtures and installation verification.
 
+## [0.7.1] - 2026-10-09
+
+### Fixed
+
+- Retained baseline exclusions during snapshot comparisons, including snapshot files stored inside the checked tree, and rejected malformed snapshot fields with controlled errors.
+- Scoped explicit handoff status checks to the corresponding case-sensitive item ID; ignored code examples using valid fence type, length, and closing syntax.
+- Validated directory role types and JSON field types without tracebacks; skipped root inventory unless an explicit allowlist is provided.
+- Required non-empty supplied handoff and index files while continuing to accept short project-native documents.
+- Added real YAML parsing to repository and CI validation, with PyYAML kept as a development dependency.
+
+### Changed
+
+- Added a statement that the skill combination can support sustained work on long-running projects but is not guaranteed to suit every task.
+- Removed obsolete provider attribution and the tests that required it; retained the project's MIT license and legacy entry-name upgrade guidance.
+- Updated the supported security-report version and separated behavior cases with and without explicit publication authorization.
+
 ## [0.7.0] - 2026-08-21
 
 ### Changed
@@ -55,7 +71,7 @@ All notable changes to this project are documented here. The format follows [Kee
 - Tightened the English and Chinese README first screen around the lightweight, proportional-governance value proposition.
 - Added a tested one-command discovery and project-scoped Codex installation path through the open-source `skills` CLI, while retaining manual installation fallbacks.
 - Added non-blocking milestone updates and lightweight direction re-anchoring to `drive-large-project`, using observable recovery events instead of self-imposed timers or hidden context-compaction counters while preserving host-required progress heartbeats.
-- Renamed `spec-workflow` to `align-project-requirements` and its evaluation IDs from `S-*` to `A-*` so the public name matches its lightweight requirements-alignment behavior and no longer reuses the CloudBase skill name. Existing preview users must remove only the old copy installed from this repository before reinstalling to avoid duplicate routing; unrelated provider or plugin skills with the same old name must not be removed.
+- Renamed `spec-workflow` to `align-project-requirements` and its evaluation IDs from `S-*` to `A-*` so the public name matches its lightweight requirements-alignment behavior. Existing preview users must remove only the old copy installed from this repository before reinstalling to avoid duplicate routing; unrelated provider or plugin skills with the same old name must not be removed.
 
 ### Known limitations
 
@@ -84,7 +100,8 @@ All notable changes to this project are documented here. The format follows [Kee
 
 - Windows hosted-runner UTF-8 output and equivalent long/8.3 symlink target spellings.
 
-[Unreleased]: https://github.com/KKLL2025/lightweight-project-skills/compare/v0.7.0...HEAD
+[Unreleased]: https://github.com/KKLL2025/lightweight-project-skills/compare/v0.7.1...HEAD
+[0.7.1]: https://github.com/KKLL2025/lightweight-project-skills/releases/tag/v0.7.1
 [0.7.0]: https://github.com/KKLL2025/lightweight-project-skills/releases/tag/v0.7.0
 [0.6.0-preview]: https://github.com/KKLL2025/lightweight-project-skills/releases/tag/v0.6.0-preview
 [0.5.0-preview]: https://github.com/KKLL2025/lightweight-project-skills/releases/tag/v0.5.0-preview

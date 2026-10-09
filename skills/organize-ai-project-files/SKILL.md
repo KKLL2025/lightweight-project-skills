@@ -27,6 +27,8 @@ It does not own requirements, Project Plan or Handoff content, execution sequenc
 
 This skill decides how project information and project areas are arranged so they can be found efficiently.
 
+Companion skills are optional. If one is unavailable, continue using normal Agent capabilities without inventing a new dependency or stopping the task.
+
 ## Prefer a recognizable project entrance
 
 Use one concise project map as the canonical navigation source, preferably by reusing an existing README, host-native Agent entry, or established project index.
@@ -126,6 +128,8 @@ Do not turn cleanup into a full-project inventory or audit.
 Organization does not imply deletion. Do not delete or discard unknown, user-owned, or difficult-to-recover material merely because it appears redundant, temporary, or untidy. Deletion requires explicit authority or a clearly safe project-native cleanup rule.
 
 ## Apply migration care proportionally
+
+For a genuine layout or migration need, [Layout Patterns](references/layout-standard.md) links the optional [layout contract](assets/project-layout.json), [layout audit](scripts/audit_layout.py), and [content snapshot](scripts/tree_snapshot.py). These resources do not create a default audit workflow.
 
 Use normal engineering judgment for simple, reversible moves.
 

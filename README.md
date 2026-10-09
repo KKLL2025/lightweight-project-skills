@@ -4,6 +4,8 @@
 
 **Lightweight project control for solo builders working with AI agents across long-lived, file-heavy projects.**
 
+This combination of skills can help an agent sustain work on long-running projects, but it is not guaranteed to suit every task. Choose it according to the task, model, and runtime.
+
 [简体中文](README.zh-CN.md)
 
 [![CI](https://github.com/KKLL2025/lightweight-project-skills/actions/workflows/ci.yml/badge.svg)](https://github.com/KKLL2025/lightweight-project-skills/actions/workflows/ci.yml)
@@ -22,7 +24,7 @@ This project starts from one rule: leave ordinary choices to the model; verify t
 The repository separates those failure surfaces into three composable skills: **Align → Drive → Organize.** Use one or combine them as the work demands. They do **not** require a PRD for every change, fixed phase files, a specific issue tracker, or a particular shell, test, or delegation pattern.
 
 > [!IMPORTANT]
-> `0.7.0` is the current release. The deterministic checks are tested, but behavior evidence is still limited to a small Codex sample. Test these skills in your own runtime before relying on them for critical work.
+> `0.7.1` is the current release. The deterministic checks are tested, but behavior evidence is still limited to a small Codex sample. Test these skills in your own runtime before relying on them for critical work.
 
 ## Choose the right skill
 
@@ -119,9 +121,10 @@ GitHub is an optional delivery surface, not a runtime dependency. See the [GitHu
 
 ## Verification
 
-The runtime skills have no third-party Python dependency. Run the repository suite with:
+The runtime skills have no third-party Python dependency. Repository format tests use PyYAML as a development dependency. Install it before running the suite:
 
 ```sh
+python -m pip install -r requirements-dev.txt
 python -m unittest discover -s tests -v
 ```
 
@@ -166,4 +169,4 @@ Project conduct is governed by [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md). Changes
 
 ## License
 
-MIT. See [LICENSE](LICENSE). Attribution for incorporated upstream work is preserved in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+MIT. See [LICENSE](LICENSE).

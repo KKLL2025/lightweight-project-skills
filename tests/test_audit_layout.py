@@ -1,15 +1,23 @@
 from __future__ import annotations
 
+import contextlib
+import importlib.util
+import io
 import json
 import subprocess
 import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "skills" / "organize-ai-project-files" / "scripts" / "audit_layout.py"
+SPEC = importlib.util.spec_from_file_location("audit_layout", SCRIPT)
+assert SPEC and SPEC.loader
+audit_layout = importlib.util.module_from_spec(SPEC)
+SPEC.loader.exec_module(audit_layout)
 
 
 def make_project(base: Path) -> tuple[Path, Path, dict]:
@@ -65,6 +73,29 @@ class AuditLayoutTests(unittest.TestCase):
             self.assertEqual(1, result.returncode)
             self.assertIn("path escapes project root", result.stdout)
 
+    def test_non_string_topology_is_a_structured_validation_error(self) -> None:
+        for topology in ([], {}, None, 1):
+            with self.subTest(topology=topology), tempfile.TemporaryDirectory() as tmp:
+                project, config, contract = make_project(Path(tmp))
+                contract["topology"] = topology
+                config.write_text(json.dumps(contract), encoding="utf-8")
+                result = run_audit(project, config)
+                self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+                self.assertFalse(json.loads(result.stdout)["passed"])
+                self.assertNotIn("Traceback", result.stderr)
+
+    def test_existing_role_roots_must_be_directories(self) -> None:
+        for role in ("developmentRoots", "outputRoots", "referenceRoots",
+                     "userAssetRoots", "ephemeralRoots"):
+            with self.subTest(role=role), tempfile.TemporaryDirectory() as tmp:
+                project, config, contract = make_project(Path(tmp))
+                (project / "file.txt").write_text("not a directory", encoding="utf-8")
+                contract["roles"][role] = ["file.txt"]
+                config.write_text(json.dumps(contract), encoding="utf-8")
+                result = run_audit(project, config)
+                self.assertEqual(result.returncode, 1)
+                self.assertIn("not a directory", result.stdout)
+
     def test_release_metadata_is_outside_layout_audit_scope(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             project, config, contract = make_project(Path(tmp))
@@ -96,6 +127,19 @@ class AuditLayoutTests(unittest.TestCase):
             payload = json.loads(result.stdout)
             self.assertEqual([], payload["unclassifiedRootEntries"])
             self.assertFalse(any("unclassified root entry" in item for item in payload["warnings"]))
+            self.assertFalse(payload["rootInventoried"])
+            self.assertIsNone(payload["rootEntryCount"])
+
+    def test_no_allowlist_does_not_enumerate_the_root(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            project, config, contract = make_project(Path(tmp))
+            contract.pop("allowedRootEntries")
+            config.write_text(json.dumps(contract), encoding="utf-8")
+            with mock.patch.object(sys, "argv", ["audit_layout.py", "--root", str(project),
+                                                "--config", str(config), "--json"]), \
+                 mock.patch.object(Path, "iterdir", side_effect=AssertionError("unexpected inventory")), \
+                 contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(audit_layout.main(), 0)
 
 
 if __name__ == "__main__":

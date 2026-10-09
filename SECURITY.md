@@ -4,7 +4,7 @@
 
 | Version | Support |
 |---|---|
-| `0.4.x` preview | Security reports accepted |
+| `0.7.x` (current) | Security reports accepted |
 | Earlier previews | Not supported |
 
 Preview support means reports are reviewed and fixes may be issued. It is not a production or safety certification.

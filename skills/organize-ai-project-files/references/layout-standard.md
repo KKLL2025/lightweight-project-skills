@@ -40,3 +40,5 @@ project/
 `assets/project-layout.json` 只是已有项目决定采用显式布局契约时的最小起点，不应复制到普通项目。`scripts/audit_layout.py` 只检查调用者明确声明的角色、文件或根目录允许项；它不评估发布状态，也不会在未提供 allowlist 时默认盘点整个根目录。
 
 `scripts/tree_snapshot.py` 只用于确实需要内容保存证据的高风险迁移。创建快照时默认不哈希；只有需要内容级证明时才显式选择 `--hash-mode critical` 或 `--hash-mode all`。不要为普通归位、重命名或清理运行快照。
+
+比较会保留基线快照中用户声明的排除规则，`--exclude` 只增加排除项。新快照将自动输出文件位置单独记录在 `snapshotOutputPath`；该文件只有仍为当前基线或其相同内容副本时才自动排除，原路径被新内容复用后会参与比较。旧快照缺少此信息时保留其已有排除规则；若要移动或复用旧输出路径，应在迁移前生成新快照。不声明根目录 allowlist 时，布局审计不会枚举根目录，`rootInventoried` 为 false、`rootEntryCount` 为 null。

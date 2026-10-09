@@ -82,14 +82,17 @@ def require_string(item: dict, key: str, item_id: str, errors: list[str]) -> str
 
 
 _NEGATED_COMPLETION = re.compile(
-    r"\b(?:not|isn['’]?t|is\s+not|never)\s+(?:complete|completed|done|verified|passed|closed)\b"
-    r"|\b(?:incomplete|pending|unfinished|unverified|blocked)\b"
+    r"\b(?:not|isn['’]?t|is\s+not|never)\s+(?:yet\s+)?(?:complete|completed|done|verified|passed|closed)\b"
+    r"|\b(?:incomplete|pending|unfinished|unverified|blocked|in[ _]progress|not[ _]started|implemented_pending)\b"
     r"|(?:未完成|尚未完成|没有完成|未验证|待验证|进行中|已阻塞|被阻塞)",
     re.IGNORECASE,
 )
 _COMPLETION_WORD = (
     r"(?:complete|completed|done|verified|passed|closed|"
     r"已完成|完成|已验证|验收通过|已通过|已关闭)"
+)
+_EXPLICIT_STATE = (
+    rf"(?i:{_NEGATED_COMPLETION.pattern}|{_COMPLETION_WORD})(?![A-Za-z0-9_])"
 )
 
 _CURRENT_SECTION_HEADINGS = {
@@ -114,23 +117,37 @@ _CLOSED_HISTORY_HEADINGS = {
 }
 
 
-def _markdown_h2_headings(text: str) -> list[str]:
-    """Return normalized level-two headings outside fenced code blocks."""
-    headings: list[str] = []
+def _markdown_visible_lines(text: str) -> list[tuple[int, str]]:
+    """Return prose lines while respecting fence type, length, and closing syntax."""
+    visible: list[tuple[int, str]] = []
     fence_marker: str | None = None
-    for line in text.splitlines():
-        stripped = line.strip()
-        fence_match = re.match(r"^(`{3,}|~{3,})", stripped)
+    fence_length = 0
+    for number, line in enumerate(text.splitlines(), start=1):
+        fence_match = re.match(r"^[ ]{0,3}(`{3,}|~{3,})(.*)$", line)
         if fence_match:
-            marker = fence_match.group(1)[0]
+            marker, suffix = fence_match.groups()
             if fence_marker is None:
-                fence_marker = marker
-            elif fence_marker == marker:
+                if marker[0] == "`" and "`" in suffix:
+                    visible.append((number, line))
+                    continue
+                fence_marker = marker[0]
+                fence_length = len(marker)
+            elif fence_marker == marker[0] and len(marker) >= fence_length and not suffix.strip():
                 fence_marker = None
+                fence_length = 0
             continue
         if fence_marker is not None:
             continue
-        match = re.fullmatch(r"##\s+(.+?)\s*#*", stripped)
+        if not line.startswith(("    ", "\t")):
+            visible.append((number, line))
+    return visible
+
+
+def _markdown_h2_headings(text: str) -> list[str]:
+    """Return normalized level-two headings outside code examples."""
+    headings: list[str] = []
+    for _, line in _markdown_visible_lines(text):
+        match = re.fullmatch(r"[ ]{0,3}##\s+(.+?)\s*#*", line)
         if match:
             headings.append(re.sub(r"\s+", " ", match.group(1)).strip().casefold())
     return headings
@@ -167,47 +184,44 @@ def _id_pattern(item_id: str) -> str:
 def handoff_ledger_findings(items: list[dict], handoff_text: str) -> list[str]:
     """Find only explicit, ID-addressable handoff/ledger contradictions."""
     findings: list[str] = []
-    lines = handoff_text.splitlines()
+    lines = _markdown_visible_lines(handoff_text)
 
     for item in items:
+        if not isinstance(item, dict):
+            continue
         item_id = item.get("id")
         status = item.get("status")
-        if not isinstance(item_id, str) or not item_id.strip() or status not in ALLOWED_STATUSES:
+        if (
+            not isinstance(item_id, str) or not item_id.strip()
+            or not isinstance(status, str) or status not in ALLOWED_STATUSES
+        ):
             continue
 
         item_id = item_id.strip()
-        id_re = re.compile(_id_pattern(item_id), re.IGNORECASE)
-        matching_lines = [line for line in lines if id_re.search(line)]
-
-        if not matching_lines or status == "abandoned":
+        if status == "abandoned":
             continue
-
-        if status == "verified":
-            for line_number, line in enumerate(lines, start=1):
-                if id_re.search(line) and _NEGATED_COMPLETION.search(line):
-                    findings.append(
-                        f"{item_id}: verified item is explicitly presented as unfinished "
-                        f"in handoff line {line_number}"
-                    )
-                    break
-            continue
-
+        # IDs are case-sensitive, as in the ledger's duplicate-ID validation.
         after_id = re.compile(
             _id_pattern(item_id)
-            + rf"(?:\s*(?:[:：=|\-]|\b(?:is|status|state)\b)\s*|\s+)"
-            + _COMPLETION_WORD
-            + r"(?![A-Za-z])",
-            re.IGNORECASE,
+            + rf"(?:\s*(?:[:：=|\-]|(?i:\b(?:is|status|state)\b))\s*|\s+)"
+            + rf"(?P<state>{_EXPLICIT_STATE})",
         )
         before_id = re.compile(
-            _COMPLETION_WORD
+            rf"(?:^|[;；|])\s*(?:[-*+]\s+)?(?P<state>{_EXPLICIT_STATE})"
             + rf"\s*(?:[:：=|\-])\s*{_id_pattern(item_id)}",
-            re.IGNORECASE,
         )
-        for line_number, line in enumerate(lines, start=1):
-            if not id_re.search(line) or _NEGATED_COMPLETION.search(line):
-                continue
-            if after_id.search(line) or before_id.search(line):
+        for line_number, line in lines:
+            states = [match.group("state") for pattern in (after_id, before_id)
+                      for match in pattern.finditer(line)]
+            unfinished = any(_NEGATED_COMPLETION.fullmatch(state) for state in states)
+            completed = any(re.fullmatch(_COMPLETION_WORD, state, re.I) for state in states)
+            if status == "verified" and unfinished:
+                findings.append(
+                    f"{item_id}: verified item is explicitly presented as unfinished "
+                    f"in handoff line {line_number}"
+                )
+                break
+            if status != "verified" and completed:
                 findings.append(
                     f"{item_id}: unfinished item is explicitly presented as complete "
                     f"in handoff line {line_number}"
@@ -265,7 +279,7 @@ def validate() -> int:
         seen_ids.add(item_id)
 
         status = item.get("status")
-        if status not in ALLOWED_STATUSES:
+        if not isinstance(status, str) or status not in ALLOWED_STATUSES:
             errors.append(f"{item_id}: invalid status {status!r}")
         else:
             counts[status] += 1
@@ -291,7 +305,7 @@ def validate() -> int:
                 errors.append(f"{item_id}: verified items require evidence")
             if gaps:
                 errors.append(f"{item_id}: verified items cannot retain gaps")
-        elif status not in {"abandoned"} and not gaps:
+        elif status != "abandoned" and not gaps:
             errors.append(f"{item_id}: unfinished items must state at least one gap")
 
     handoff_text: str | None = None
@@ -303,6 +317,8 @@ def validate() -> int:
             except (OSError, UnicodeError) as exc:
                 errors.append(f"cannot read handoff: {exc}")
         if handoff_text is not None:
+            if not handoff_text.strip():
+                errors.append("handoff must be non-empty")
             line_count = len(handoff_text.splitlines())
             if line_count > args.max_handoff_lines:
                 context_warnings.append(
@@ -333,6 +349,8 @@ def validate() -> int:
                 index_text = index_path.read_text(encoding="utf-8-sig")
             except (OSError, UnicodeError) as exc:
                 errors.append(f"cannot read project document index: {exc}")
+        if index_text is not None and not index_text.strip():
+            errors.append("project document index must be non-empty")
         # An existing project may intentionally use a very small native index.
 
     if args.strict_context and context_warnings:

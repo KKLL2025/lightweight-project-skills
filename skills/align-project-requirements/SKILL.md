@@ -93,6 +93,8 @@ This is a working baseline, not a frozen contract. It should be detailed enough 
 
 The framework is an information role, not a mandatory new file. Keep it in the current task context for direct execution; reuse a project-native specification, plan, issue, or design document when one already exists; create a durable artifact only when later Turns, Sessions, review, or coordination genuinely need it.
 
+When a durable baseline is needed, [Alignment Card](references/alignment-card.md) provides an optional shape.
+
 Do not create requirement IDs, acceptance ledgers, authority matrices, risk registers, detailed task trees, or other management artifacts unless the actual project has a concrete reason to need them.
 
 ## Choose the appropriate execution mode
@@ -104,6 +106,8 @@ Move from alignment to execution when the intended outcome and material boundari
 - execute directly when normal Agent execution is sufficient;
 - use `drive-large-project` when the agreed delivery depth, duration, stages, dependencies, or recovery needs genuinely benefit from persistent coordination;
 - use `organize-ai-project-files` only when project structure or file organization is materially part of the problem.
+
+Route to another skill only when it is installed and useful. Otherwise continue with normal Agent capabilities; an unavailable companion is not a reason to stop the agreed task.
 
 Do not reduce the agreed scope merely to make it fit one Turn or Session. When the intended outcome is larger than one execution batch, preserve that outcome and use `drive-large-project` when persistent coordination would materially help.
 
