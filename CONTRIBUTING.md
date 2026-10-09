@@ -13,9 +13,10 @@ Questions and early design ideas are welcome in [Discussions](https://github.com
 
 ## Local validation
 
-The runtime scripts use only the Python standard library. From the repository root, run:
+The runtime scripts use only the Python standard library. The repository's YAML format tests use a development dependency. From the repository root, run:
 
 ```sh
+python -m pip install -r requirements-dev.txt
 python -m unittest discover -s tests -v
 ```
 

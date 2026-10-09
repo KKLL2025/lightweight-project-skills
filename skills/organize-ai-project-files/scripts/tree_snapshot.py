@@ -48,7 +48,7 @@ def common_parser(parser: argparse.ArgumentParser) -> None:
         "--exclude",
         action="append",
         default=[],
-        help="Relative path prefix to exclude; may be repeated",
+        help="Relative path prefix to exclude; compare also retains all baseline exclusions",
     )
     parser.add_argument(
         "--hash-mode",
@@ -205,7 +205,9 @@ def build_snapshot(
     root = root.resolve()
     if not root.is_dir():
         raise ValueError(f"tree root does not exist: {root}")
-    prefixes = [normalize_prefix(value) for value in (*DEFAULT_EXCLUDES, *excludes)]
+    if type(critical_max_mib) is not int or critical_max_mib <= 0:
+        raise ValueError("critical-max-mib must be a positive integer")
+    prefixes = list(dict.fromkeys(normalize_prefix(value) for value in (*DEFAULT_EXCLUDES, *excludes)))
     critical_max = critical_max_mib * 1024 * 1024
     files: list[dict[str, Any]] = []
     total_bytes = 0
@@ -247,6 +249,7 @@ def build_snapshot(
         "hashMode": hash_mode,
         "criticalMaxMiB": critical_max_mib,
         "excludes": prefixes,
+        "snapshotOutputPath": None,
         "fileCount": len(files),
         "totalBytes": total_bytes,
         "files": files,
@@ -260,7 +263,88 @@ def load_snapshot(path: Path) -> dict[str, Any]:
         raise ValueError("unsupported snapshot schema")
     if not isinstance(value.get("files"), list):
         raise ValueError("snapshot files must be an array")
+    excludes = value.get("excludes", [])
+    if not isinstance(excludes, list) or not all(isinstance(item, str) for item in excludes):
+        raise ValueError("snapshot excludes must be an array of strings")
+    if value.get("hashMode", "none") not in ("none", "critical", "all"):
+        raise ValueError("snapshot hashMode must be none, critical, or all")
+    critical_max = value.get("criticalMaxMiB", 512)
+    if type(critical_max) is not int or critical_max <= 0:
+        raise ValueError("snapshot criticalMaxMiB must be a positive integer")
+    output_path = value.get("snapshotOutputPath")
+    if output_path is not None and (not isinstance(output_path, str) or not output_path.strip()):
+        raise ValueError("snapshotOutputPath must be a non-empty string or null")
+    seen_paths: set[str] = set()
+    for item in value["files"]:
+        if not isinstance(item, dict):
+            raise ValueError("snapshot file entries must be objects")
+        if not isinstance(item.get("path"), str) or not item["path"]:
+            raise ValueError("snapshot file paths must be non-empty strings")
+        if item["path"] in seen_paths:
+            raise ValueError(f"duplicate snapshot path: {item['path']}")
+        seen_paths.add(item["path"])
+        if item.get("kind", "file") not in ("file", "symlink"):
+            raise ValueError("snapshot entry kind must be file or symlink")
+        if type(item.get("bytes")) is not int or item["bytes"] < 0:
+            raise ValueError("snapshot entry bytes must be a non-negative integer")
+        if item.get("kind") == "symlink":
+            if not isinstance(item.get("target"), str) or not item["target"]:
+                raise ValueError("snapshot symlink targets must be non-empty strings")
+        elif "sha256" in item:
+            digest = item["sha256"]
+            if not isinstance(digest, str) or len(digest) != 64 or any(
+                char not in "0123456789abcdefABCDEF" for char in digest
+            ):
+                raise ValueError("snapshot sha256 must be a 64-character hexadecimal string")
+            item["sha256"] = digest.upper()
+        elif type(item.get("mtimeNs")) is not int:
+            raise ValueError("unhashed snapshot entries require integer mtimeNs")
+    if type(value.get("fileCount")) is not int or value["fileCount"] != len(value["files"]):
+        raise ValueError("snapshot fileCount must match its file entries")
+    if type(value.get("totalBytes")) is not int or value["totalBytes"] != sum(
+        item["bytes"] for item in value["files"]
+    ):
+        raise ValueError("snapshot totalBytes must match its file entries")
     return value
+
+
+def comparison_exclusions(
+    before: dict[str, Any], before_path: Path, root: Path, extra: list[str]
+) -> list[str]:
+    """Retain user exclusions; ignore an automatic output only while it is the snapshot."""
+    root = root.resolve()
+    baseline = list(before.get("excludes", []))
+    output_relative = before.get("snapshotOutputPath")
+    if "snapshotOutputPath" not in before:
+        # Legacy files mixed the output path into their exclusion list.
+        old_root = before.get("root")
+        try:
+            inferred = before_path.relative_to(Path(old_root).resolve()).as_posix() if isinstance(old_root, str) else None
+        except (OSError, RuntimeError, ValueError):
+            inferred = None
+        if inferred in baseline:
+            baseline.remove(inferred)
+            output_relative = inferred
+    exclusions = [*baseline, *extra]
+    candidates = [before_path]
+    if output_relative is not None:
+        candidates.append(root / output_relative)
+    for candidate in candidates:
+        if candidate.is_symlink():
+            continue
+        try:
+            resolved = candidate.resolve()
+            relative = resolved.relative_to(root).as_posix()
+        except ValueError:
+            continue
+        if excluded(relative, exclusions) or not resolved.is_file():
+            continue
+        if os.path.samefile(resolved, before_path) or (
+            resolved.stat().st_size == before_path.stat().st_size
+            and sha256(resolved) == sha256(before_path)
+        ):
+            exclusions.append(relative)
+    return exclusions
 
 
 def fingerprint(item: dict[str, Any], path_mode: str) -> tuple[Any, ...]:
@@ -299,6 +383,7 @@ def main() -> int:
             output = Path(args.output).resolve()
             excludes = list(args.exclude)
             root = Path(args.root).resolve()
+            output_relative = None
             try:
                 output_relative = output.relative_to(root).as_posix()
                 excludes.append(output_relative)
@@ -310,9 +395,14 @@ def main() -> int:
                 args.hash_mode or "none",
                 args.critical_max_mib,
             )
+            # Automatic snapshot output exclusion must not reserve this filename forever.
+            snapshot["excludes"] = list(dict.fromkeys(
+                normalize_prefix(value) for value in (*DEFAULT_EXCLUDES, *args.exclude)
+            ))
+            snapshot["snapshotOutputPath"] = output_relative
             output.parent.mkdir(parents=True, exist_ok=True)
             with output.open("w", encoding="utf-8", newline="\n") as handle:
-                json.dump(snapshot, handle, ensure_ascii=False, indent=2)
+                json.dump(snapshot, handle, ensure_ascii=True, indent=2)
                 handle.write("\n")
             print(
                 f"Snapshot created: {snapshot['fileCount']} file(s), "
@@ -320,7 +410,8 @@ def main() -> int:
             )
             return 0
 
-        before = load_snapshot(Path(args.before).resolve())
+        before_path = Path(args.before).resolve()
+        before = load_snapshot(before_path)
         effective_hash_mode = args.hash_mode
         if effective_hash_mode is None and before.get("hashMode") in {
             "none",
@@ -332,7 +423,7 @@ def main() -> int:
             effective_hash_mode = "none"
         after = build_snapshot(
             Path(args.root),
-            list(args.exclude),
+            comparison_exclusions(before, before_path, Path(args.root), list(args.exclude)),
             effective_hash_mode,
             int(before.get("criticalMaxMiB", args.critical_max_mib)),
         )
@@ -365,6 +456,7 @@ def main() -> int:
                 "after": after_unhashed,
             },
             "pathMode": args.path_mode,
+            "excludes": after["excludes"],
             "before": {
                 "fileCount": before.get("fileCount"),
                 "totalBytes": before.get("totalBytes"),
@@ -377,7 +469,7 @@ def main() -> int:
             "added": summarize_counter(added),
         }
         if args.json:
-            print(json.dumps(result, ensure_ascii=False, indent=2))
+            print(json.dumps(result, ensure_ascii=True, indent=2))
         else:
             if equal:
                 status = "PASS"
@@ -399,7 +491,7 @@ def main() -> int:
             if added:
                 print(f"Added identities: {sum(added.values())}")
         return 0 if equal else 1
-    except (OSError, ValueError, json.JSONDecodeError) as exc:
+    except (OSError, RuntimeError, ValueError, json.JSONDecodeError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2
 

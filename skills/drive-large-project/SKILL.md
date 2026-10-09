@@ -7,9 +7,9 @@ description: "Use when a sufficiently defined project will likely span multiple 
 
 Keep substantial work moving across Turns and Sessions without losing direction, overloading context, or allowing project management to displace the actual work.
 
-The Agent's primary job is to advance the project.
+This skill combination can help an Agent sustain long-running work, but is not guaranteed to suit every task.
 
-Use additional process only when it materially improves continuity, recovery, coordination, or a level of rigor the project actually requires.
+Add process only when it materially improves continuity, recovery, coordination, or required rigor.
 
 ## Enter only when persistent coordination is useful
 
@@ -131,7 +131,7 @@ Stable knowledge should preserve useful high-level understanding, responsibiliti
 
 ## Work in bounded execution batches
 
-A Turn is an execution batch, not a synonym for a milestone.A bounded Turn limits how much work is attempted at once; it does not redefine the size or ambition of the project itself.
+A Turn is an execution batch, not a synonym for a milestone. A bounded Turn limits how much work is attempted at once; it does not redefine the size or ambition of the project itself.
 
 At the beginning of a Turn, select a bounded batch in the host's plan or working context. It may contain several closely related small steps or one coherent part of a difficult milestone.
 
@@ -196,6 +196,10 @@ Project control exists to make execution more stable, not to make the Agent cont
 
 Do not duplicate another skill's responsibility merely for convenience.
 
+Unavailable companions do not block normal Agent execution within these boundaries.
+
+Optional references: [context](references/context-lifecycle.md), [execution](references/execution-control.md), [templates](references/artifact-templates.md). Use the [validator](scripts/validate_continuity.py) only for an existing formal acceptance ledger; IDs are case-sensitive.
+
 ## Finish or pause cleanly
 
 Before stopping, preserve only enough current state for later work to continue effectively.
@@ -205,5 +209,3 @@ Do not create acceptance ledgers, evidence archives, detailed histories, release
 Do not confuse local progress with completion of the whole project.
 
 Declare completion according to the delivery standard actually agreed for that project, without manufacturing additional work solely to increase certainty.
-
-A successful use of this skill should make the project easier to continue, understand, and finish while keeping most Agent effort focused on the project itself.

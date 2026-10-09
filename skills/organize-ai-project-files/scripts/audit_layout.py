@@ -75,7 +75,9 @@ def main() -> int:
 
     if contract.get("schemaVersion") != "1.0":
         errors.append("schemaVersion must be 1.0")
-    if contract.get("topology") not in {"single-repository", "shell-root"}:
+    if not isinstance(contract.get("topology"), str) or contract["topology"] not in {
+        "single-repository", "shell-root"
+    }:
         errors.append("topology must be single-repository or shell-root")
 
     roles = contract.get("roles")
@@ -95,7 +97,7 @@ def main() -> int:
         for item in raw:
             try:
                 path = within(root, item)
-            except ValueError as exc:
+            except (OSError, RuntimeError, ValueError) as exc:
                 errors.append(str(exc))
                 continue
             paths.append(path)
@@ -103,6 +105,8 @@ def main() -> int:
                 errors.append(f"declared path does not exist: {item}")
             elif key == "ephemeralRoots" and not path.exists():
                 warnings.append(f"ephemeral path is currently absent: {item}")
+            elif not path.is_dir():
+                errors.append(f"declared root is not a directory: {item}")
         resolved_roles[key] = paths
 
     development = resolved_roles.get("developmentRoots", [])
@@ -122,22 +126,27 @@ def main() -> int:
         for relative in entry_files:
             try:
                 path = within(root, relative)
-            except ValueError as exc:
+            except (OSError, RuntimeError, ValueError) as exc:
                 errors.append(str(exc))
                 continue
             if not path.is_file():
                 errors.append(f"declared entry file does not exist: {relative}")
 
-    actual_root_entries = sorted(item.name for item in root.iterdir())
+    actual_root_entries: list[str] | None = None
     unclassified: list[str] = []
     if "allowedRootEntries" in contract:
         allowed = contract["allowedRootEntries"]
         if not isinstance(allowed, list) or not all(isinstance(item, str) for item in allowed):
             errors.append("allowedRootEntries must be an array of strings")
         else:
-            unclassified = sorted(set(actual_root_entries) - set(allowed))
-            for name in unclassified:
-                warnings.append(f"unclassified root entry: {name}")
+            try:
+                actual_root_entries = sorted(item.name for item in root.iterdir())
+            except OSError as exc:
+                errors.append(f"cannot inventory project root: {exc}")
+            else:
+                unclassified = sorted(set(actual_root_entries) - set(allowed))
+                for name in unclassified:
+                    warnings.append(f"unclassified root entry: {name}")
 
     result = {
         "root": str(root),
@@ -146,7 +155,8 @@ def main() -> int:
         "errors": errors,
         "warnings": warnings,
         "unclassifiedRootEntries": unclassified,
-        "rootEntryCount": len(actual_root_entries),
+        "rootInventoried": actual_root_entries is not None,
+        "rootEntryCount": len(actual_root_entries) if actual_root_entries is not None else None,
         "roleCounts": {key: len(relative_roles.get(key, [])) for key in ROLE_KEYS},
         "passed": not errors,
     }

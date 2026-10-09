@@ -5,7 +5,7 @@ from urllib.parse import unquote
 
 
 ROOT = Path(__file__).resolve().parents[1]
-EXPECTED_VERSION = "0.7.0"
+EXPECTED_VERSION = "0.7.1"
 
 
 class RepositoryHealthTests(unittest.TestCase):
@@ -14,7 +14,7 @@ class RepositoryHealthTests(unittest.TestCase):
             "README.md",
             "README.zh-CN.md",
             "LICENSE",
-            "THIRD_PARTY_NOTICES.md",
+            "requirements-dev.txt",
             "CHANGELOG.md",
             "ROADMAP.md",
             "CONTRIBUTING.md",
@@ -32,12 +32,11 @@ class RepositoryHealthTests(unittest.TestCase):
         missing = [name for name in required if not (ROOT / name).is_file()]
         self.assertEqual(missing, [])
 
-    def test_upstream_attribution_is_preserved(self):
-        notices = (ROOT / "THIRD_PARTY_NOTICES.md").read_text(encoding="utf-8")
-        self.assertIn("align-project-requirements", notices)
-        self.assertIn("TencentCloudBase/CloudBase-AI-Toolkit", notices)
-        self.assertIn("Copyright (c) 2025 Tencent CloudBase", notices)
-        self.assertIn("MIT License", notices)
+    def test_project_license_is_preserved(self):
+        license_text = (ROOT / "LICENSE").read_text(encoding="utf-8")
+        self.assertIn("MIT License", license_text)
+        self.assertIn("Lightweight Project Skills contributors", license_text)
+        self.assertIn("Permission is hereby granted", license_text)
 
     def test_version_is_consistent(self):
         version = (ROOT / "VERSION").read_text(encoding="utf-8").strip()

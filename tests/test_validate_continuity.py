@@ -115,6 +115,27 @@ class ValidateContinuityTests(unittest.TestCase):
         self.assertEqual(result.returncode, 1)
         self.assertIn("invalid status", result.stderr)
 
+    def test_non_string_status_fails_without_traceback(self) -> None:
+        for value in ([], {}, None, 1):
+            with self.subTest(status=value):
+                self.write_ledger(second_status=value)
+                result = self.run_validator(
+                    "--handoff", "control/handoff.md", "--handoff-ledger-check", "error"
+                )
+                self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+                self.assertIn("invalid status", result.stderr)
+                self.assertNotIn("Traceback", result.stderr)
+
+    def test_invalid_item_with_handoff_returns_validation_error(self) -> None:
+        ledger = self.root / "control" / "acceptance.json"
+        ledger.write_text(json.dumps({"items": [None]}), encoding="utf-8")
+        result = self.run_validator(
+            "--handoff", "control/handoff.md", "--handoff-ledger-check", "error"
+        )
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("must be an object", result.stderr)
+        self.assertNotIn("Traceback", result.stderr)
+
     def test_missing_evidence_fails(self) -> None:
         (self.root / "evidence" / "验证.txt").unlink()
         result = self.run_validator()
@@ -211,6 +232,60 @@ class ValidateContinuityTests(unittest.TestCase):
         )
         self.assertEqual(result.returncode, 0, result.stderr)
 
+    def test_pending_evidence_does_not_hide_an_explicit_completion(self) -> None:
+        self.write_handoff("AC-2: complete; runtime evidence is pending.\n")
+        result = self.run_validator(
+            "--handoff", "control/handoff.md", "--handoff-ledger-check", "error"
+        )
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("AC-2: unfinished item is explicitly presented as complete", result.stderr)
+
+    def test_two_items_on_one_line_do_not_share_status_words(self) -> None:
+        self.write_handoff("AC-1: verified; AC-2: pending.\n")
+        result = self.run_validator(
+            "--handoff", "control/handoff.md", "--handoff-ledger-check", "error"
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_ledger_ids_remain_case_sensitive_in_handoff(self) -> None:
+        ledger = self.root / "control" / "acceptance.json"
+        payload = json.loads(ledger.read_text(encoding="utf-8"))
+        payload["items"][1]["id"] = "ac-1"
+        ledger.write_text(json.dumps(payload), encoding="utf-8")
+        self.write_handoff("AC-1: complete.\n")
+        result = self.run_validator(
+            "--handoff", "control/handoff.md", "--handoff-ledger-check", "error"
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_completion_before_id_respects_explicit_negation(self) -> None:
+        for text, expected in (("not complete: AC-2\n", 0), ("complete: AC-2\n", 1)):
+            with self.subTest(text=text):
+                self.write_handoff(text)
+                result = self.run_validator(
+                    "--handoff", "control/handoff.md", "--handoff-ledger-check", "error"
+                )
+                self.assertEqual(result.returncode, expected, result.stdout + result.stderr)
+
+    def test_not_yet_completion_before_id_is_not_a_positive_claim(self) -> None:
+        for text in ("not yet complete: AC-2\n", "not currently complete: AC-2\n"):
+            with self.subTest(text=text):
+                self.write_handoff(text)
+                result = self.run_validator(
+                    "--handoff", "control/handoff.md", "--handoff-ledger-check", "error"
+                )
+                self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
+    def test_verified_item_rejects_not_yet_and_enum_unfinished_states(self) -> None:
+        for state in ("not yet verified", "in_progress", "not_started", "implemented_pending"):
+            with self.subTest(state=state):
+                self.write_handoff(f"AC-1: {state}\n")
+                result = self.run_validator(
+                    "--handoff", "control/handoff.md", "--handoff-ledger-check", "error"
+                )
+                self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+                self.assertIn("AC-1: verified item is explicitly presented as unfinished", result.stderr)
+
     def test_semantic_check_requires_handoff(self) -> None:
         result = self.run_validator("--handoff-ledger-check", "warn")
         self.assertEqual(result.returncode, 1)
@@ -227,6 +302,15 @@ class ValidateContinuityTests(unittest.TestCase):
         )
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertNotIn("too short", result.stdout + result.stderr)
+
+    def test_empty_handoff_or_index_is_rejected(self) -> None:
+        for argument, relative in (("--handoff", "control/handoff.md"),
+                                   ("--index", "control/index.md")):
+            with self.subTest(argument=argument):
+                (self.root / relative).write_text(" \n\t", encoding="utf-8")
+                result = self.run_validator(argument, relative)
+                self.assertEqual(result.returncode, 1)
+                self.assertIn("must be non-empty", result.stderr)
 
     def test_canonical_handoff_hygiene_warns_or_fails_in_strict_mode(self) -> None:
         self.write_handoff(
@@ -271,6 +355,25 @@ class ValidateContinuityTests(unittest.TestCase):
         )
         result = self.run_validator(
             "--handoff", "control/handoff.md", "--strict-context"
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_code_fences_respect_length_and_closing_line(self) -> None:
+        for text in (
+            "````markdown\n```\n## Closed history\n```\n````\n",
+            "```markdown\n```not a closing fence\n## Closed history\n```\n",
+            "~~~~markdown\n~~~\n## Closed history\n~~~\n~~~~\n",
+            "    ## Closed history\n",
+        ):
+            with self.subTest(text=text):
+                self.write_handoff(text)
+                result = self.run_validator("--handoff", "control/handoff.md", "--strict-context")
+                self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
+    def test_fenced_completion_example_is_not_live_handoff_state(self) -> None:
+        self.write_handoff("```text\nAC-2: complete\n```\nAC-2: pending\n")
+        result = self.run_validator(
+            "--handoff", "control/handoff.md", "--handoff-ledger-check", "error"
         )
         self.assertEqual(result.returncode, 0, result.stderr)
 

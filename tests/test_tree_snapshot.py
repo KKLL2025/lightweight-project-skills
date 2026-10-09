@@ -1,6 +1,9 @@
 from __future__ import annotations
 
 import importlib.util
+import argparse
+import contextlib
+import io
 import json
 import os
 import subprocess
@@ -126,6 +129,143 @@ class TreeSnapshotTests(unittest.TestCase):
             self.root, [r"资料\临时"], "all", 512
         )
         self.assertEqual([item["path"] for item in snapshot["files"]], ["资料/keep.txt"])
+
+    def test_compare_retains_baseline_exclusions_when_an_included_file_is_lost(self) -> None:
+        (self.root / "cache").mkdir()
+        (self.root / "keep.bin").write_bytes(b"same content")
+        (self.root / "cache" / "copy.bin").write_bytes(b"same content")
+        before = tree_snapshot.build_snapshot(self.root, ["cache"], "all", 512)
+        (self.root / "keep.bin").unlink()
+
+        result = self.compare(before)
+        self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+        payload = json.loads(result.stdout)
+        self.assertFalse(payload["equal"])
+        self.assertEqual(payload["after"]["fileCount"], 0)
+
+    def test_compare_retains_baseline_exclusions_when_adding_an_exclusion(self) -> None:
+        (self.root / "cache").mkdir()
+        (self.root / "cache" / "ignored.txt").write_text("cache", encoding="utf-8")
+        (self.root / "kept.txt").write_text("kept", encoding="utf-8")
+        before = tree_snapshot.build_snapshot(self.root, ["cache"], "all", 512)
+        (self.root / "generated.txt").write_text("new output", encoding="utf-8")
+
+        result = self.compare(before, "--exclude", "generated.txt")
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertEqual(json.loads(result.stdout)["after"]["fileCount"], 1)
+
+    def test_snapshot_inside_tree_stays_excluded_during_compare(self) -> None:
+        (self.root / "kept.txt").write_text("unchanged", encoding="utf-8")
+        output = self.root / "snapshot.json"
+        created = subprocess.run(
+            [sys.executable, str(SCRIPT), "create", "--root", str(self.root),
+             "--output", str(output), "--hash-mode", "all"],
+            capture_output=True, text=True, encoding="utf-8", check=False,
+        )
+        self.assertEqual(created.returncode, 0, created.stderr)
+        compared = subprocess.run(
+            [sys.executable, str(SCRIPT), "compare", "--root", str(self.root),
+             "--before", str(output), "--json", "--path-mode", "exact"],
+            capture_output=True, text=True, encoding="utf-8", check=False,
+        )
+        self.assertEqual(compared.returncode, 0, compared.stdout + compared.stderr)
+        self.assertTrue(json.loads(compared.stdout)["equal"])
+
+    def test_reused_snapshot_output_path_is_not_permanently_excluded(self) -> None:
+        (self.root / "kept.txt").write_text("unchanged", encoding="utf-8")
+        output = self.root / "snapshot.json"
+        created = subprocess.run(
+            [sys.executable, str(SCRIPT), "create", "--root", str(self.root),
+             "--output", str(output), "--hash-mode", "all"],
+            capture_output=True, text=True, encoding="utf-8", check=False,
+        )
+        self.assertEqual(created.returncode, 0, created.stderr)
+        saved = Path(self.temporary.name) / "moved-before.json"
+        output.rename(saved)
+        output.write_text("new project content", encoding="utf-8")
+        compared = subprocess.run(
+            [sys.executable, str(SCRIPT), "compare", "--root", str(self.root),
+             "--before", str(saved), "--json"],
+            capture_output=True, text=True, encoding="utf-8", check=False,
+        )
+        self.assertEqual(compared.returncode, 1, compared.stdout + compared.stderr)
+        self.assertEqual(json.loads(compared.stdout)["after"]["fileCount"], 2)
+
+    def test_copying_baseline_outside_tree_keeps_original_artifact_excluded(self) -> None:
+        (self.root / "kept.txt").write_text("unchanged", encoding="utf-8")
+        output = self.root / "snapshot.json"
+        created = subprocess.run(
+            [sys.executable, str(SCRIPT), "create", "--root", str(self.root),
+             "--output", str(output), "--hash-mode", "all"],
+            capture_output=True, text=True, encoding="utf-8", check=False,
+        )
+        self.assertEqual(created.returncode, 0, created.stderr)
+        copied = Path(self.temporary.name) / "copied-before.json"
+        copied.write_bytes(output.read_bytes())
+        compared = subprocess.run(
+            [sys.executable, str(SCRIPT), "compare", "--root", str(self.root),
+             "--before", str(copied), "--json"],
+            capture_output=True, text=True, encoding="utf-8", check=False,
+        )
+        self.assertEqual(compared.returncode, 0, compared.stdout + compared.stderr)
+
+    def test_explicit_output_path_exclusion_remains_intentional(self) -> None:
+        (self.root / "kept.txt").write_text("unchanged", encoding="utf-8")
+        before = tree_snapshot.build_snapshot(self.root, ["snapshot.json"], "all", 512)
+        (self.root / "snapshot.json").write_text("intentionally ignored", encoding="utf-8")
+        self.assertEqual(self.compare(before).returncode, 0)
+
+    def test_duplicate_paths_are_rejected_even_when_content_counts_match(self) -> None:
+        (self.root / "a.bin").write_bytes(b"same")
+        (self.root / "b.bin").write_bytes(b"same")
+        before = self.snapshot()
+        before["files"][1]["path"] = before["files"][0]["path"]
+        result = self.compare(before)
+        self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+        self.assertNotIn("Traceback", result.stderr)
+
+    def test_invalid_snapshot_fields_fail_without_tracebacks(self) -> None:
+        (self.root / "kept.txt").write_text("kept", encoding="utf-8")
+        for field, value in (
+            ("files", [None]), ("excludes", {}), ("hashMode", []),
+            ("criticalMaxMiB", False), ("fileCount", "1"), ("totalBytes", []),
+            ("snapshotOutputPath", []),
+        ):
+            with self.subTest(field=field):
+                before = self.snapshot()
+                before[field] = value
+                result = self.compare(before)
+                self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+                self.assertNotIn("Traceback", result.stderr)
+
+    def test_snapshot_can_serialize_surrogateescaped_filename(self) -> None:
+        snapshot = self.snapshot()
+        snapshot["files"] = [{"path": "bad\udcff.txt", "name": "bad\udcff.txt",
+                              "kind": "file", "bytes": 0, "mtimeNs": 0}]
+        snapshot.update(fileCount=1, totalBytes=0)
+        output = Path(self.temporary.name) / "surrogate.json"
+        args = argparse.Namespace(command="create", root=str(self.root),
+                                  output=str(output), exclude=[], hash_mode="none",
+                                  critical_max_mib=512)
+        with mock.patch.object(tree_snapshot, "parse_args", return_value=args), \
+             mock.patch.object(tree_snapshot, "build_snapshot", return_value=snapshot), \
+             contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(tree_snapshot.main(), 0)
+        restored = json.loads(output.read_text(encoding="utf-8"))
+        self.assertEqual(restored["files"][0]["path"], "bad\udcff.txt")
+
+    def test_create_rejects_non_positive_critical_limit(self) -> None:
+        output = Path(self.temporary.name) / "invalid-limit.json"
+        for value in ("0", "-1"):
+            with self.subTest(value=value):
+                result = subprocess.run(
+                    [sys.executable, str(SCRIPT), "create", "--root", str(self.root),
+                     "--output", str(output), "--critical-max-mib", value],
+                    capture_output=True, text=True, encoding="utf-8", check=False,
+                )
+                self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+                self.assertNotIn("Traceback", result.stderr)
+                self.assertFalse(output.exists())
 
     def test_hash_mode_none_fails_closed_even_when_metadata_matches(self) -> None:
         target = self.root / "same-name.bin"

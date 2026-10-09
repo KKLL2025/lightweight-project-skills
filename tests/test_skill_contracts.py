@@ -4,6 +4,8 @@ import re
 import unittest
 from pathlib import Path
 
+import yaml
+
 
 ROOT = Path(__file__).resolve().parents[1]
 SKILLS = {
@@ -17,19 +19,33 @@ def read_skill(name: str) -> str:
     return (SKILLS[name] / "SKILL.md").read_text(encoding="utf-8")
 
 
-def frontmatter(text: str) -> dict[str, str]:
-    if not text.startswith("---\n"):
-        raise AssertionError("SKILL.md must start with YAML frontmatter")
+def frontmatter(text: str) -> dict:
+    match = re.match(r"\A---\n(.*?)\n---(?:\n|$)", text, re.DOTALL)
+    if not match:
+        raise AssertionError("SKILL.md frontmatter is missing or not closed")
     try:
-        raw = text.split("\n---\n", 1)[0][4:]
-    except IndexError as exc:
-        raise AssertionError("SKILL.md frontmatter is not closed") from exc
-    values: dict[str, str] = {}
-    for line in raw.splitlines():
-        if ":" in line:
-            key, value = line.split(":", 1)
-            values[key.strip()] = value.strip()
+        values = yaml.safe_load(match.group(1))
+    except yaml.YAMLError as exc:
+        raise AssertionError(f"invalid SKILL.md YAML: {exc}") from exc
+    if not isinstance(values, dict):
+        raise AssertionError("SKILL.md frontmatter must be a mapping")
     return values
+
+
+def runtime_interface(text: str) -> dict:
+    try:
+        metadata = yaml.safe_load(text)
+    except yaml.YAMLError as exc:
+        raise AssertionError(f"invalid runtime YAML: {exc}") from exc
+    if not isinstance(metadata, dict) or not isinstance(metadata.get("interface"), dict):
+        raise AssertionError("runtime metadata must contain an interface mapping")
+    interface = metadata["interface"]
+    for field in ("display_name", "short_description", "default_prompt"):
+        if not isinstance(interface.get(field), str) or not interface[field].strip():
+            raise AssertionError(f"interface.{field} must be a non-empty string")
+    if not 25 <= len(interface["short_description"]) <= 64:
+        raise AssertionError("short_description must be 25 to 64 characters")
+    return interface
 
 
 class SkillContractTests(unittest.TestCase):
@@ -42,8 +58,22 @@ class SkillContractTests(unittest.TestCase):
             with self.subTest(skill=name):
                 values = frontmatter(read_skill(name))
                 self.assertEqual(name, values.get("name"))
+                self.assertIsInstance(values.get("description"), str)
                 self.assertGreater(len(values.get("description", "")), 80)
-                self.assertEqual({"name", "description"}, set(values))
+                self.assertLessEqual(len(values["description"]), 1024)
+                self.assertTrue({"name", "description"}.issubset(values))
+                self.assertFalse(set(values) - {"name", "description", "license", "compatibility",
+                                              "metadata", "allowed-tools"})
+
+    def test_frontmatter_rejects_invalid_yaml_and_missing_fence(self) -> None:
+        invalid = (
+            '---\nname: example\ndescription: "unterminated\n---\nBody\n',
+            '---\nname: example\ndescription: valid\nBody without closing fence\n',
+            '---\n- example\n---\nBody\n',
+        )
+        for text in invalid:
+            with self.subTest(text=text), self.assertRaises(AssertionError):
+                frontmatter(text)
 
     def test_skills_stay_concise(self) -> None:
         for name in SKILLS:
@@ -81,10 +111,18 @@ class SkillContractTests(unittest.TestCase):
         for name, skill_dir in SKILLS.items():
             metadata = (skill_dir / "agents" / "openai.yaml").read_text(encoding="utf-8")
             with self.subTest(skill=name):
-                self.assertIn("display_name:", metadata)
-                self.assertIn("short_description:", metadata)
-                self.assertIn("default_prompt:", metadata)
-                self.assertIn("$" + name, metadata)
+                interface = runtime_interface(metadata)
+                self.assertIn("$" + name, interface["default_prompt"])
+
+    def test_runtime_metadata_rejects_invalid_yaml_or_field_types(self) -> None:
+        for text in (
+            'interface:\n  display_name: "unterminated\n',
+            'interface: []\n',
+            'interface:\n  display_name: false\n  short_description: valid description for a skill\n'
+            '  default_prompt: use the skill\n',
+        ):
+            with self.subTest(text=text), self.assertRaises(AssertionError):
+                runtime_interface(text)
 
     def test_runtime_metadata_preserves_activation_boundaries(self) -> None:
         align = (SKILLS["align-project-requirements"] / "agents" / "openai.yaml").read_text(
